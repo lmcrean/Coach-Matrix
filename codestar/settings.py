@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8000-lmcrean-project4-avaw7dd1zq8.ws-eu105.gitpod.io', 'lmcrean-ittib-b97fbbd27fb0.herokuapp.com/']
+ALLOWED_HOSTS = ['8000-lmcrean-project4-avaw7dd1zq8.ws-eu105.gitpod.io', 'lmcrean-ittib-b97fbbd27fb0.herokuapp.com']
 
 
 # Application definition
