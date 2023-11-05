@@ -108,3 +108,24 @@ Yes! We'd strongly encourage you to look at the source code of the `uptime.sh` f
 ---
 
 Happy coding!
+
+
+ERRORS not in tutorial
+
+gitpod /workspace/Project-4 (main) $ python3 manage.py migrate
+Traceback (most recent call last):
+  File "/workspace/Project-4/manage.py", line 22, in <module>
+    main()
+  File "/workspace/Project-4/manage.py", line 18, in main
+    execute_from_command_line(sys.argv)
+  File "/workspace/.pip-modules/lib/python3.9/site-packages/django/core/management/__init__.py", line 419, in execute_from_command_line
+    utility.execute()
+  File "/workspace/.pip-modules/lib/python3.9/site-packages/django/core/management/__init__.py", line 395, in execute
+    django.setup()
+  File "/workspace/.pip-modules/lib/python3.9/site-packages/django/__init__.py", line 24, in setup
+    apps.populate(settings.INSTALLED_APPS)
+  File "/workspace/.pip-modules/lib/python3.9/site-packages/django/apps/registry.py", line 122, in populate
+    app_config.ready()
+  File "/workspace/.pip-modules/lib/python3.9/site-packages/allauth/account/apps.py", line 15, in ready
+    raise ImproperlyConfigured(
+django.core.exceptions.ImproperlyConfigured: allauth.account.middleware.AccountMiddleware must be added to settings.MIDDLEWARE
