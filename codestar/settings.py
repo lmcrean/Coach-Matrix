@@ -29,7 +29,12 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8000-lmcrean-project4-avaw7dd1zq8.ws-eu105.gitpod.io', 'lmcrean-ittib-b97fbbd27fb0.herokuapp.com']
+ALLOWED_HOSTS = [
+    '8000-lmcrean-project4-avaw7dd1zq8.ws-eu105.gitpod.io', 
+    'lmcrean-ittib-b97fbbd27fb0.herokuapp.com',
+    '8000-lmcrean-project4-avaw7dd1zq8.ws-eu106.gitpod.io'
+]
+
 
 
 # Application definition
@@ -66,7 +71,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware' #error message/not in tutorial
 ]
 
 ROOT_URLCONF = 'codestar.urls'
