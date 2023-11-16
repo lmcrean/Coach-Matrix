@@ -153,4 +153,14 @@ The user stories are organised by EPICS. They can be summarised here:
 
 # 4. Issues and Bugs
 
+## 4.2. Sign in page
+
+“Cannot Delete ‘Forgot Password?’ On Sign in Page. Seems Completely Unresponsive to Code.” Stack Overflow, https://stackoverflow.com/questions/77427112/cannot-delete-forgot-password-on-sign-in-page-seems-completely-unresponsive. Accessed 12 Nov. 2023.
+
+## 4.1. Google Auth Features
+
+Issue 1: “Cannot Access Django-Admin Panel on Port.” Stack Overflow, https://stackoverflow.com/questions/77465837/cannot-access-django-admin-panel-on-port. Accessed 12 Nov. 2023.
+
+Issue 2: “IntegrityError When Adding Social Application in Django: Null Value in Column ‘Provider_id.’” Stack Overflow, https://stackoverflow.com/questions/77466342/integrityerror-when-adding-social-application-in-django-null-value-in-column-p. Accessed 12 Nov. 2023.
+
 # 5. Acknowledgement and credits
