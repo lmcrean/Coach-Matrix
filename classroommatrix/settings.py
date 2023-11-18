@@ -35,6 +35,7 @@ X_FRAME_OPTION = 'SAMEORIGIN'
 ALLOWED_HOSTS = [
     '8000-lmcrean-project4-avaw7dd1zq8.ws-eu105.gitpod.io', 
     'lmcrean-ittib-b97fbbd27fb0.herokuapp.com',
+    'classroom-matrix-985ace5aad63.herokuapp.com/',
     '8000-lmcrean-project4-avaw7dd1zq8.ws-eu106.gitpod.io'
 ]
 
