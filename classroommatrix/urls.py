@@ -17,9 +17,9 @@ from django.contrib import admin
 from django.urls import path, include
 
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path("", include("blog.urls"), name="blog-urls"),
+urlpatterns = [ 
+    path('admin/', admin.site.urls), # admin page
+    path("", include("blog.urls"), name="blog-urls"), # this function will include the urls from the blog app
     path('summernote/', include('django_summernote.urls')),
     path("accounts/", include("allauth.urls")),
     path("", include("users.urls"))

@@ -3,7 +3,7 @@ from django.contrib.auth import logout
 
 
 def home(request):
-    return render(request, "home.html")
+    return render(request, "index.html")
 
 
 def logout_view(request):
