@@ -7,14 +7,14 @@ from .models import Post
 from .forms import CommentForm
 
 
-class PostList(generic.ListView):
+class PostList(generic.ListView): # this class will list all the posts
     model = Post
     queryset = Post.objects.filter(status=1).order_by("-created_on")
     template_name = "questions.html"
     paginate_by = 6
 
 
-class PostDetail(View):
+class PostDetail(View): # this class will show the details of a post
 
     def get(self, request, slug, *args, **kwargs):
         queryset = Post.objects.filter(status=1)
