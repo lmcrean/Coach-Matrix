@@ -5,7 +5,9 @@ from django.contrib.auth import logout
 def home(request):
     return render(request, "index.html")
 
+def logintoquestions(request):
+    return redirect("questions.html")
 
 def logout_view(request):
     logout (request)
-    return redirect("/")
+    return redirect("index.html")
