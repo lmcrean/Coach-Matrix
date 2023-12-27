@@ -1,1 +1,1 @@
-web: gunicorn classroommatrix.wsgi
+web: gunicorn coachmatrix.wsgi
