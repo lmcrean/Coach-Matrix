@@ -116,3 +116,24 @@ class Answer(models.Model):
     def __str__(self):
         return f"Answer {self.body} by {self.name}"
     
+class Upvote(models.Model):
+    """
+    This class will handle upvoting a question. If the user has already upvoted the question, it will remove the upvote. If the user has not already upvoted the question, it will add the upvote.
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    upvotedate = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.user) + " upvoted " + str(self.question) + " on " + str(self.upvotedate)
+    
+class Downvote(models.Model):
+    """
+    This class will handle downvoting a question. If the user has already downvoted the question, it will remove the downvote. If the user has not already downvoted the question, it will add the downvote.
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    downvotedate = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.user) + " downvoted " + str(self.question) + " on " + str(self.downvotedate)
