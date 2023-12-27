@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'blog',
     'users',
+    'main_forum',
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
