@@ -1,5 +1,5 @@
 # main_forum/urls.py 
-# (called through classroommatrix/urls.py using path("", include("main_forum.urls"), name="main_forum-urls"))
+# (called through coachmatrix/urls.py using path("", include("main_forum.urls"), name="main_forum-urls"))
 
 from . import views
 from django.urls import path

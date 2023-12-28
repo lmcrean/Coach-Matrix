@@ -86,22 +86,22 @@ body {
     z-index: 100;
 }
 
-.post-link {
+.question-link {
     text-decoration: none;
     color: #445261;
 }
 
-.post-link:hover,
+.question-link:hover,
 .page-link {
     color: #E84610;
 }
 
-.post-title {
+.question-title {
     margin-top: 20%;
     margin-left: 5%;
 }
 
-.post-subtitle {
+.question-subtitle {
     margin-left: 5%;
     color: lightgray;
 }

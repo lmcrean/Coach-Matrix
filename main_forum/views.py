@@ -1,4 +1,4 @@
-# blog/views.py
+# main_forum/views.py
 
 from django.shortcuts import render, get_object_or_404, reverse
 from django.views import generic, View
@@ -34,13 +34,12 @@ class QuestionCreate(generic.CreateView): # this class will create a question
     template_name = "ask_question.html"
 
     def form_valid(self, form):
+        # Assign the current user as the author of the question
         form.instance.author = self.request.user
-        form.instance.title = form.cleaned_data['subject']  # Copy the subject into title
-        form.instance.slug = form.cleaned_data['subject'].replace(' ', '-').lower()
-        # Sets the status to "Published"
-        form.instance.status = 1  # '1' corresponds to STATUS = Published. ((0, "Draft"), (1, "Published"))
+        form.instance.status = 1
+        # Then save the form and instance
         return super().form_valid(form)
-
+    
     def get_success_url(self):
         # Redirect to the 'questions' page after form submission
         return reverse_lazy('questions')

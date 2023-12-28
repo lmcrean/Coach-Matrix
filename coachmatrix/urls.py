@@ -1,4 +1,4 @@
-"""classroommatrix URL Configuration
+"""coachmatrix URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -19,9 +19,8 @@ from django.urls import path, include
 
 urlpatterns = [ 
     path('admin/', admin.site.urls), # admin page
-    path("", include("blog.urls"), name="blog-urls"),# this function will include the urls from the blog app
     path("", include("main_forum.urls"), name="main_forum-urls"), # this function will include the urls from the main_forum app
     path('summernote/', include('django_summernote.urls')),
     path("accounts/", include("allauth.urls")),
-    path("", include("users.urls"))
+    path("", include("users.urls")),
 ]

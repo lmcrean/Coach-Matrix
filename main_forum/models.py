@@ -48,7 +48,6 @@ class Question(models.Model):
         User, related_name='questionpost_upvotes', blank=True)
     downvotes = models.ManyToManyField(User, related_name='questionpost_downvote', blank=True)
     subject = models.CharField(max_length=100, help_text='Enter a subject line for your question.', unique=True)
-    content = models.TextField()
     body = models.TextField(null=True, blank=True, default="")  # Allow null and blank, or remove the field if it's not needed
     standards = models.ManyToManyField(TeachingStandardTag, related_name='questions', blank=True)
     answercount = models.IntegerField(default=0)
@@ -71,6 +70,12 @@ class Question(models.Model):
     def __str__(self):
         return self.subject
 
+    def save(self, *args, **kwargs):
+        if not self.pk:  # If this is a new question (no primary key yet)
+            self.slug = slugify(self.subject)
+            self.title = self.subject  # Set the title based on the subject
+        super(Question, self).save(*args, **kwargs)  # Call the "real" save method.
+
     def number_of_upvotes(self):
         return self.upvotes.count()
     
@@ -78,15 +83,17 @@ class Question(models.Model):
         return self.downvotes.count()
 
     def save(self, *args, **kwargs):
-        if not self.pk:  # Check if this is a new question or an update
-            # It's a new question, so no need to update the slug or title
+        # Only set the title and slug if it's a new question or title is not set
+        if not self.pk or not self.title:
             self.slug = slugify(self.subject)
-        else:
-            # It's an update, so update the slug and title to reflect the new subject
             self.title = self.subject
-            self.slug = slugify(self.subject)
-        
             super(Question, self).save(*args, **kwargs)
+        else:
+            # If it's an update, the instance already has a primary key
+            self.title = self.subject  # The title is updated
+            self.slug = slugify(self.subject)  # The slug is updated
+            super(Question, self).save(*args, **kwargs)  # The instance is saved again
+
 
 
 class Answer(models.Model):

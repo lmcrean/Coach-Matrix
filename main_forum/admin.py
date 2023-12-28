@@ -26,7 +26,7 @@ class QuestionAdmin(SummernoteModelAdmin):
     list_filter = ('status', 'created_on')
     prepopulated_fields = {'slug': ('title',)}
     summernote_fields = ('content',)
-    filter_horizontal = ('standards',)  # This will add a nice widget to manage ManyToMany relationship
+    # filter_horizontal = ('standards',)  # This will add a nice widget to manage ManyToMany relationship
 
 @admin.register(Answer)
 class AnswerAdmin(SummernoteModelAdmin):

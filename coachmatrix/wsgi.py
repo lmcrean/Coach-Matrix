@@ -1,5 +1,5 @@
 """
-WSGI config for classroommatrix project.
+WSGI config for coachmatrix project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
