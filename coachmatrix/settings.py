@@ -40,7 +40,8 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '8000-lmcrean-coachmatrix-zp6cz7sdhxw.ws-eu107.gitpod.io',
-    '8000-lmcrean-classroommatrix-zp6cz7sdhxw.ws-eu107.gitpod.io'
+    '8000-lmcrean-classroommatrix-zp6cz7sdhxw.ws-eu107.gitpod.io',
+    'coach-matrix-d2cd1e717f81.herokuapp.com'
 ]
 
 
@@ -201,4 +202,3 @@ AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 )
-
