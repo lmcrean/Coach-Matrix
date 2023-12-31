@@ -53,3 +53,6 @@ class AnswerForm(forms.ModelForm) :
     class Meta: # Meta class is used to specify the model to which the form is associated
         model = Answer
         fields = ('body',)
+        widgets = {
+            'body': SummernoteWidget(),
+        }
