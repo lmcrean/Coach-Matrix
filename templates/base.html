@@ -47,17 +47,20 @@
                         <a class="nav-link active" aria-current="page" href="{% url 'questions' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'questions' %}">Top Questions</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'ask_question' %}">Ask A Question</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
+                    </li>
                     {% else %}
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'questions' %}">Top Questions</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'account_signup' %}">Register</a>
