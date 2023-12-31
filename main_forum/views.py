@@ -12,6 +12,9 @@ from django.views.generic import DeleteView
 from django.core.exceptions import PermissionDenied
 from django.utils.text import slugify
 from django.contrib import messages
+import logging
+logger = logging.getLogger(__name__)
+
 
 class QuestionList(generic.ListView):
     """
@@ -245,8 +248,8 @@ class AnswerUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return reverse_lazy('question_detail', kwargs={'slug': self.object.question.slug})
 
     def test_func(self):
-        answer = self.get_object()
-        return self.request.user == answer.name  # Ensure only the answer author can update
+        return self.request.user == self.get_object().author or self.request.user.is_superuser
+        
 
 class AnswerDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Answer
@@ -257,4 +260,4 @@ class AnswerDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         answer = self.get_object()
-        return self.request.user == answer.author# Ensure only the answer author can delete
+        return self.request.user == answer.author # Ensure only the answer author can delete
