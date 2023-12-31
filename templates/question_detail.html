@@ -121,7 +121,7 @@
                         </span> wrote:
                     </p>
                     <!-- The body of the answer goes before the | -->
-                    {{ answer.body | linebreaks }}
+                    {{ answer.body|safe }}
                 </div>
                 <!-- Our for loop ends here -->
                 {% endfor %}
@@ -135,8 +135,9 @@
                     Your answer is awaiting approval
                 </div>
                 {% else %}
-                {% if user.is_authenticated %}
+                {% endif %}
 
+                {% if user.is_authenticated %}
                 <h3>Leave a answer:</h3>
                 <p>Answering as: {{ user.username }}</p>
                 <form method="post" style="margin-top: 1.3em;">
@@ -148,18 +149,6 @@
                 {% else %}
                     <p>You must be logged in to leave an answer.</p>
                 {% endif %}
-            </div>
-            <!-- Display answers -->
-            <div>
-                <h3>Answers:</h3>
-                {% for answer in answers %}
-                    <div>
-                        <p>{{ answer.name }} <small>{{ answer.created_on }}</small></p>
-                        <p>{{ answer.body }}</p>
-                    </div>
-                {% empty %}
-                    <p>No answers yet.</p>
-                {% endfor %}
             </div>
         </div>
     </div>
@@ -198,5 +187,4 @@
   <a href="{% url 'question_update' slug=question.slug %}" class="btn btn-primary">Edit this Question</a>
 
 {% endif %}
-{% endif %}
-{% endblock content %}
+{% endblock %}

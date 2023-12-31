@@ -114,14 +114,26 @@ class Answer(models.Model):
     status = models.IntegerField(choices=STATUS, default=0)
     answercount = models.IntegerField(default=0)
     featured_image = CloudinaryField('image', default='placeholder')
-    subject = models.CharField(max_length=100, help_text='Enter a subject line for your question.', unique=True)
-
 
     class Meta:
         ordering = ["created_on"]
 
     def __str__(self):
         return f"Answer {self.body} by {self.name}"
+
+    def save(self, *args, **kwargs):
+        if not self.slug:  # if slug is not set or empty
+            base_slug = slugify(self.name) if self.name else 'answer'  # Fallback to 'answer' if name is empty
+            new_slug = base_slug
+            counter = 1
+
+            while Answer.objects.filter(slug=new_slug).exists():  # Ensure uniqueness
+                new_slug = f'{base_slug}-{counter}'
+                counter += 1
+
+            self.slug = new_slug or uuid.uuid4().hex[:6]  # Set a UUID if all else fails
+
+        super(Answer, self).save(*args, **kwargs)
     
 class Upvote(models.Model):
     """
