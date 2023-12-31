@@ -125,27 +125,29 @@
                     {% if user.is_authenticated and user == answer.author %}
                     <!-- Update button and Delete Answer buttons -->
                     <a href="{% url 'answer_update' answer.slug %}" class="btn btn-primary btn-sm">Edit</a>
-                    <a href="{% url 'answer_delete' answer.slug %}" class="btn btn-danger btn-sm">Delete</a>
-                {% endif %}
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteAnswerModal-{{ answer.id }}">
+                        Delete
+                    </button>                
+                    {% endif %}
                 </div>
                 <!-- Delete Confirmation Modal -->
                 <div class="modal fade" id="deleteAnswerModal-{{ answer.id }}" tabindex="-1" aria-labelledby="deleteAnswerModalLabel-{{ answer.id }}" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="deleteAnswerModalLabel-{{ answer.id }}">Confirm Delete</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <h5 class="modal-title" id="deleteAnswerModalLabel-{{ answer.id }}">Are you sure you want to delete this answer?</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="modal-body">
-                                Are you sure you want to delete this answer?
+                            This action cannot be undone.
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <!-- The action should point to your answer delete view -->
-                                <form method="post" action="{% url 'answer_delete' answer.slug %}">
-                                    {% csrf_token %}
-                                    <input type="submit" class="btn btn-danger" value="Delete">
-                                </form>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <form method="post" action="{% url 'answer_delete' answer.slug %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="answer_id" value="{{ answer.id }}">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
                             </div>
                         </div>
                     </div>

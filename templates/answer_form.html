@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h2>Edit Answer</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.media }}
+      <div class="form-group">
+        {{ form.body.label_tag }}<br>
+        {{ form.body }}
+      </div>
+      <button type="submit" class="btn btn-primary">Update</button>
+      <a href="{% url 'question_detail' slug=answer.question.slug %}" class="btn btn-secondary">Cancel</a>
+    </form>
+  </div>
+{% endblock %}
