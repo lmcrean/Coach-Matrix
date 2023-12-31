@@ -167,6 +167,31 @@ class QuestionDetail(View):
             },
         )
 
+    def post(self, request, slug, *args, **kwargs):
+        """
+        This function will handle the submission of an answer to a question.
+        """
+        queryset = Question.objects.filter(status=1)
+        question = get_object_or_404(queryset, slug=slug)
+        form = AnswerForm(data=request.POST)
+        
+        if form.is_valid():
+            answer = form.save(commit=False)
+            answer.question = question
+            answer.name = request.user.username 
+            answer.email = request.user.email
+            answer.approved = True
+            answer.save()
+            
+            # Redirect to the question detail page
+            return HttpResponseRedirect(reverse('question_detail', args=[slug]))
+        else:
+            answers = question.answers.filter(approved=True).order_by("-created_on")
+            return render(request, 'question_detail.html', {
+                'question': question,
+                'answers': answers,
+                'answer_form': form,  
+            })
 
 class Upvote(View):
     """
