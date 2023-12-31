@@ -14,4 +14,6 @@ urlpatterns = [ # url patterns for the blog app here.
     path('question/<int:pk>/delete/', views.QuestionDelete.as_view(), name='question_delete'), # delete question
     path('question/<slug:slug>/update/', views.QuestionUpdate.as_view(), name='question_update'),
       # update question
+    path('answer/<slug:slug>/update/', views.AnswerUpdate.as_view(), name='answer_update'),  # Update answer
+    path('answer/<slug:slug>/delete/', views.AnswerDelete.as_view(), name='answer_delete'),
 ]

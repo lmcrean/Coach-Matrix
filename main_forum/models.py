@@ -114,6 +114,8 @@ class Answer(models.Model):
     status = models.IntegerField(choices=STATUS, default=0)
     answercount = models.IntegerField(default=0)
     featured_image = CloudinaryField('image', default='placeholder')
+    author = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+
 
     class Meta:
         ordering = ["created_on"]

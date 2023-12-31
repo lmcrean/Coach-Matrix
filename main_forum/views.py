@@ -8,6 +8,7 @@ from .models import Question, STATUS, TeachingStandardTag, Answer
 from .forms import AnswerForm, QuestionForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.edit import UpdateView
+from django.views.generic import DeleteView
 from django.core.exceptions import PermissionDenied
 from django.utils.text import slugify
 from django.contrib import messages
@@ -177,6 +178,7 @@ class QuestionDetail(View):
         
         if form.is_valid():
             answer = form.save(commit=False)
+            answer.author = request.user
             answer.question = question
             answer.name = request.user.username 
             answer.email = request.user.email
@@ -233,3 +235,26 @@ class Downvote(View):
 
     def get(self, request, *args, **kwargs):
         return HttpResponseNotAllowed(['POST'])
+
+class AnswerUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Answer
+    fields = ['body']
+    template_name = 'answer_form.html'  # You need to create this template
+
+    def get_success_url(self):
+        return reverse_lazy('question_detail', kwargs={'slug': self.object.question.slug})
+
+    def test_func(self):
+        answer = self.get_object()
+        return self.request.user == answer.name  # Ensure only the answer author can update
+
+class AnswerDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Answer
+    template_name = 'answer_confirm_delete.html'  # You need to create this template
+
+    def get_success_url(self):
+        return reverse_lazy('question_detail', kwargs={'slug': self.object.question.slug})
+
+    def test_func(self):
+        answer = self.get_object()
+        return self.request.user == answer.author# Ensure only the answer author can delete
