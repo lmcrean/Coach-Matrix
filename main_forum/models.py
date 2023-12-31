@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
 from django.utils.text import slugify
+from ckeditor.fields import RichTextField
 
 
 STATUS = ((0, "Draft"), (1, "Published"))
@@ -39,16 +40,16 @@ class Question(models.Model):
         User, on_delete=models.CASCADE, related_name="question_posts"
     )
     featured_image = CloudinaryField('image', default='placeholder')
-    excerpt = models.TextField(blank=True)
+    excerpt = RichTextField()
     updated_on = models.DateTimeField(auto_now=True)
-    content = models.TextField()
+    content = RichTextField()
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=STATUS, default=0)
     upvotes = models.ManyToManyField(
         User, related_name='questionpost_upvotes', blank=True)
     downvotes = models.ManyToManyField(User, related_name='questionpost_downvote', blank=True)
     subject = models.CharField(max_length=100, help_text='Enter a subject line for your question.', unique=True)
-    body = models.TextField(null=True, blank=True, default="")  # Allow null and blank, or remove the field if it's not needed
+    body = RichTextField(null=True, blank=True, default="")  # Allow null and blank, or remove the field if it's not needed
     standards = models.ManyToManyField(TeachingStandardTag, related_name='questions', blank=True)
     answercount = models.IntegerField(default=0)
     views = models.IntegerField(default=0) # number of views
@@ -65,7 +66,6 @@ class Question(models.Model):
         """
         ordering = ["-created_on"]
         # ordering = ["-upvotes"]
-
 
     def __str__(self):
         return self.subject
@@ -105,7 +105,7 @@ class Answer(models.Model):
     slug = models.SlugField(max_length=200, unique=True)
     name = models.CharField(max_length=80)
     email = models.EmailField()
-    body = models.TextField()
+    body = RichTextField()
     created_on = models.DateTimeField(auto_now_add=True)
     approved = models.BooleanField(default=False)
     upvotes = models.ManyToManyField(

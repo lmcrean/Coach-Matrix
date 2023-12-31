@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'users',
     'main_forum',
+    'ckeditor',
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
