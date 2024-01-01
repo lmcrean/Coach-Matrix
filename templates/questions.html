@@ -41,12 +41,16 @@
                                                 {{ question.number_of_upvotes }} Upvote
                                             </button>
                                         </form>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" name="net_votes">
+                                            {{ question.total_votes }} Total
+                                        </button>
                                         <form action="{% url 'question_downvote_from_list' question.slug %}" method="POST">
                                             {% csrf_token %}
                                             <button type="submit" class="btn btn-danger btn-sm" name="blogquestion_id" value="{{ question.slug }}">
                                                 {{ question.number_of_downvotes }} Downvote
                                             </button>
                                         </form>
+
                                     {% endif %}
                                     
                                 </div></p>

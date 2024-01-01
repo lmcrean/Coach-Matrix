@@ -26,6 +26,12 @@ class QuestionList(generic.ListView):
     template_name = "questions.html"
     paginate_by = 6
 
+    def get_context_data(self, **kwargs):
+        context = super(QuestionList, self).get_context_data(**kwargs)
+        for question in context['question_list']:
+            question.total_votes = question.number_of_upvotes() - question.number_of_downvotes()
+        return context
+
 class QuestionCreate(generic.CreateView): # this class will create a question
     """
     Form for asking a question. The user can enter a subject line and the main body of the question. They can also tag the question with up to 3 standards.
@@ -119,7 +125,9 @@ class QuestionDetail(View):
         upvoted = question.upvotes.filter(id=request.user.id).exists()
         downvoted = question.downvotes.filter(id=request.user.id).exists()
         standards = question.standards.all()  # Retrieve associated teaching standard tags
-        if question.upvotes.filter(id=self.request.user.id).exists():
+        total_votes = question.number_of_upvotes() - question.number_of_downvotes()
+
+        if question.upvotes.filter(id=self.request.user.id).exists(): # If the user has already upvoted the question, set upvoted to True
             upvoted = True
 
         return render(
@@ -132,6 +140,7 @@ class QuestionDetail(View):
                 "upvoted": upvoted,
                 "downvoted": downvoted,
                 "standards": standards,
+                "total_votes": total_votes,
                 "answer_form": AnswerForm()
             },
         )

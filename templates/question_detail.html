@@ -56,16 +56,20 @@
                     <div class="col-auto">
                         {% if user.is_authenticated %}
                         <form class="d-inline" action="{% url 'question_upvote' question.slug %}" method="POST">
-                            {% csrf_token %}
+                            {% csrf_token %} <!--csrf token is for security-->
                             <button type="submit" class="btn btn-primary btn-sm" name="blogquestion_id" value="{{question.slug}}">
                                 <span>{{ question.number_of_upvotes }}</span> Upvote
                             </button>
                         </form>
-                        {% endif %}
                         
                     </div>
                     <div class="col-auto">
-                        {% if user.is_authenticated %}
+                    <button type="button" class="btn btn-outline-secondary btn-sm" name="net_votes">
+                        {{ total_votes }} Total
+                    </button>
+                    </div>
+                    <div class="col-auto">
+                        
                         <form class="d-inline" action="{% url 'question_downvote' question.slug %}" method="POST">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-danger btn-sm" name="blogquestion_id" value="{{question.slug}}">
