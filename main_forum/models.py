@@ -114,6 +114,12 @@ class Answer(models.Model):
     def __str__(self):
         return f"Answer {self.body} by {self.name}"
 
+    def number_of_upvotes(self):
+        return self.upvotes.count()
+    
+    def number_of_downvotes(self):
+        return self.downvotes.count()
+
     def save(self, *args, **kwargs):
         if not self.slug:  # if slug is not set or empty
             base_slug = slugify(self.name) if self.name else 'answer'  # Fallback to 'answer' if name is empty
@@ -127,6 +133,7 @@ class Answer(models.Model):
             self.slug = new_slug or uuid.uuid4().hex[:6]  # Set a UUID if all else fails
 
         super(Answer, self).save(*args, **kwargs)
+    
     
 class Upvote(models.Model):
     """
