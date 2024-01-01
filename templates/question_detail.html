@@ -53,47 +53,33 @@
                 </div>
                 <div class="row">
 
-                    <div class="col-1">
-                        <strong>
-                            {% if user.is_authenticated %}
-                            <form class="d-inline" action="{% url 'question_upvote' question.slug %}" method="POST">
-                                {% csrf_token %}
-                                {% if upvoted %}
-                                <button type="submit" name="blogquestion_id" value="{{question.slug}}" class="btn-upvote"><i class="fas fa-heart"></i></button>
-                                {% else %}
-                                <button type="submit" name="blogquestion_id" value="{{question.slug}}" class="btn-upvote"><i class="far fa-heart"></i></button>
-                                {% endif %}
-                            </form>
-                            {% else %}
-                            <span class="text-secondary"><i class="far fa-heart"></i></span>
-                            {% endif %}
-                        <!-- The number of upvotes goes before the closing strong tag -->
-                        <span class="text-secondary">{{ question.number_of_upvotes }} </span>
-                        </strong>
+                    <div class="col-auto">
+                        {% if user.is_authenticated %}
+                        <form class="d-inline" action="{% url 'question_upvote' question.slug %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary btn-sm" name="blogquestion_id" value="{{question.slug}}">
+                                <span>{{ question.number_of_upvotes }}</span> Upvote
+                            </button>
+                        </form>
+                        {% endif %}
+                        
                     </div>
-                    <div class="col-1">
-                        <strong>
-                            {% if user.is_authenticated %}
-                            <form class="d-inline" action="{% url 'question_downvote' question.slug %}" method="POST">
-                                {% csrf_token %}
-                                {% if downvoted %}
-                                <button type="submit" name="blogquestion_id" value="{{question.slug}}" class="btn-downvote"><i class="fas fa-solid fa-down-long"></i></button>
-                                {% else %}
-                                <button type="submit" name="blogquestion_id" value="{{question.slug}}" class="btn-downvote"><i class="far fa-regular fa-down-long"></i></i></button>
-                                {% endif %}
-                            </form>
-                            {% else %}
-                            <span class="text-secondary"><i class="far fa-regular fa-down-long"></i></span>
-                            {% endif %}
-                            <!-- The number of downvotes goes before the closing strong tag -->
-                            <span class="text-secondary">{{ question.number_of_downvotes }}</span>
-                        </strong>
+                    <div class="col-auto">
+                        {% if user.is_authenticated %}
+                        <form class="d-inline" action="{% url 'question_downvote' question.slug %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm" name="blogquestion_id" value="{{question.slug}}">
+                                <span>{{ question.number_of_downvotes }}</span> Downvote
+                            </button>
+                        </form>
+                        {% endif %}
+                        
                     </div>
-                    <div class="col-1">
+                    <div class="col-auto">
                         {% with answers.count as total_answers %}
                         <strong class="text-secondary"><i class="far fa-answers"></i>
                             <!-- Our total_answers variable goes before the closing strong tag -->
-                            {{ total_answers }}</strong>
+                            {{ total_answers }}</strong> answers 
                         {% endwith %}
                     </div>
                 </div>
@@ -111,42 +97,37 @@
             <div class="card-body">
                 <!-- We want a for loop inside the empty control tags to iterate through each answer in answers -->
                 {% for answer in answers %}
-                <div class="row">
-                    <div class="col-auto">
-                      <!-- Upvote Button -->
-                      <form method="post" action="{% url 'answer_upvote' answer.id %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-success btn-sm">Upvote</button>
-                      </form>
-                    </div>
-                    <div class="col">
-                      <!-- Answer Content -->
-                      <p>{{ answer.body|safe }}</p>
-                    </div>
-                    <div class="col-auto">
-                      <!-- Downvote Button -->
-                      <form method="post" action="{% url 'answer_downvote' answer.id %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger btn-sm">Downvote</button>
-                      </form>
-                    </div>
-                </div>
-                <div class="answers" style="padding: 10px;">
+                <div class="row mb-2">
+                  <div class="col-auto">
+                    <!-- Upvote Button -->
+                    <form method="post" action="{% url 'answer_upvote' answer.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-outline-success btn-sm mb-1"><span>{{ answer.number_of_upvotes }}</span> Upvote</button>
+                    </form>
+                    <!-- Downvote Button -->
+                    <form method="post" action="{% url 'answer_downvote' answer.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-outline-danger btn-sm"><span>{{ answer.number_of_downvotes }}</span> Downvote</button>
+                    </form>
+                  </div>
+                  <div class="col">
+                    <!-- Answer Content -->
+                    <p>{{ answer.body|safe }}</p>
+                    <!-- Answerer's name and created date -->
                     <p class="font-weight-bold">
-                        <!-- The answerer's name goes here.-->
-                        {{ answer.name }}
-                        <span class=" text-muted font-weight-normal">
-                            <!-- The answer's created date goes here -->
-                            {{ answer.created_on }}
-                        </span> 
+                      {{ answer.name }}
+                      <span class="text-muted font-weight-normal">
+                        {{ answer.created_on }}
+                      </span>
                     </p>
+                    <!-- Edit and Delete Answer buttons (if applicable) -->
                     {% if user.is_authenticated and user == answer.author %}
-                    <!-- Update button and Delete Answer buttons -->
                     <a href="{% url 'answer_update' answer.slug %}" class="btn btn-primary btn-sm">Edit</a>
                     <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteAnswerModal-{{ answer.id }}">
-                        Delete
-                    </button>                
+                      Delete
+                    </button>
                     {% endif %}
+                  </div>
                 </div>
                 <!-- Delete Confirmation Modal -->
                 <div class="modal fade" id="deleteAnswerModal-{{ answer.id }}" tabindex="-1" aria-labelledby="deleteAnswerModalLabel-{{ answer.id }}" aria-hidden="true">
