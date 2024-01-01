@@ -119,6 +119,9 @@ class Answer(models.Model):
     
     def number_of_downvotes(self):
         return self.downvotes.count()
+    
+    def total_votes(self):
+        return self.number_of_upvotes() - self.number_of_downvotes()
 
     def save(self, *args, **kwargs):
         if not self.slug:  # if slug is not set or empty
