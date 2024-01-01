@@ -201,7 +201,7 @@ class QuestionDetail(View):
 
 class Upvote(View):
     """
-    This class will handle upvoting a question. If the user has already upvoted the question, it will remove the upvote. If the user has not already upvoted the question, it will add the upvote.
+    This class will handle upvoting a question from question_detail view. If the user has already upvoted the question, it will remove the upvote. If the user has not already upvoted the question, it will add the upvote.
     """
     def post(self, request, slug, *args, **kwargs):
         question = get_object_or_404(Question, slug=slug)
@@ -222,7 +222,7 @@ class Upvote(View):
 
 class Downvote(View):
     """
-    This class will handle downvoting a question. If the user has already downvoted the question, it will remove the downvote. If the user has not already downvoted the question, it will add the downvote.
+    This class will handle downvoting a question from question_detail view. If the user has already downvoted the question, it will remove the downvote. If the user has not already downvoted the question, it will add the downvote.
     """
     def post(self, request, slug, *args, **kwargs):
         question = get_object_or_404(Question, slug=slug)
@@ -239,6 +239,38 @@ class Downvote(View):
 
     def get(self, request, *args, **kwargs):
         return HttpResponseNotAllowed(['POST'])
+
+class QuestionUpvoteFromList(LoginRequiredMixin, View):
+    def post(self, request, slug, *args, **kwargs):
+        question = get_object_or_404(Question, slug=slug)
+        if question.author == request.user:
+            messages.error(request, "You cannot upvote your own question.")
+        else:
+            if question.upvotes.filter(id=request.user.id).exists():
+                question.upvotes.remove(request.user)
+                messages.success(request, "Your upvote has been removed.")
+            else:
+                question.upvotes.add(request.user)
+                messages.success(request, "You have upvoted this question.")
+
+        # Redirect back to the questions list
+        return HttpResponseRedirect(reverse('questions'))
+
+class QuestionDownvoteFromList(LoginRequiredMixin, View):
+    def post(self, request, slug, *args, **kwargs):
+        question = get_object_or_404(Question, slug=slug)
+        if question.author == request.user:
+            messages.error(request, "You cannot downvote your own question.")
+        else:
+            if question.downvotes.filter(id=request.user.id).exists():
+                question.downvotes.remove(request.user)
+                messages.success(request, "Your downvote has been removed.")
+            else:
+                question.downvotes.add(request.user)
+                messages.success(request, "You have downvoted this question.")
+
+        # Redirect back to the questions list
+        return HttpResponseRedirect(reverse('questions'))
 
 class AnswerUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Answer

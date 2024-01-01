@@ -1,3 +1,5 @@
+<!--questions.html-->
+
 {% extends "base.html" %}
 {% load socialaccount %}
 
@@ -29,8 +31,25 @@
                                 <p class="card-text">{{ question.excerpt }}</p>
                             </a>
                             <hr />
-                            <p class="card-text text-muted h6">{{ question.created_on}} <i class="far fa-heart"></i>
-                                {{ question.number_of_likes }}</p>
+                            <p class="card-text text-muted h6">{{ question.created_on}}     
+                                <!-- Upvote and Downvote buttons -->
+                                <div class="voting-buttons">
+                                    {% if user.is_authenticated %}
+                                        <form action="{% url 'question_upvote_from_list' question.slug %}" method="POST">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-primary btn-sm" name="blogquestion_id" value="{{ question.slug }}">
+                                                {{ question.number_of_upvotes }} Upvote
+                                            </button>
+                                        </form>
+                                        <form action="{% url 'question_downvote_from_list' question.slug %}" method="POST">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger btn-sm" name="blogquestion_id" value="{{ question.slug }}">
+                                                {{ question.number_of_downvotes }} Downvote
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                    
+                                </div></p>
                         </div>
                     </div>
                 </div>
