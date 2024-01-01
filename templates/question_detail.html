@@ -102,12 +102,16 @@
                 <!-- We want a for loop inside the empty control tags to iterate through each answer in answers -->
                 {% for answer in answers %}
                 <div class="row mb-2">
-                  <div class="col-auto">
+                    <div class="col-auto">
                     <!-- Upvote Button -->
                     <form method="post" action="{% url 'answer_upvote' answer.id %}">
                       {% csrf_token %}
                       <button type="submit" class="btn btn-outline-success btn-sm mb-1"><span>{{ answer.number_of_upvotes }}</span> Upvote</button>
                     </form>
+                    <!--Total votes-->
+                    <button type="button" class="btn btn-outline-secondary btn-sm" name="net_votes">
+                        {{ answer.total_votes }} Total
+                    </button>
                     <!-- Downvote Button -->
                     <form method="post" action="{% url 'answer_downvote' answer.id %}">
                       {% csrf_token %}

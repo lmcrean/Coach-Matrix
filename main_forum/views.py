@@ -127,6 +127,9 @@ class QuestionDetail(View):
         standards = question.standards.all()  # Retrieve associated teaching standard tags
         total_votes = question.number_of_upvotes() - question.number_of_downvotes()
 
+        for answer in answers: # Add the total votes for each answer to the answer object
+            answer.total_votes = answer.total_votes()
+
         if question.upvotes.filter(id=self.request.user.id).exists(): # If the user has already upvoted the question, set upvoted to True
             upvoted = True
 
