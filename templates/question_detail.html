@@ -111,6 +111,26 @@
             <div class="card-body">
                 <!-- We want a for loop inside the empty control tags to iterate through each answer in answers -->
                 {% for answer in answers %}
+                <div class="row">
+                    <div class="col-auto">
+                      <!-- Upvote Button -->
+                      <form method="post" action="{% url 'answer_upvote' answer.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-sm">Upvote</button>
+                      </form>
+                    </div>
+                    <div class="col">
+                      <!-- Answer Content -->
+                      <p>{{ answer.body|safe }}</p>
+                    </div>
+                    <div class="col-auto">
+                      <!-- Downvote Button -->
+                      <form method="post" action="{% url 'answer_downvote' answer.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Downvote</button>
+                      </form>
+                    </div>
+                </div>
                 <div class="answers" style="padding: 10px;">
                     <p class="font-weight-bold">
                         <!-- The answerer's name goes here.-->
@@ -118,10 +138,8 @@
                         <span class=" text-muted font-weight-normal">
                             <!-- The answer's created date goes here -->
                             {{ answer.created_on }}
-                        </span> wrote:
+                        </span> 
                     </p>
-                    <!-- The body of the answer goes before the | -->
-                    {{ answer.body|safe }}
                     {% if user.is_authenticated and user == answer.author %}
                     <!-- Update button and Delete Answer buttons -->
                     <a href="{% url 'answer_update' answer.slug %}" class="btn btn-primary btn-sm">Edit</a>

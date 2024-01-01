@@ -12,8 +12,9 @@ urlpatterns = [ # url patterns for the blog app here.
     path('upvote/<slug:slug>', views.Upvote.as_view(), name='question_upvote'), # question upvote
     path('downvote/<slug:slug>', views.Downvote.as_view(), name='question_downvote'), # question downvote
     path('question/<int:pk>/delete/', views.QuestionDelete.as_view(), name='question_delete'), # delete question
-    path('question/<slug:slug>/update/', views.QuestionUpdate.as_view(), name='question_update'),
-      # update question
+    path('question/<slug:slug>/update/', views.QuestionUpdate.as_view(), name='question_update'), # update question
     path('answer/<slug:slug>/update/', views.AnswerUpdate.as_view(), name='answer_update'),  # Update answer
-    path('answer/<slug:slug>/delete/', views.AnswerDelete.as_view(), name='answer_delete'),
+    path('answer/<slug:slug>/delete/', views.AnswerDelete.as_view(), name='answer_delete'), # Delete answer
+    path('answer/<int:pk>/upvote/', views.AnswerUpvote.as_view(), name='answer_upvote'), # Answer upvote
+    path('answer/<int:pk>/downvote/', views.AnswerDownvote.as_view(), name='answer_downvote'), # Answer downvote
 ]

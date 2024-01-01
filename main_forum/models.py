@@ -1,3 +1,5 @@
+# main_forum/models.py
+
 from django.db import models
 from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
@@ -10,18 +12,7 @@ STATUS = ((0, "Draft"), (1, "Published"))
 
 class TeachingStandardTag(models.Model):
     """
-    Model representing the 8 Teaching Standards. This is fed into the Question model as a ManyToManyField.
-
-    The 8 UK Teaching Standards are:
-    1. High Expectations
-    2. Promoting Progress
-    3. Subject Knowledge
-    4. Planning
-    5. Differentiation
-    6. Assessment
-    7. Behaviour Management
-    8. Professionalism
-
+    Model representing the 8 Teaching Standards. This is fed into the Question model as a ManyToManyField. The tags were added manually on Django Admin.
     """
     name = models.CharField(max_length=100)
 

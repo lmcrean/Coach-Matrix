@@ -1,12 +1,13 @@
 # main_forum/views.py
 
-from django.shortcuts import render, get_object_or_404, reverse
+from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.views import generic, View
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from .models import Question, STATUS, TeachingStandardTag, Answer
 from .forms import AnswerForm, QuestionForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import UpdateView
 from django.views.generic import DeleteView
 from django.core.exceptions import PermissionDenied
@@ -261,3 +262,31 @@ class AnswerDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         answer = self.get_object()
         return self.request.user == answer.author # Ensure only the answer author can delete
+
+class AnswerUpvote(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        answer = get_object_or_404(Answer, pk=pk)
+        if request.user == answer.author:
+            messages.error(request, "You cannot vote on your own answer.")
+        else:
+            if answer.upvotes.filter(id=request.user.id).exists():
+                answer.upvotes.remove(request.user)
+                messages.success(request, "Your upvote has been removed.")
+            else:
+                answer.upvotes.add(request.user)
+                messages.success(request, "You have upvoted this answer.")
+        return redirect('question_detail', slug=answer.question.slug)
+
+class AnswerDownvote(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        answer = get_object_or_404(Answer, pk=pk)
+        if request.user == answer.author:
+            messages.error(request, "You cannot vote on your own answer.")
+        else:
+            if answer.downvotes.filter(id=request.user.id).exists():
+                answer.downvotes.remove(request.user)
+                messages.success(request, "Your downvote has been removed.")
+            else:
+                answer.downvotes.add(request.user)
+                messages.success(request, "You have downvoted this answer.")
+        return redirect('question_detail', slug=answer.question.slug)
