@@ -18,7 +18,7 @@ class TeachingStandardTagAdmin(admin.ModelAdmin):
     
 
 @admin.register(Question)
-class QuestionAdmin():
+class QuestionAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug', 'status', 'created_on')
     search_fields = ['title', 'content']
     list_filter = ('status', 'created_on')
@@ -26,7 +26,7 @@ class QuestionAdmin():
     # filter_horizontal = ('standards',)  # This will add a nice widget to manage ManyToMany relationship
 
 @admin.register(Answer)
-class AnswerAdmin():
+class AnswerAdmin(admin.ModelAdmin):
 
     list_display = ('name', 'body', 'question', 'created_on', 'approved')
     list_filter = ('approved', 'created_on')
