@@ -1,6 +1,5 @@
 from django.contrib import admin
 from .models import Question, Answer, TeachingStandardTag
-from django_summernote.admin import SummernoteModelAdmin
 
 @admin.register(TeachingStandardTag)
 class TeachingStandardTagAdmin(admin.ModelAdmin):
@@ -19,17 +18,15 @@ class TeachingStandardTagAdmin(admin.ModelAdmin):
     
 
 @admin.register(Question)
-class QuestionAdmin(SummernoteModelAdmin):
-
+class QuestionAdmin():
     list_display = ('title', 'slug', 'status', 'created_on')
     search_fields = ['title', 'content']
     list_filter = ('status', 'created_on')
     prepopulated_fields = {'slug': ('title',)}
-    summernote_fields = ('content',)
     # filter_horizontal = ('standards',)  # This will add a nice widget to manage ManyToMany relationship
 
 @admin.register(Answer)
-class AnswerAdmin(SummernoteModelAdmin):
+class AnswerAdmin():
 
     list_display = ('name', 'body', 'question', 'created_on', 'approved')
     list_filter = ('approved', 'created_on')

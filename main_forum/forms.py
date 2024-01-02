@@ -1,6 +1,5 @@
 from .models import Question, TeachingStandardTag, Answer
 from django import forms
-from django_summernote.widgets import SummernoteWidget
 from ckeditor.widgets import CKEditorWidget
 
 
