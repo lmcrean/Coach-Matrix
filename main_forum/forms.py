@@ -9,19 +9,6 @@ from ckeditor.widgets import CKEditorWidget
 class QuestionForm(forms.ModelForm):
     """
     Form for asking a question. The user can enter a subject line and the main body of the question. They can also tag the question with up to 3 standards.
-
-
-       The 8 UK Teaching Standards are:
-    1. High Expectations
-    2. Promoting Progress
-    3. Subject Knowledge
-    4. Planning
-    5. Differentiation
-    6. Assessment
-    7. Behaviour Management
-    8. Professionalism
-
-    Parameters: The body can be no longer than 10000 characters. When choosing teacher standard, they can tag the question with up to 3 standards.
     """
     
     subject = forms.CharField(
@@ -35,7 +22,7 @@ class QuestionForm(forms.ModelForm):
         max_length=10000, 
         required=True, 
         help_text='Enter the main body of your question.'
-    ) # Use Summernote widget for content
+    ) # Use CKeditor widget for content
     standards = forms.ModelMultipleChoiceField(
         queryset=TeachingStandardTag.objects.all(),
         required=False,
