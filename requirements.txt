@@ -4,7 +4,11 @@ dj-database-url==0.5.0
 dj3-cloudinary-storage==0.0.6
 Django==3.2.23
 django-allauth==0.58.2
+django-ckeditor==5.9.0
 django-crispy-forms==1.14.0
+django-js-asset==2.2.0
+django-quill-editor==0.1.40
+django-summernote==0.8.20.0
 gunicorn==21.2.0
 oauthlib==3.2.2
 psycopg2==2.9.9
@@ -14,6 +18,3 @@ pytz==2023.3.post1
 requests-oauthlib==1.3.1
 sqlparse==0.4.4
 urllib3==1.26.15
-django-ckeditor==5.9.0
-django-js-asset==2.2.0
-django-quill-editor==4.8.0
