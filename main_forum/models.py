@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
 from django.utils.text import slugify
 from ckeditor.fields import RichTextField
+from django_quill.fields import QuillField
+
 
 
 STATUS = ((0, "Draft"), (1, "Published"))
@@ -31,9 +33,9 @@ class Question(models.Model):
         User, on_delete=models.CASCADE, related_name="question_posts"
     )
     featured_image = CloudinaryField('image', default='placeholder')
-    excerpt = RichTextField()
+    excerpt = QuillField()
     updated_on = models.DateTimeField(auto_now=True)
-    content = RichTextField()
+    content = QuillField()
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=STATUS, default=0)
     upvotes = models.ManyToManyField(
@@ -96,7 +98,7 @@ class Answer(models.Model):
     slug = models.SlugField(max_length=200, unique=True)
     name = models.CharField(max_length=80)
     email = models.EmailField()
-    body = RichTextField()
+    body = QuillField()
     created_on = models.DateTimeField(auto_now_add=True)
     approved = models.BooleanField(default=False)
     upvotes = models.ManyToManyField(

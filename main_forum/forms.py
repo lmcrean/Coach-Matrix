@@ -1,8 +1,7 @@
 from .models import Question, TeachingStandardTag, Answer
 from django import forms
 from ckeditor.widgets import CKEditorWidget
-
-
+from django_quill.forms import QuillFormField
 
 
 class QuestionForm(forms.ModelForm):
@@ -16,12 +15,7 @@ class QuestionForm(forms.ModelForm):
         label='Enter your question heading here',  # Update the label here
         help_text='Enter a subject line for your question.'
     )
-    content = forms.CharField(
-        widget=CKEditorWidget(),
-        max_length=10000, 
-        required=True, 
-        help_text='Enter the main body of your question.'
-    ) # Use CKeditor widget for content
+    content = QuillFormField()
     standards = forms.ModelMultipleChoiceField(
         queryset=TeachingStandardTag.objects.all(),
         required=False,
@@ -37,7 +31,7 @@ class QuestionForm(forms.ModelForm):
         fields = ['subject', 'content', 'standards']  
 
 class AnswerForm(forms.ModelForm) :
-    body = forms.CharField(widget=CKEditorWidget())
+    body = QuillFormField()
 
     class Meta: # Meta class is used to specify the model to which the form is associated
         model = Answer

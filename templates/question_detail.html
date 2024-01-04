@@ -46,10 +46,10 @@
             <div class="card-body">
                 <!-- The question content goes inside the card-text -->
                 <p class="card-text ">
-                    {{ question.content | safe }}
+                    {{ question.content.html | safe }}
                 </p>
                 <div class="question-body">
-                    <p>{{ question.body }}</p>
+                    <p>{{ question.body | safe }}</p>
                 </div>
                 <div class="row">
 
@@ -120,7 +120,7 @@
                   </div>
                   <div class="col">
                     <!-- Answer Content -->
-                    <p>{{ answer.body|safe }}</p>
+                    <p>{{ answer.body.html|safe }}</p>
                     <!-- Answerer's name and created date -->
                     <p class="font-weight-bold">
                       {{ answer.name }}

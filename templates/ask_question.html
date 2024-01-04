@@ -2,6 +2,11 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
+{% block extra_head%}
+<!-- django-quill-editor Media -->
+{% include 'django_quill/media.html' %}`
+{% endblock %}
+
 {% block content %}
 <div class="container">
     {% if form.instance.pk %}

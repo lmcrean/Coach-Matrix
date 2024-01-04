@@ -28,7 +28,7 @@
                             </div>
                             <a href="{% url 'question_detail' question.slug  %}" class="question-link">
                                 <h2 class="card-title">{{ question.title }}</h2>
-                                <p class="card-text">{{ question.excerpt }}</p>
+                                <p class="card-text">{{ question.excerpt.html|safe }}</p>
                             </a>
                             <hr />
                             <p class="card-text text-muted h6">{{ question.created_on}}     
