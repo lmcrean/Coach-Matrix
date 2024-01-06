@@ -18,6 +18,9 @@
         integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">
     </script>
     <link rel="stylesheet" href="https://res.cloudinary.com/dh1xovduy/raw/upload/v1703781479/static/css/style.674a1e0f7f03.css"> <!--temporary workaround, has to to be updated manually with python manage.py collectstatic-->
+    <link rel="stylesheet" href="{% static 'django_quill/django_quill.css' %}">
+    <script src="{% static 'django_quill/django_quill.js' %}"></script>
+
     {% block extra_head %}
     {% endblock %}
 </head>
