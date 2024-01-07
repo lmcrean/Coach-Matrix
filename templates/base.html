@@ -1,4 +1,4 @@
-{% load static %}
+{% load static %} <!-- this loads static files from cloudinary -->
 {% load socialaccount %}
 
 <!DOCTYPE html>
@@ -18,15 +18,15 @@
         integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">
     </script>
     <link rel="stylesheet" href="https://res.cloudinary.com/dh1xovduy/raw/upload/v1703781479/static/css/style.674a1e0f7f03.css"> <!--temporary workaround, has to to be updated manually with python manage.py collectstatic-->
+    <link rel="stylesheet" href="{% static '{% static django_quill/django_quill.css' %}">
+    <link rel="stylesheet" href="{% static '{% static django_quill_backup/django_quill.css' %}">
 
     {% block extra_head %}
     {% endblock %}
 </head>
 
 <body class="d-flex flex-column h-100 main-bg">
-
     <!-- Navigation -->
-
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container-fluid">
             {% if user.is_authenticated %}
@@ -117,5 +117,5 @@
 </html>
 
 <script src="https://kit.fontawesome.com/c7515a9d31.js" crossorigin="anonymous"></script>
-<script  src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
-<script  src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+<script src="{% static django_quill/django_quill.js %}"></script>
+<script src="{% static django_quill_backup/django_quill.js %}"></script>
