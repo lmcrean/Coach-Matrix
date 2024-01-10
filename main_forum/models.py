@@ -43,7 +43,7 @@ class Question(models.Model):
     downvotes = models.ManyToManyField(User, related_name='questionpost_downvote', blank=True)
     subject = models.CharField(max_length=100, help_text='Enter a subject line for your question.', unique=True)
     body = RichTextField(null=True, blank=True, default="")  # Allow null and blank, or remove the field if it's not needed
-    standards = models.ManyToManyField(TeachingStandardTag, related_name='questions', blank=True)
+    standard = models.ForeignKey(TeachingStandardTag, related_name='questions', on_delete=models.SET_NULL, null=True, blank=True)
     answercount = models.IntegerField(default=0)
     views = models.IntegerField(default=0) # number of views
 

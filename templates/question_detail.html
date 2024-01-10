@@ -31,15 +31,15 @@
         </div>
     </div>
 </div>
-<div class="question-standards">
-    <p>Teaching Standards:</p>
-    <ul>
-        {{ standards|length }} standards found. <!-- debugging text-->
-        {% for standard in standards %}
-            <li>{{ standard.name }}</li>
-        {% endfor %}
-    </ul>
+<div class="question-standard">
+    <p>Teaching Standard:</p>
+    {% if standard %}
+        <p>{{ standard.name }}</p>
+    {% else %}
+        <p>No standard selected.</p>
+    {% endif %}
 </div>
+
 <div class="container">
     <div class="row">
         <div class="col card mb-4  mt-3 left  top">

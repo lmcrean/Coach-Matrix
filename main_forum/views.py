@@ -34,7 +34,7 @@ class QuestionList(generic.ListView):
 
 class QuestionCreate(generic.CreateView): # this class will create a question
     """
-    Form for asking a question. The user can enter a subject line and the main body of the question. They can also tag the question with up to 3 standards.
+    Form for asking a question. The user can enter a subject line and the main body of the question. They can also tag the question.
 
     This class should help create an instance of the Question model. It will also use the QuestionForm class to create the form.
 
@@ -124,7 +124,8 @@ class QuestionDetail(View):
         answers = question.answers.filter(approved=True).order_by("-created_on")
         upvoted = question.upvotes.filter(id=request.user.id).exists()
         downvoted = question.downvotes.filter(id=request.user.id).exists()
-        standards = question.standards.all()  # Retrieve associated teaching standard tags
+        standard = question.standard
+        print("Standard is:", standard)  # Debug statement
         total_votes = question.number_of_upvotes() - question.number_of_downvotes()
 
         for answer in answers: # Add the total votes for each answer to the answer object
@@ -142,7 +143,7 @@ class QuestionDetail(View):
                 "answered": False,
                 "upvoted": upvoted,
                 "downvoted": downvoted,
-                "standards": standards,
+                "standard": standard,
                 "total_votes": total_votes,
                 "answer_form": AnswerForm()
             },

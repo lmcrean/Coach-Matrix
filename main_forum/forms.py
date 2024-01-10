@@ -16,11 +16,11 @@ class QuestionForm(forms.ModelForm):
         help_text='Enter a subject line for your question.'
     )
     content = QuillFormField()
-    standards = forms.ModelMultipleChoiceField(
+    standard = forms.ModelChoiceField(
         queryset=TeachingStandardTag.objects.all(),
         required=False,
-        widget=forms.CheckboxSelectMultiple,
-        help_text='Select the standard(s) for which you are asking the question.'
+        widget=forms.RadioSelect,
+        help_text='Select the standard for which you are asking the question.'
     )
 
     class Meta:
@@ -28,7 +28,7 @@ class QuestionForm(forms.ModelForm):
         the Meta class is used to specify the model to which the form is associated and the fields from the model you want the form to include.
         """
         model = Question  # Specifies the model in models.py associated with this form
-        fields = ['subject', 'content', 'standards']  
+        fields = ['subject', 'content', 'standard']  
 
 class AnswerForm(forms.ModelForm) :
     body = QuillFormField()
