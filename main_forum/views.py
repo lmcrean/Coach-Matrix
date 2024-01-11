@@ -1,5 +1,7 @@
 # main_forum/views.py
 
+from django.db import models
+from django.db.models import Count, F
 from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.views import generic, View
 from django.http import HttpResponseRedirect
@@ -18,19 +20,27 @@ logger = logging.getLogger(__name__)
 
 
 class QuestionList(generic.ListView):
-    """
-    This class will list all the posts using the question model.
-    """
     model = Question
-    queryset = Question.objects.filter(status=1).order_by("-created_on")
     template_name = "questions.html"
-    paginate_by = 6
+    paginate_by = 50  # Display 50 questions per page
 
-    def get_context_data(self, **kwargs):
-        context = super(QuestionList, self).get_context_data(**kwargs)
-        for question in context['question_list']:
-            question.total_votes = question.number_of_upvotes() - question.number_of_downvotes()
-        return context
+    def get_queryset(self): # This function will get the queryset for the view. A queryset is a list of objects of a given model. In this case, we are getting a list of questions.
+        sort_by = self.request.GET.get('sort_by', 'votes')  # Default sort by votes
+
+        if sort_by == 'votes': # If the sort_by parameter is 'votes', then...
+            return Question.objects.filter(status=1).annotate( # Filter by status = 1 (published) and annotate the queryset with the following:
+                total_upvotes=Count('upvotes', distinct=True), # Count the number of upvotes for each question
+                total_downvotes=Count('downvotes', distinct=True), # Count the number of downvotes for each question
+                total_votes=F('total_upvotes') - F('total_downvotes') # Calculate the total votes for each question
+            ).order_by('-total_votes', '-created_on') # Order by total votes, then by date created
+        else:
+            return Question.objects.filter(status=1).order_by('-created_on') # ...OR else, order by date created
+
+    def get_context_data(self, **kwargs): # This function will get the context data for the view. Context data is a dictionary of values that are passed to the template. In this case, we are passing the sort_by parameter to the template. This function will be called when the view is rendered.
+        context = super().get_context_data(**kwargs) # Call the super() method to get the context data from the parent class. The context data in this case is the list of questions.
+        context['sort_by'] = self.request.GET.get('sort_by', 'votes') # Get the sort_by parameter from the URL. If it doesn't exist, default to 'votes'.
+        return context # Return the context data
+
 
 class QuestionCreate(generic.CreateView): # this class will create a question
     """
