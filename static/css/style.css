@@ -1,13 +1,52 @@
 @font-face {
-    font-family: 'Yeseva One';
+    font-family: 'YesevaOne';
     src: url('../media/YesevaOne-Regular.ttf') format('truetype');
 }
 
+/*Glacial indifference*/
+@font-face {
+    font-family: 'GlacialIndifference';
+    src: url('../media/GlacialIndifference-Regular.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'GlacialIndifference';
+    src: url('../media/GlacialIndifference-Bold.otf') format('opentype');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'GlacialIndifference';
+    src: url('../media/GlacialIndifference-Italic.otf') format('opentype');
+    font-style: italic;
+}
+
 h1 {
-    font-family: 'Yeseva One', cursive;
+    font-family: 'YesevaOne', cursive;
     font-size: 3rem;
     font-weight: 400;
     color: #445261;
+}
+
+h2 {
+    font-family: 'GlacialIndifference', sans-serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: #4A4A4F;
+}
+
+h3 {
+    font-family: 'GlacialIndifference', sans-serif;
+    font-size: 1.5rem;
+    font-style: italic;
+    color: #4A4A4F;
+}
+
+p {
+    font-family: 'GlacialIndifference', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: #4A4A4F;
 }
 
 body {
