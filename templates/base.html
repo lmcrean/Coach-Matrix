@@ -69,8 +69,11 @@
                     {% endif %}
 
                 </ul>
-                <span class="navbar-text text-muted">
-                    
+                <span class="navbar-text">
+                    {% if user.is_authenticated %}
+                    <i class="fas fa-user-circle profile-picture"></i>
+                    {{ user.username }}
+                    {% endif %}
                 </span>
             </div>
         </div>
