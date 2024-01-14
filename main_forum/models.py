@@ -6,6 +6,8 @@ from cloudinary.models import CloudinaryField
 from django.utils.text import slugify
 from ckeditor.fields import RichTextField
 from django_quill.fields import QuillField
+from django.db.models.signals import m2m_changed
+from django.dispatch import receiver
 
 
 
@@ -46,46 +48,47 @@ class Question(models.Model):
     standard = models.ForeignKey(TeachingStandardTag, related_name='questions', on_delete=models.SET_NULL, null=True, blank=True)
     answercount = models.IntegerField(default=0)
     views = models.IntegerField(default=0) # number of views
+    net_votes = models.IntegerField(default=0)
 
-    class Meta: 
-        """Meta class is used to change the behavior of the model. By default django orders the objects by their primary key. But we can change this behavior by specifying the ordering attribute in the Meta class.
+    def save(self, *args, **kwargs):
+        # Determine whether this is a new instance or an update
+        is_new = self._state.adding
 
-        In default view for the user, the Questions will be ordered by most upvotes first, then by the date they were created.
-        
-        in this case, we want several options to be available to us when we query the database for questions. We want to be able to 
-        - order the questions by the number of upvotes they have received.
-        - order the questions by the date they were created.
-        - filter the questions by their Teaching Standards tags.
+        # Handling slug and title creation or update
+        if not self.pk:  # If this is a new question
+            self.slug = slugify(self.subject)
+            self.title = self.subject
+
+        # Save the instance first (for both new and updated instances)
+        super(Question, self).save(*args, **kwargs)
+
+        # Recalculate net_votes only for an update
+        if not is_new:
+            self.net_votes = self.upvotes.count() - self.downvotes.count()
+            # Save again to update net_votes
+            super(Question, self).save(update_fields=['net_votes'])
+
+
+    class Meta:
+        """By default django orders the objects by their primary key. But we can change this behavior by specifying the ordering attribute in the Meta class.
         """
         ordering = ["-created_on"]
-        # ordering = ["-upvotes"]
 
     def __str__(self):
         return self.subject
 
-    def save(self, *args, **kwargs):
-        if not self.pk:  # If this is a new question (no primary key yet)
-            self.slug = slugify(self.subject)
-            self.title = self.subject  # Set the title based on the subject
-        super(Question, self).save(*args, **kwargs)  # Call the "real" save method.
-
-    def number_of_upvotes(self):
+    def number_of_upvotes(self): # method to count the number of upvotes
         return self.upvotes.count()
     
-    def number_of_downvotes(self):
+    def number_of_downvotes(self): # method to count the number of downvotes
         return self.downvotes.count()
 
-    def save(self, *args, **kwargs):
-        # Only set the title and slug if it's a new question or title is not set
-        if not self.pk or not self.title:
-            self.slug = slugify(self.subject)
-            self.title = self.subject
-            super(Question, self).save(*args, **kwargs)
-        else:
-            # If it's an update, the instance already has a primary key
-            self.title = self.subject  # The title is updated
-            self.slug = slugify(self.subject)  # The slug is updated
-            super(Question, self).save(*args, **kwargs)  # The instance is saved again
+# Signal handlers to update net_votes when upvotes or downvotes change
+@receiver(m2m_changed, sender=Question.upvotes.through)
+@receiver(m2m_changed, sender=Question.downvotes.through)
+def update_net_votes(sender, instance, **kwargs):
+    instance.net_votes = instance.upvotes.count() - instance.downvotes.count()
+    instance.save()
 
 
 

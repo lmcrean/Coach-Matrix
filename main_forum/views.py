@@ -27,14 +27,10 @@ class QuestionList(generic.ListView):
     def get_queryset(self): # This function will get the queryset for the view. A queryset is a list of objects of a given model. In this case, we are getting a list of questions.
         sort_by = self.request.GET.get('sort_by', 'votes')  # Default sort by votes
 
-        if sort_by == 'votes': # If the sort_by parameter is 'votes', then...
-            return Question.objects.filter(status=1).annotate( # Filter by status = 1 (published) and annotate the queryset with the following:
-                total_upvotes=Count('upvotes', distinct=True), # Count the number of upvotes for each question
-                total_downvotes=Count('downvotes', distinct=True), # Count the number of downvotes for each question
-                total_votes=F('total_upvotes') - F('total_downvotes') # Calculate the total votes for each question
-            ).order_by('-total_votes', '-created_on') # Order by total votes, then by date created
+        if sort_by == 'votes':
+            return Question.objects.filter(status=1).order_by('-net_votes', '-created_on')
         else:
-            return Question.objects.filter(status=1).order_by('-created_on') # ...OR else, order by date created
+            return Question.objects.filter(status=1).order_by('-created_on')
 
     def get_context_data(self, **kwargs): # This function will get the context data for the view. Context data is a dictionary of values that are passed to the template. In this case, we are passing the sort_by parameter to the template. This function will be called when the view is rendered.
         context = super().get_context_data(**kwargs) # Call the super() method to get the context data from the parent class. The context data in this case is the list of questions.
@@ -272,9 +268,11 @@ class QuestionUpvoteFromList(LoginRequiredMixin, View):
             if question.upvotes.filter(id=request.user.id).exists():
                 question.upvotes.remove(request.user)
                 messages.success(request, "Your upvote has been removed.")
+                question.save()  # Save to update net_votes
             else:
                 question.upvotes.add(request.user)
                 messages.success(request, "You have upvoted this question.")
+                question.save()  # Save to update net_votes
 
         # Redirect back to the questions list
         return HttpResponseRedirect(reverse('questions'))

@@ -64,26 +64,22 @@
                 <div class="col-md-6 col-lg-2 col-sm-4">
                   <div class="voting-component text-center text-md-center">
                     <!-- Center content for medium screens -->
-                    <!-- Upvote Button -->
-                    <form action="{% url 'question_upvote_from_list' question.slug %}" method="POST">
-                      {% csrf_token %}
-                      <button type="submit" class="voting-button upvote">
-                          <div class="circle green">
-                              <div class="triangle upvote"></div>
-                          </div>
-                      </button>
-                    </form>
-                    <!--total votes-->
-                    <div class="number" name="net_votes">{{ question.total_votes }}</div>
-                    <!-- Downvote Button -->
-                    <form action="{% url 'question_downvote_from_list' question.slug %}" method="POST">
-                      {% csrf_token %}
-                      <button type="submit" class="voting-button downvote">
-                          <div class="circle yellow">
-                              <div class="triangle downvote"></div>
-                          </div>
-                      </button>
-                  </form>
+                <!-- Upvote Button -->
+                <form action="{% url 'question_upvote_from_list' question.slug %}" method="POST">
+                  {% csrf_token %}
+                  <button type="submit" class="circle green">
+                      <div class="triangle upvote"></div>
+                  </button>
+                  <div class="number" name="net_votes">{{ question.net_votes }}</div>
+                </form>
+                <!-- Downvote Button -->
+                <form action="{% url 'question_downvote_from_list' question.slug %}" method="POST">
+                  {% csrf_token %}
+                  <button type="submit" class="circle yellow">
+                      <div class="triangle downvote"></div>
+                  </button>
+                </form>
+
                   </div>
                 </div>
               </div>
