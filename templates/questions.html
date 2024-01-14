@@ -66,19 +66,24 @@
                     <!-- Center content for medium screens -->
                     <!-- Upvote Button -->
                     <form action="{% url 'question_upvote_from_list' question.slug %}" method="POST">
-                        {% csrf_token %}
-                    <div class="circle green" action="{% url 'question_upvote_from_list' question.slug %}" method="POST">
-                      <div class="triangle upvote"></div>
-                    </div>
+                      {% csrf_token %}
+                      <button type="submit" class="voting-button upvote">
+                          <div class="circle green">
+                              <div class="triangle upvote"></div>
+                          </div>
+                      </button>
                     </form>
+                    <!--total votes-->
                     <div class="number" name="net_votes">{{ question.total_votes }}</div>
                     <!-- Downvote Button -->
                     <form action="{% url 'question_downvote_from_list' question.slug %}" method="POST">
-                        {% csrf_token %}
-                    <div class="circle yellow">
-                      <div class="triangle downvote"></div>
-                    </div>
-                    </form>
+                      {% csrf_token %}
+                      <button type="submit" class="voting-button downvote">
+                          <div class="circle yellow">
+                              <div class="triangle downvote"></div>
+                          </div>
+                      </button>
+                  </form>
                   </div>
                 </div>
               </div>

@@ -29,6 +29,11 @@
   --bs-btn-padding-y: 2px;
 }
 
+button.voting-button {
+  border-width: 0px;
+  background-color: unset;
+}
+
 .voting-card .circle {
   width: 50px; /* Circle size */
   height: 50px; /* Circle size */
