@@ -10,16 +10,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">
     </script>
-     <!--<link rel="stylesheet" href="https://res.cloudinary.com/dh1xovduy/raw/upload/v1703781479/static/css/style.674a1e0f7f03.css"> is a temporary workaround, has to to be updated manually with python manage.py collectstatic however, due to other bugs, it's important to determine static as working-->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}"> <!-- this should loads static files from cloudinary, should lead to an URL like https://res.cloudinary.com/dh1xovduy/raw/upload/v1703781479/static/css/style.674a1e0f7f03.css -->
-
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/votingcard.css' %}">
+    
     {% block extra_head %}
     {% endblock %}
 </head>
@@ -98,11 +97,11 @@
 
     <!-- Footer -->
     <footer class="footer mt-auto py-3 dark-bg">
-        <p class="m-0 text-center text-white">Made by Code Instituters</p>
-        <p class="m-0 text-center text-white">Follow us: <i class="fab fa-facebook-square ms-3"></i>
-            <i class="fab fa-twitter-square ms-3"></i>
-            <i class="fab fa-instagram-square ms-3"></i>
-            <i class="fab fa-youtube-square ms-3"></i></p>
+        <p class="m-0 text-center text-white">© Laurie Crean 2024</p>
+        <p class="m-0 text-center text-white">Let's Connect:
+            <i class="fab fa-linkedin ms-3"></i>
+            <i class="fab fa-github ms-3"></i>
+            <i class="fab fa-codepen ms-3"></i></p>
     </footer>
     <script>
         setTimeout(function () {
@@ -111,8 +110,8 @@
             alert.close();
         }, 2000);
     </script>
+    
 </body>
-
 </html>
 
 <script src="https://kit.fontawesome.com/c7515a9d31.js" crossorigin="anonymous"></script>

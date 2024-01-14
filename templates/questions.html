@@ -2,8 +2,10 @@
 
 {% extends "base.html" %}
 {% load socialaccount %}
+{% load static %}
 
 {% block content %}
+
 
 <div class="container-fluid">
     <div class="col-12 mt-3 left">
@@ -20,46 +22,75 @@
         <br>
         <!-- Questions List -->
         {% for question in question_list %}
-        <div class="col-12">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <div class="image-container">
-                        <div class="image-flash">
-                            <p class="author">Author: {{ question.author }}</p>
-                        </div>
-                    </div>
+
+        <div class="voting-card">
+        <div class="container mt-5">
+            <!-- Bootstrap Card -->
+            <div class="card">
+              <div class="row g-0 d-flex justify-content-center">
+                <!-- Expanded Column 1 -->
+                <div class="col-lg-8 col-md-12 col-sm-12">
                     <a href="{% url 'question_detail' question.slug  %}" class="question-link">
-                        <h2 class="card-title">{{ question.title }}</h2>
+                        <h2 class="card-title card-header main">{{ question.title }}</h2>
                         <p class="card-text">{{ question.excerpt.html|safe }}</p>
                     </a>
-                    <hr />
-                    <p class="card-text text-muted h6">{{ question.created_on}}     
-                        <!-- Upvote and Downvote buttons -->
-                        <div class="voting-buttons">
-                            {% if user.is_authenticated %}
-                                <form action="{% url 'question_upvote_from_list' question.slug %}" method="POST">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-primary btn-sm" name="blogquestion_id" value="{{ question.slug }}">
-                                        {{ question.number_of_upvotes }} Upvote
-                                    </button>
-                                </form>
-                                <button type="button" class="btn btn-outline-secondary btn-sm" name="net_votes">
-                                    {{ question.total_votes }} Total
-                                </button>
-                                <form action="{% url 'question_downvote_from_list' question.slug %}" method="POST">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-danger btn-sm" name="blogquestion_id" value="{{ question.slug }}">
-                                        {{ question.number_of_downvotes }} Downvote
-                                    </button>
-                                </form>
-                            {% endif %}
-                        </div>
-                    </p>
+                  <div class="tags-placeholder p-2 tags">
+                    <span class="btn btn-outline-success tags">differentiation</span>
+                    <span class="btn btn-outline-success tags">planning</span>
+                    <span class="btn btn-outline-success tags">mathematics</span>
+                    <span class="btn btn-outline-success tags">resources</span>
+                  </div>
+                  <div class="d-flex justify-content-center p-1 column-gap-3 ">
+                    <!-- Single row for date, answers, and read more -->
+                    <p class="text-muted">{{ question.created_on}}</p>
+                    <p class="text-muted">25 Answers</p>
+                    <a class="link-opacity-50">Read More...</a>
+                  </div>
                 </div>
+          
+                <!-- Column 2 -->
+                <div class="col-md-6 col-lg-2 col-sm-4">
+                  <div class="card-body text-center text-md-center">
+                    <!-- Added text-md-center for medium screens -->
+                    <i class="fas fa-user-circle profile-picture"></i>
+                    <h5 class="card-title">{{ question.author }}</h5>
+                    <p class="reputation small">
+                      <i class="fas fa-star small"></i> 64
+                    </p>
+                  </div>
+                </div>
+          
+                <!-- Column 3 -->
+                <div class="col-md-6 col-lg-2 col-sm-4">
+                  <div class="voting-component text-center text-md-center">
+                    <!-- Center content for medium screens -->
+                    <!-- Upvote Button -->
+                    <form action="{% url 'question_upvote_from_list' question.slug %}" method="POST">
+                      {% csrf_token %}
+                      <button type="submit" class="voting-button upvote">
+                          <div class="circle green">
+                              <div class="triangle upvote"></div>
+                          </div>
+                      </button>
+                    </form>
+                    <!--total votes-->
+                    <div class="number" name="net_votes">{{ question.total_votes }}</div>
+                    <!-- Downvote Button -->
+                    <form action="{% url 'question_downvote_from_list' question.slug %}" method="POST">
+                      {% csrf_token %}
+                      <button type="submit" class="voting-button downvote">
+                          <div class="circle yellow">
+                              <div class="triangle downvote"></div>
+                          </div>
+                      </button>
+                  </form>
+                  </div>
+                </div>
+              </div>
             </div>
         </div>
-        {% endfor %}
     </div>
+    
 
     {% if is_paginated %}
     <!-- Pagination logic here -->
@@ -76,4 +107,5 @@
     </nav>
     {% endif %}
 </div>
-{%endblock%}
+{%endfor%}
+{% endblock content %}
