@@ -1,0 +1,114 @@
+
+.voting-card .container {
+  text-align: center;
+}
+
+/* Custom CSS for voting card component */
+
+.voting-card .container {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  /* margin-top: 2rem; */
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.voting-card .profile-picture {
+  font-size: 3rem;
+  color: #6c757d;
+}
+
+.voting-card .reputation {
+  font-size: 1rem;
+  color: #ffc107;
+}
+
+.voting-card .tags {
+  font-size: 14px;
+  --bs-btn-padding-x: 0.2rem;
+  --bs-btn-padding-y: 2px;
+}
+
+.voting-card .circle {
+  width: 50px; /* Circle size */
+  height: 50px; /* Circle size */
+  border-radius: 50%; /* Make it round */
+  display: inline-flex; /* Align inline and allow flexbox properties */
+  justify-content: center; /* Center triangle horizontally */
+  align-items: center; /* Center triangle vertically */
+  margin: auto; /* Spacing between circles */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+/* Default state for the green circle */
+.voting-card .circle.green {
+  background-color: #adebad; /* Light green background */
+}
+
+/* Hover state for the green circle */
+.voting-card .circle.green:hover {
+  background-color: #5cd65c; /* Darker green background */
+}
+
+/* Active/Clicked state for the green circle */
+.voting-card .circle.green:active {
+  background-color: #3cb371; /* Even darker green for the click effect */
+}
+
+/* Default state for the yellow circle */
+.voting-card .circle.yellow {
+  background-color: #ffecb3; /* Light yellow background */
+}
+
+/* Hover state for the yellow circle */
+.voting-card .circle.yellow:hover {
+  background-color: #ffd54f; /* Darker yellow background */
+}
+
+/* Active/Clicked state for the yellow circle */
+.voting-card .circle.yellow:active {
+  background-color: #ffb300; /* Even darker yellow for the click effect */
+}
+
+.voting-card .circle.green .triangle {
+  width: 3;
+  height: 3;
+  border-top: 0px solid transparent;
+  border-left: 15px solid transparent; /* Triangle size and transparent borders */
+  border-right: 15px solid transparent; /* Triangle size and transparent borders */
+  border-bottom: 13px solid white; /* Triangle color */
+  transition: border-bottom-color 0.3s; /* Smooth transition for triangle color */
+  margin: 0 0 5px;
+}
+
+/* Upside-down triangle for the yellow circle (downvote button) */
+.voting-card .circle.yellow .triangle {
+  width: 0;
+  height: 0;
+  margin: 6px 0 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 13px solid white; /* The color of the triangle */
+}
+
+/* Change triangle color on .circle hover */
+.voting-card .circle:hover .triangle {
+  border-bottom-color: #f5f5f5; /* Light gray to match the body background */
+}
+
+/* Change triangle color on .circle active */
+.voting-card .circle:active .triangle {
+  border-bottom-color: #e0e0e0; /* Darker gray for the click effect */
+}
+
+.voting-card .number {
+  font-size: 26px; /* Large number size */
+  color: #333; /* Dark gray color for the text */
+  margin: 4px 0 4px; /* Spacing between circles and number */
+  font-family: "Glacial Indifference", sans-serif;
+}
+
+.voting-card .card-header.main {
+  border: 1px solid #dee2e6; 
+}

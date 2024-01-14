@@ -21,6 +21,10 @@
     font-style: italic;
 }
 
+html {
+    font-family: 'GlacialIndifference', sans-serif;
+}
+
 h1 {
     font-family: 'YesevaOne', cursive;
     font-size: 3rem;
@@ -54,7 +58,6 @@ body {
 }
 
 .brand {
-    font-family: Lato, sans-serif;
     font-size: 1.4rem;
     font-weight: 700;
     color: #4A4A4F;
