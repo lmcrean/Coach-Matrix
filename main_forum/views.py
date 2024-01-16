@@ -10,6 +10,7 @@ from .models import Question, STATUS, TeachingStandardTag, Answer
 from .forms import AnswerForm, QuestionForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.views.generic.edit import UpdateView
 from django.views.generic import DeleteView
 from django.core.exceptions import PermissionDenied
@@ -218,6 +219,7 @@ class QuestionDetail(View):
                 'answer_form': form,  
             })
 
+@method_decorator(login_required(login_url='/accounts/login/'), name='dispatch')
 class Upvote(View):
     """
     This class will handle upvoting a question from question_detail view. If the user has already upvoted the question, it will remove the upvote. If the user has not already upvoted the question, it will add the upvote.
@@ -232,13 +234,13 @@ class Upvote(View):
             question.upvotes.remove(request.user)
         else:
             question.upvotes.add(request.user)
-        return HttpResponseRedirect(reverse('question_detail', args=[slug]))
-        pass
+        next_page = request.GET.get('next') or reverse('question_detail', args=[slug])
+        return HttpResponseRedirect(next_page)
 
     def get(self, request, *args, **kwargs):
         return HttpResponseNotAllowed(['POST'])
 
-
+@method_decorator(login_required(login_url='/accounts/login/'), name='dispatch')
 class Downvote(View):
     """
     This class will handle downvoting a question from question_detail view. If the user has already downvoted the question, it will remove the downvote. If the user has not already downvoted the question, it will add the downvote.
@@ -253,13 +255,19 @@ class Downvote(View):
             question.downvotes.remove(request.user)
         else:
             question.downvotes.add(request.user)
-        return HttpResponseRedirect(reverse('question_detail', args=[slug]))
-        pass
+        next_page = request.GET.get('next') or reverse('question_detail', args=[slug])
+        return HttpResponseRedirect(next_page)
 
     def get(self, request, *args, **kwargs):
         return HttpResponseNotAllowed(['POST'])
 
 class QuestionUpvoteFromList(LoginRequiredMixin, View):
+    login_url = '/accounts/login/'
+    
+    def dispatch(self, request, *args, **kwargs):
+        self.login_url += '?next=' + request.path
+        return super().dispatch(request, *args, **kwargs)
+
     def post(self, request, slug, *args, **kwargs):
         question = get_object_or_404(Question, slug=slug)
         if question.author == request.user:
@@ -278,6 +286,12 @@ class QuestionUpvoteFromList(LoginRequiredMixin, View):
         return HttpResponseRedirect(reverse('questions'))
 
 class QuestionDownvoteFromList(LoginRequiredMixin, View):
+    login_url = '/accounts/login/'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.login_url += '?next=' + request.path
+        return super().dispatch(request, *args, **kwargs)
+
     def post(self, request, slug, *args, **kwargs):
         question = get_object_or_404(Question, slug=slug)
         if question.author == request.user:
@@ -316,6 +330,7 @@ class AnswerDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         answer = self.get_object()
         return self.request.user == answer.author # Ensure only the answer author can delete
 
+@method_decorator(login_required(login_url='/accounts/login/'), name='dispatch')
 class AnswerUpvote(LoginRequiredMixin, View):
     def post(self, request, pk):
         answer = get_object_or_404(Answer, pk=pk)
@@ -330,6 +345,7 @@ class AnswerUpvote(LoginRequiredMixin, View):
                 messages.success(request, "You have upvoted this answer.")
         return redirect('question_detail', slug=answer.question.slug)
 
+@method_decorator(login_required(login_url='/accounts/login/'), name='dispatch')
 class AnswerDownvote(LoginRequiredMixin, View):
     def post(self, request, pk):
         answer = get_object_or_404(Answer, pk=pk)

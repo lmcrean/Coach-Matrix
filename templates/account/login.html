@@ -18,8 +18,9 @@
         have not created an account yet, then <a class="link" href="{{ signup_url }}">sign up</a>
         first.{% endblocktrans %}</p>
       
-      <a href="{% provider_login_url 'google' %}?next=/">Login With Google</a>
-      <a href="{% provider_login_url 'microsoft' %}?next=/">Login With Microsoft</a>
+        <a href="{% provider_login_url 'google' %}?next={{ request.GET.next }}">Login With Google</a>
+        <a href="{% provider_login_url 'microsoft' %}?next={{ request.GET.next }}">Login With Microsoft</a>
+        
     </div>
   </div>
   <div class="row">
