@@ -260,6 +260,9 @@ class Downvote(View):
         return HttpResponseNotAllowed(['POST'])
 
 class QuestionUpvoteFromList(LoginRequiredMixin, View):
+    def get(self, request, slug, *args, **kwargs):
+        return HttpResponseRedirect(reverse('questions'))
+
     def post(self, request, slug, *args, **kwargs):
         question = get_object_or_404(Question, slug=slug)
         if question.author == request.user:
@@ -278,6 +281,9 @@ class QuestionUpvoteFromList(LoginRequiredMixin, View):
         return HttpResponseRedirect(reverse('questions'))
 
 class QuestionDownvoteFromList(LoginRequiredMixin, View):
+    def get(self, request, slug, *args, **kwargs):
+        return HttpResponseRedirect(reverse('questions'))
+
     def post(self, request, slug, *args, **kwargs):
         question = get_object_or_404(Question, slug=slug)
         if question.author == request.user:
