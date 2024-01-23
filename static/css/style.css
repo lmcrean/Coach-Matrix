@@ -57,6 +57,10 @@ body {
     background-color: #F9FAFC;
 }
 
+.footer-link {
+    color: white !important;
+}
+
 .brand {
     font-size: 1.4rem;
     font-weight: 700;
@@ -181,3 +185,4 @@ body {
     color: #445261;
     text-decoration: underline;
 }
+
