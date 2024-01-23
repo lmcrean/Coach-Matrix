@@ -3,6 +3,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
+from django.utils import timezone
+from datetime import timedelta
 from django.utils.text import slugify
 from ckeditor.fields import RichTextField
 from django_quill.fields import QuillField
@@ -82,6 +84,17 @@ class Question(models.Model):
     
     def number_of_downvotes(self): # method to count the number of downvotes
         return self.downvotes.count()
+
+    def formatted_date(self): # method to format the date responsively to the time it was created
+        now = timezone.now()
+        if now - timedelta(days=1) < self.created_on: # if the question was created less than a day ago
+            return self.created_on.strftime('%-I:%M%p').lower() # display the time as e.g. 9:30am
+        elif now - timedelta(days=7) < self.created_on: # elif the question was created less than a week ago
+            return self.created_on.strftime('%-I:%M%p, %b %d') # display the time and date as e.g. 9:30am, Jan 6
+        elif self.created_on.year == now.year: # elif the question was created this year
+            return self.created_on.strftime('%b %d') # display the date as e.g. Jan 6
+        else:
+            return self.created_on.strftime('%b %d, %Y') # else the question was created in a previous year
 
 # Signal handlers to update net_votes when upvotes or downvotes change
 @receiver(m2m_changed, sender=Question.upvotes.through)
