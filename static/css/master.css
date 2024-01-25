@@ -1,0 +1,5 @@
+/* Master stylesheet */
+
+/* Importing other CSS files */
+@import url('style.css');
+@import url('votingcard.css');
