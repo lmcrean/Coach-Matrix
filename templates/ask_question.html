@@ -5,23 +5,187 @@
 
 {% block extra_head %}
 <!-- django-quill-editor Media -->
-{% include 'django_quill/media.html' %}`
+{% include 'django_quill/media.html' %}
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    {% if form.instance.pk %}
-    <!-- If the form instance has a primary key, we are updating an existing question -->
-    <h2>Update Your Question</h2>
-    <form method="post" action="{% url 'question_update' slug=form.instance.slug %}">
-    {% else %}
+
+<button id="random-bg-logo-position"> random design variation </button>
+<div class="bg-overlay"></div> <!-- New overlay element -->
+
+<main class="flex-shrink-0 main-bg">
+
     <!-- If there is no primary key, we are creating a new question -->
-    <h2>Ask a Question</h2>
+
+    <div class="container-question my-5">
+        <h1 class="text-center">Ask a Question</h1>
+        <hr>
+        <h2 class="text-center">Category</h2>
+        <label>
+            Select the most Relevant <a href="google.com">Teaching Standard</a> to your question:
+        </label>
+        <form id="standards-form" method="post" action="{% url 'ask_question' %}">
+            {% csrf_token %}
+            <div class="row">
+                <!-- High Expectations -->
+                <div class="col-6 col-sm-6 col-md-3 col-lg-3 mb-4 text-center">
+                    <label class="standard-option">
+                        <input type="radio" name="standard" value="1" id="high-expectations" class="d-none">
+                        <div class="card">
+                            <img src="https://res.cloudinary.com/dh1xovduy/image/upload/v1706366074/nrunwhqwfcbphfddo5cy.svg" class="card-img-top" alt="High Expectations">
+                            <div class="card-body ">
+                                <p class="card-text">High Expectations</p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+                <!-- Promoting Progress -->
+                <div class="col-6 col-sm-6 col-md-3 col-lg-3 mb-4 text-center">
+                    <label class="standard-option">
+                        <input type="radio" name="standard" value="2" id="promoting-progress" class="d-none">
+                        <div class="card">
+                            <img src="https://res.cloudinary.com/dh1xovduy/image/upload/v1706366075/qesqupa7ocsjjhaby877.svg" class="card-img-top" alt="Promoting Progress">
+                            <div class="card-body">
+                                <p class="card-text">Promoting Progress</p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+                <!-- Subject Knowledge -->
+                <div class="col-6 col-sm-6 col-md-3 col-lg-3 mb-4 text-center">
+                    <label class="standard-option">
+                        <input type="radio" name="standard" value="3" id="subject-knowledge" class="d-none">
+                        <div class="card">
+                            <img src="https://res.cloudinary.com/dh1xovduy/image/upload/v1706366075/ekkdgtfct1uglcjzyyff.svg" class="card-img-top" alt="Subject Knowledge">
+                            <div class="card-body">
+                                <p class="card-text">Subject Knowledge</p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+                <!-- Planning -->
+                <div class="col-6 col-sm-6 col-md-3 col-lg-3 mb-4 text-center">
+                    <label class="standard-option">
+                        <input type="radio" name="standard" value="4" id="planning" class="d-none">
+                        <div class="card">
+                            <img src="https://res.cloudinary.com/dh1xovduy/image/upload/v1706366073/phqii1p6jnleayfaicpz.svg" class="card-img-top" alt="Planning">
+                            <div class="card-body">
+                                <p class="card-text">Planning</p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+                <!-- Differentiation -->
+                <div class="col-6 col-sm-6 col-md-3 col-lg-3 mb-4 text-center">
+                    <label class="standard-option">
+                        <input type="radio" name="standard" value="5" id="differentiation" class="d-none">
+                        <div class="card">
+                            <img src="https://res.cloudinary.com/dh1xovduy/image/upload/v1706366073/adj3mwvye1kl5pmb7zdx.svg" class="card-img-top" alt="Differentiation">
+                            <div class="card-body">
+                                <p class="card-text">Differentiation</p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+                <!-- Assessment -->
+                <div class="col-6 col-sm-6 col-md-3 col-lg-3 mb-4 text-center">
+                    <label class="standard-option">
+                        <input type="radio" name="standard" value="6" id="assessment" class="d-none">
+                        <div class="card">
+                            <img src="https://res.cloudinary.com/dh1xovduy/image/upload/v1706366073/wbrndgomy1tav4zsqq5t.svg" class="card-img-top" alt="Assessment">
+                            <div class="card-body">
+                                <p class="card-text">Assessment</p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+                <!-- Behaviour Management -->
+                <div class="col-6 col-sm-6 col-md-3 col-lg-3 mb-4 text-center">
+                    <label class="standard-option">
+                        <input type="radio" name="standard" value="7" id="behaviour-management" class="d-none">
+                        <div class="card">
+                            <img src="https://res.cloudinary.com/dh1xovduy/image/upload/v1706366073/w4h6xxqceqc6adpj0g30.svg" class="card-img-top" alt="Behaviour Management">
+                            <div class="card-body">
+                                <p class="card-text">Behaviour Management</p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+                <!-- Professionalism -->
+                <div class="col-6 col-sm-6 col-md-3 col-lg-3 mb-4 text-center">
+                    <label class="standard-option">
+                        <input type="radio" name="standard" value="8" id="professionalism" class="d-none">
+                        <div class="card">
+                            <img src="https://res.cloudinary.com/dh1xovduy/image/upload/v1706366073/dbjsudz9kads8ynjywg9.svg" class="card-img-top" alt="Professionalism">
+                            <div class="card-body">
+                                <p class="card-text">Professionalism</p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <input type="hidden" name="csrfmiddlewaretoken" value="Ovi5yTwYi5Ym8xdMGPVNyexT6aVWjRoBhM6KZUnoMzLQ45eYP8MIZgIF8C8ASiPY">
+
+            <h2 class="text-center">Subject line</h2>
+            <div> <input type="text" name="subject" maxlength="100" class="textinput textInput form-control requiredField" required id="id_subject" placeholder="Enter your subject line here"> </div>
+
+            <br>
+            <h2 class="text-center">Details</h2>
+            <textarea name="content" class="form-control" required id="id_content" placeholder="Enter your content here" rows="10">
+Enter your text here being specific about your question.
+                - Briefly describe the context of your teaching environment (e.g., class size, subject, student demographics).
+                - Outline the specific issue or challenge you are encountering.
+                - Detail any strategies you have already implemented and their outcomes.
+                - Express what you aim to achieve or what specific advice you are seeking.
+                - Include any particular constraints or resources that might be relevant (e.g., time, materials, support staff).
+                  
+                </textarea>
+            <!--simplified without Django_Quill-->
+            <br>
+            <h2 class="text-center">Tags</h2>
+            <div class="tag-input">
+                <div class="input">
+                    <div>
+                        <i class="fa fa-tags"></i>
+                        <input type="text" id="tag-ip" placeholder="Enter your tags seperated by spaces">
+                    </div>
+                    <span id="tag-error" style="color: red; display: none;"></span> <!-- Error message element -->
+
+                </div>
+                <div class="tag-list mb-4"></div>
+            </div>
+
+        </form>
+        <button type="submit" class="btn btn-primary " id="question-submit">Submit</button>
+    </div>
+
+</main>
+
+<!-- <div class="bg-logo">
+    <div class="bg-logo logo">
+        <div class="bg-logo green-semicircle"></div>
+        <div class="bg-logo orange-semicircle"></div>
+        <div class="bg-logo slant top-slant"></div>
+        <div class="bg-logo slant bottom-slant"></div>
+        <div class="bg-logo orange-almond almond"></div>
+        <div class="bg-logo green-almond almond"></div>
+    </div>
+</div> -->
+{% endblock %}
+
+<!-- <div class="container">
+    {% if form.instance.pk %} -->
+    <!-- If the form instance has a primary key, we are updating an existing question -->
+    <!-- <h2>Update Your Question</h2>
+    <form method="post" action="{% url 'question_update' slug=form.instance.slug %}">
+    {% else %} -->
+    <!-- If there is no primary key, we are creating a new question -->
+    <!-- <h2>Ask a Question</h2>
     <form method="post" action="{% url 'ask_question' %}">
     {% endif %}
         {% csrf_token %}
         {{ form|crispy }}
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-</div>
-{% endblock %}
+</div> -->

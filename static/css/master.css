@@ -9,3 +9,7 @@
 /* @import url('navbar.css'); */
 @import url('ask_question.css'); /* to fix*/
 /* @import url('bg-logo.css'); */
+
+#text {
+    display: none;
+}
