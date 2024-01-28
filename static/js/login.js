@@ -2,15 +2,12 @@ var video = document.getElementById("myVideo");
 var btn = document.getElementById("pause-video");
 
 function pauseVideo() {
-  console.log("pauseVideo");
   if (video.paused) {
     video.play();
     btn.innerHTML = "Pause video";
-    console.log("video.play()");
   } else {
     video.pause();
     btn.innerHTML = "Play video";
-    console.log("video.pause()");
   }
 }
 

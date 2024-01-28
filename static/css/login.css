@@ -116,12 +116,12 @@ body {
 
 #myVideo {
     position: fixed;
-    right: 0;
     bottom: 0;
     min-width: 110vh;
     height: 110vh;
     filter: blur(5px);
     z-index: -6;
+    transform: translate(-1%, 0%);
 }
 
 .content {
