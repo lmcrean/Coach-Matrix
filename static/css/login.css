@@ -133,7 +133,7 @@ body {
     padding: 20px;
 }
 
-#myBtn {
+#pause-video {
     width: 139px;
     font-size: 17px;
     font-style: italic;
@@ -149,7 +149,7 @@ body {
     margin-top: 6rem;
 }
 
-#myBtn:hover {
+#pause-video:hover {
     background: #ddd;
     color: black;
 }
