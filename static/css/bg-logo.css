@@ -4,15 +4,15 @@
     /* Green hex code */
     --secondary-color: #F46B17;
     /* Orange hex code */
-    --main-size: 120vw;
-    --half-size: 60vw;
-    --hollow-size: 110vw;
+    --main-size-bg-logo: 120vw;
+    --half-size-bg-logo: 60vw;
+    --hollow-size-bg-logo: 110vw;
     /* Size of the hollow circle, customize as needed */
-    --slant-width: 15vw;
+    --slant-width-bg-logo: 15vw;
     /* Customizable width of the slant */
-    --slant-height: 27vw;
+    --slant-height-bg-logo: 27vw;
     /* Customizable height of the slant */
-    --almond-size: 46vw;
+    --almond-size-bg-logo: 46vw;
 }
 
 /* General styling for the logo container */

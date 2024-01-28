@@ -1,6 +1,3 @@
-.main-bg {
-    padding-top: 20px;
-}
 
 .bg-overlay {
     position: fixed;
@@ -17,7 +14,7 @@
     z-index: -11; /* Above the video, but below the form */
 }
 
-.container {
+.container-question {
     position: relative;
     transform: unset;
     width: 95%;

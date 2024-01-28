@@ -4,10 +4,76 @@
 
 {% block content %}
 
-<div class="container-fluid">
+
+
+<div class="video-container">
+
+    <video autoplay loop id="myVideo" muted>
+      <source src="https://res.cloudinary.com/dh1xovduy/video/upload/v1706345572/yoytb7nmec4amfrlb0mm.mp4" type="video/mp4">
+    </video>
+  
+    <div class="video-overlay"></div> <!-- New overlay element -->
+  </div>
+  
+  <div class="form-modal">
+  
+    <div id="landing-logo" class="logo">
+      <div id="landing-logo" class="green-semicircle"></div>
+      <div id="landing-logo" class="orange-semicircle"></div>
+      <div id="landing-logo" class="slant top-slant"></div> <!-- top slant creates gap beween orange and green semicircle -->
+      <div id="landing-logo" class="slant bottom-slant"></div> <!-- bottom slant has same function, it should really be exactly the same shape as top-slant, just aligned as a gap at the bottom.-->
+      <div id="landing-logo" class="orange-almond almond"></div>
+      <div id="landing-logo" class="green-almond almond"></div>
+    </div>
+  
+    <h1 class="text-center gy-15"> Coach Matrix </h1>
+    <h4 class="text-center "> built for teachers </h4>
+    <br>
+    <div class="form-toggle">
+      <button id="login-toggle" onclick="toggleLogin()" class="active">log in</button>
+      <button id="signup-toggle" onclick="toggleSignup()" class=" ">sign up</button>
+    </div>
+  
+    <div id="login-form">
+      <form>
+        <a href="{% provider_login_url 'google' %}?next=/questions/"><button type="button" class="btn -box-sd-effect" > <i class="fa fa-google fa-lg" aria-hidden="true"></i> sign in with google</button></a>
+        <button type="button" class="btn -box-sd-effect" > <i class="fa fa-linkedin fa-lg" aria-hidden="true"></i> sign in with linkedin</button>
+        <a href="{% provider_login_url 'microsoft' %}?next=/questions/"></a><button type="button" class="btn -box-sd-effect"> <i class="fa fa-windows fa-lg" aria-hidden="true"></i> sign in with microsoft</button></a>
+        <hr>
+        <p class="text-center">or</p>
+        <hr>
+        <input type="text" placeholder="Enter username" />
+        <input type="password" placeholder="Enter password" />
+        <button id="signInBtn" class="btn-success">Sign In</button>
+      </form>
+    </div>
+  
+    <div id="signup-form">
+      <form>
+        <input type="email" placeholder="Enter your email" />
+        <input type="text" placeholder="Choose username" />
+        <input type="password" placeholder="Create password" />
+        <button type="button" class="btn signup">create account</button>
+        <p>Clicking <strong>create account</strong> means that you are agree to our <a href="https://generator.lorem-ipsum.info/terms-and-conditions" target="_blank" rel="noopener noreferrer"> terms of services</a>.</p>
+        <hr />
+        <a href="{% provider_login_url 'google' %}?next=/questions/"><button type="button" class="btn -box-sd-effect"> <i class="fa fa-google fa-lg" aria-hidden="true"></i> sign up with google</button></a>
+        </a>
+        <button type="button" class="btn -box-sd-effect"> <i class="fa fa-linkedin fa-lg" aria-hidden="true"></i> sign up with linkedin</button>
+        <a href="{% provider_login_url 'google' %}?next=/questions/"><button type="button" class="btn -box-sd-effect"> <i class="fa fa-windows fa-lg" aria-hidden="true"></i> sign up with microsoft</button></a>
+  
+      </form>
+    </div>
+  
+  </div>
+  
+  <button id="myBtn" class="btn-secondary" onclick="myFunction()">pause video</button>
+
+
+
+<!-- <div class="container-fluid">
     <div class="row">
 
-        <!-- Blog Entries Column -->
+    
         <div class="col-12 mt-3 left">
             <div class="row">
                 <img src="{% static 'media/logo1.png' %}" alt="CoachMatrixLogo" class="img-fluid" style="max-width: 300px;">
@@ -33,5 +99,5 @@
         </ul>
     </nav>
     {% endif %}
-</div>
+</div> -->
 {%endblock%}

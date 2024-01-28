@@ -66,7 +66,7 @@ body {
     animation-delay: 1s;
 }
 
-.almond {
+#landing-logo .almond {
     opacity: 0;
     /* Initial state */
     animation: fadeIn 5s ease forwards;
@@ -95,8 +95,8 @@ body {
     left: 0;
     background-color: rgba(0, 150, 136, 0.5);
     /* Adjust the alpha for transparency */
-    z-index: 0;
     /* Above the video, but below the form */
+    z-index: -3;
 }
 
 
@@ -121,6 +121,7 @@ body {
     min-width: 110vh;
     height: 110vh;
     filter: blur(5px);
+    z-index: -6;
 }
 
 .content {
@@ -171,13 +172,14 @@ body {
 }
 
 /* General styling for the logo container */
+
 .logo {
     top: 20px;
     margin: 30px auto 30px;
     position: relative;
     width: 200px;
     /* Logo width */
-    height: 200px;
+    height: 200px !important;
     /* Logo height */
     background-color: grey;
     /* Assuming a white background */
@@ -188,7 +190,7 @@ body {
 }
 
 /* Styling for the green semicircle */
-.green-semicircle {
+#landing-logo .green-semicircle {
     position: absolute;
     width: 100px;
     /* Half of the logo width */
@@ -204,7 +206,7 @@ body {
 }
 
 /* Styling for the orange semicircle */
-.orange-semicircle {
+#landing-logo .orange-semicircle {
     position: absolute;
     width: 100px;
     /* Half of the logo width */
@@ -254,7 +256,7 @@ body {
 }
 
 /* Additional slant styles */
-.slant {
+#landing-logo .slant {
     position: absolute;
     background-color: #FFF;
     /* White color for the slant */
@@ -268,7 +270,7 @@ body {
 }
 
 
-.top-slant {
+#landing-logo .top-slant {
     margin: -18px 0 auto;
     top: 4%;
     bottom: auto;
@@ -280,7 +282,7 @@ body {
     z-index: 10;
 }
 
-.bottom-slant {
+#landing-logo .bottom-slant {
     bottom: -9%;
     left: 60%;
     width: 14px;
@@ -289,11 +291,11 @@ body {
     transform-origin: 0 0;
 }
 
-.almond {
+#landing-logo .almond {
     z-index: 50;
 }
 
-.green-almond {
+#landing-logo .green-almond {
     position: absolute;
     width: var(--almond-size);
     height: var(--almond-size);
@@ -305,7 +307,7 @@ body {
     z-index: 10;
 }
 
-.orange-almond {
+#landing-logo .orange-almond {
     position: absolute;
     width: var(--almond-size);
     height: var(--almond-size);
@@ -316,8 +318,6 @@ body {
     left: 36%;
 
 }
-
-
 
 
 /* form modal */
