@@ -19,7 +19,7 @@ a.navbar-brand.navbar-logo {
 }
 
 /* General styling for the logo container */
-.logo {
+.navbar-logo-logo {
   margin-left: 1rem;
     position: relative;
     width: var(--circle-size); /* Logo width */
@@ -31,7 +31,7 @@ a.navbar-brand.navbar-logo {
 }
 
 /* Styling for the green semicircle */
-.green-semicircle {
+.navbar-logo-green-semicircle {
     position: absolute;
     width: 21px; /* Half of the logo width */
     height: var(--circle-size); /* Full height of the logo */
@@ -42,7 +42,7 @@ a.navbar-brand.navbar-logo {
 }
 
 /* Styling for the orange semicircle */
-.orange-semicircle {
+.navbar-logo-orange-semicircle {
     position: absolute;
     width: 21px; /* Half of the logo width */
     height: var(--circle-size); /* Full height of the logo */
@@ -53,7 +53,7 @@ a.navbar-brand.navbar-logo {
 }
 
 /* Hollow circle in the center */
-.logo::after {
+.navbar-logo-logo::after {
     content: '';
     position: absolute;
     width: var(--hollow-size, 100px); /* Default size is 100px, but you can customize it */
@@ -66,7 +66,7 @@ a.navbar-brand.navbar-logo {
 }
 
 /* Hollow circle in the center */
-.logo::before {
+.navbar-logo-logo::before {
     content: '';
     position: absolute;
     width: var(--hollow-size
@@ -81,7 +81,7 @@ z-index: 8; /* Ensure it's above the slants */
 }
 
 /* Additional slant styles */
-.slant {
+.navbar-logo-slant {
     position: absolute;
     background-color: #FFF; /* White color for the slant */
     border-radius: 0%;
@@ -91,7 +91,7 @@ z-index: 8; /* Ensure it's above the slants */
 }
 
 
-.top-slant {
+.navbar-logo-top-slant {
   margin: -12px 0 auto;
   top: 21%;
 bottom: auto;
@@ -102,7 +102,7 @@ transform-origin: 0 0;
   z-index: 10;
 }
 
-.bottom-slant {
+.navbar-logo-bottom-slant {
 bottom: -13%;
 left: 57%;
  width: 3px;
@@ -110,11 +110,11 @@ transform: translate(0%, 0) rotate(52deg); /* Adjust rotation angle as needed */
 transform-origin: 0 0;
 }
 
-.almond {
+.navbar-logo-almond {
     z-index: 50;
 }
 
-.green-almond {
+.navbar-logo-green-almond {
     position: absolute;
     width: var(--almond-size);
     height: var(--almond-size);
@@ -126,7 +126,7 @@ transform-origin: 0 0;
     z-index: 10;
 }
 
-.orange-almond {
+.navbar-logo-orange-almond {
     position: absolute;
     width: var(--almond-size);
     height: var(--almond-size);
