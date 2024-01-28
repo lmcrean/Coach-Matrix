@@ -11,13 +11,134 @@
 </div>
 {% endif %}
 
+<div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="sticky-top">
+          <div class="question-meta">
+            <h1>How Can I improve my algebra lesson through the use of traffic lights method?</h1>
+          </div>
+          <div class="question-tags">
+            <span>Mathematics</span>
+            <span>Algebra</span>
+            <span>Traffic Lights</span>
+            <span>Assessment</span>
+          </div>
+          <div class="question-info d-flex justify-content-left">
+            <span class="question-date">18th Nov</span>
+            <span class="spacer mx-1"></span>
+            <span class="question-answers">5 Answers</span>
+          </div>
+  
+        </div>
+      </div>
+      <div class="col-auto">
+  
+        <!--voting component-->
+        <div class="voting-component text-center">
+          <div class="circle green">
+            <div class="triangle upvote"></div>
+          </div>
+          <div class="number">14</div>
+          <div class="circle yellow">
+            <div class="triangle downvote"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+  <div class="body-and-gutter">
+    <div class="question-body">
+      <p>I've been experimenting with the traffic lights system to enhance communication and understanding in my algebra classes. Here's what I've observed:</p>
+      <h2>What's Working:</h2>
+      <ul>
+        <li><strong>Student Ownership:</strong> Students using green cards to indicate their readiness to move on have taken greater ownership of their learning. This empowerment is reflected in their active participation.</li>
+        <li><strong>Immediate Clarification:</strong> The yellow light has been effective for pinpointing specific moments where students feel confused, allowing for immediate clarification. It's been a game-changer during complex lessons, like quadratic equations.</li>
+      </ul>
+      <h2>Areas for Refinement:</h2>
+      <ul>
+        <li><strong>Red Light Hesitation:</strong> Some students are reluctant to use the red light, possibly due to a fear of being judged by peers. I'm looking for creative solutions to encourage the use of red lights without fear.</li>
+      </ul>
+      </div>
+  
+      <div class="icon-column"> <!-- this column shouold be in a gutter/margin on the right of the main body of text, and just underneath the voting buttons-->
+        <div class="icon-action"><i class="far fa-bookmark"></i></div>
+        <div class="icon-action"><i class="far fa-flag"></i></div>
+      </div>
+    </div>
+    
+    
+      <div class="container">
+      <div class="user-info">
+        <i class="fa fa-user-circle user-icon"></i>
+        <span class="user-asked">Asked by User3432 on 18th Nov</span>
+              <hr>
+  
+      </div>
+    </div>
+
+    <!-----------------------answers section----------------------->
+
+    <div class="answer-section-header d-flex justify-content-center ">
+        <h1 class="answer-count text-center mr-2">5 Answers</h1>
+        <button class="sort-options text-center">⇅ most votes</button>
+      </div>
+      
+      <div class="container">
+          <div class="body-and-gutter">
+              <div class="icon-column">
+                  <!-- this column shouold be in a gutter/margin on the right of the main body of text, and just underneath the voting buttons-->
+                  <!--voting component-->
+                  <div class="voting-component text-center">
+                      <div class="circle green">
+                          <div class="triangle upvote"></div>
+                      </div>
+                      <div class="number">14</div>
+                      <div class="circle yellow">
+                          <div class="triangle downvote"></div>
+                      </div>
+                  </div>
+                  <div class="icon-action"><i class="far fa-bookmark"></i></div>
+                  <div class="icon-action"><i class="far fa-flag"></i></div>
+              </div>
+      
+              <div class="question-body">
+                  <p>I've been experimenting with the traffic lights system to enhance communication and understanding in my algebra classes. Here's what I've observed:</p>
+                  <h2>What's Working:</h2>
+                  <ul>
+                      <li><strong>Student Ownership:</strong> Students using green cards to indicate their readiness to move on have taken greater ownership of their learning. This empowerment is reflected in their active participation.</li>
+                      <li><strong>Immediate Clarification:</strong> The yellow light has been effective for pinpointing specific moments where students feel confused, allowing for immediate clarification. It's been a game-changer during complex lessons, like quadratic equations.</li>
+                  </ul>
+                  <h2>Areas for Refinement:</h2>
+                  <ul>
+                      <li><strong>Red Light Hesitation:</strong> Some students are reluctant to use the red light, possibly due to a fear of being judged by peers. I'm looking for creative solutions to encourage the use of red lights without fear.</li>
+                  </ul>
+              </div>
+      
+          </div>
+      
+          <div class="container">
+              <div class="user-info">
+                  <hr>
+                  <i class="fa fa-user-circle user-icon"></i>
+                  <span class="user-asked">Answered by User3432 on 18th Nov</span>
+      
+              </div>
+
+
+
+
+
+
+<!-- 
 <div class="masthead">
     <div class="container">
         <div class="row g-0">
             <div class="col-md-6 masthead-text">
-                <!-- Question title goes in these h1 tags -->
+                Question title goes in these h1 tags
                 <h1 class="question-title">{{ question.title }}</h1>
-                <!-- Question author goes before the | the question's created date goes after -->
+                Question author goes before the | the question's created date goes after
                 <p class="question-subtitle">{{ question.author }} | {{ question.created_on }}</p>
             </div>
             <div class="d-none d-md-block col-md-6 masthead-image">
@@ -38,7 +159,7 @@
     <div class="row">
         <div class="col card mb-4  mt-3 left  top">
             <div class="card-body">
-                <!-- The question content goes inside the card-text -->
+                The question content goes inside the card-text
                 <p class="card-text ">
                     {{ question.content.html | safe }}
                 </p>
@@ -50,7 +171,7 @@
                     <div class="col-auto">
                         {% if user.is_authenticated %}
                         <form class="d-inline" action="{% url 'question_upvote' question.slug %}" method="POST">
-                            {% csrf_token %} <!--csrf token is for security-->
+                            {% csrf_token %} csrf token is for security
                             <button type="submit" class="btn btn-primary btn-sm" name="blogquestion_id" value="{{question.slug}}">
                                 <span>{{ question.number_of_upvotes }}</span> Upvote
                             </button>
@@ -76,7 +197,7 @@
                     <div class="col-auto">
                         {% with answers.count as total_answers %}
                         <strong class="text-secondary"><i class="far fa-answers"></i>
-                            <!-- Our total_answers variable goes before the closing strong tag -->
+                            Our total_answers variable goes before the closing strong tag
                             {{ total_answers }}</strong> answers 
                         {% endwith %}
                     </div>
@@ -93,36 +214,36 @@
         <div class="col-md-8 card mb-4  mt-3 ">
             <h3>Answers:</h3>
             <div class="card-body">
-                <!-- We want a for loop inside the empty control tags to iterate through each answer in answers -->
+                We want a for loop inside the empty control tags to iterate through each answer in answers
                 {% for answer in answers %}
                 <div class="row mb-2">
                     <div class="col-auto">
-                    <!-- Upvote Button -->
+                    Upvote Button
                     <form method="post" action="{% url 'answer_upvote' answer.id %}">
                       {% csrf_token %}
                       <button type="submit" class="btn btn-outline-success btn-sm mb-1"><span>{{ answer.number_of_upvotes }}</span> Upvote</button>
                     </form>
-                    <!--Total votes-->
+                    Total votes
                     <button type="button" class="btn btn-outline-secondary btn-sm" name="net_votes">
                         {{ answer.total_votes }} Total
                     </button>
-                    <!-- Downvote Button -->
+                    Downvote Button
                     <form method="post" action="{% url 'answer_downvote' answer.id %}">
                       {% csrf_token %}
                       <button type="submit" class="btn btn-outline-danger btn-sm"><span>{{ answer.number_of_downvotes }}</span> Downvote</button>
                     </form>
                   </div>
                   <div class="col">
-                    <!-- Answer Content -->
+                    Answer Content
                     <p>{{ answer.body.html|safe }}</p>
-                    <!-- Answerer's name and created date -->
+                    Answerer's name and created date
                     <p class="font-weight-bold">
                       {{ answer.name }}
                       <span class="text-muted font-weight-normal">
                         {{ answer.created_on }}
                       </span>
                     </p>
-                    <!-- Edit and Delete Answer buttons (if applicable) -->
+                    Edit and Delete Answer buttons (if applicable)
                     {% if user.is_authenticated and user == answer.author %}
                     <a href="{% url 'answer_update' answer.slug %}" class="btn btn-primary btn-sm">Edit</a>
                     <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteAnswerModal-{{ answer.id }}">
@@ -130,7 +251,12 @@
                     </button>
                     {% endif %}
                   </div>
-                </div>
+                </div> -->
+
+
+
+
+
                 <!-- Delete Confirmation Modal -->
                 <div class="modal fade" id="deleteAnswerModal-{{ answer.id }}" tabindex="-1" aria-labelledby="deleteAnswerModalLabel-{{ answer.id }}" aria-hidden="true">
                     <div class="modal-dialog">
@@ -153,13 +279,13 @@
                         </div>
                     </div>
                 </div>
-                <!-- Our for loop ends here -->
+                Our for loop ends here
                 {% endfor %}
             </div>
         </div>
         <div class="card mb-4 mt-3 ">
             <div class="card-body">
-                <!-- For later -->
+                For later
                 {% if posted %}
                 <div class="alert alert-success" role="alert">
                     Your answer is awaiting approval
@@ -172,7 +298,7 @@
                 <p>Answering as: {{ user.username }}</p>
                 <form method="post" style="margin-top: 1.3em;">
                     {% csrf_token %}
-                    {{ answer_form.media }} <!-- This line ensures Summernote's JS is loaded -->
+                    {{ answer_form.media }} This line ensures Summernote's JS is loaded
                     {{ answer_form | crispy }}
                     <button type="submit" class="btn btn-primary btn-lg">Submit</button>
                 </form>
