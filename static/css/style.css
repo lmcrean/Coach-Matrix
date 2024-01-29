@@ -55,6 +55,15 @@ p {
     color: #4A4A4F;
 }
 
+a {
+    text-decoration: unset;
+    color: #4A4A4F;
+}
+
+a .readmore {
+    color: #4A4A4F;
+}
+
 body {
     background-color: #F9FAFC;
 }
