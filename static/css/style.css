@@ -21,7 +21,7 @@
     font-style: italic;
 }
 
-html {
+html,a, button {
     font-family: 'GlacialIndifference', sans-serif;
 }
 

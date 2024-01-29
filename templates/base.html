@@ -32,14 +32,11 @@
                 <div class="navbar-logo-slant navbar-logo-bottom-slant"></div>
                 <div class="navbar-logo-orange-almond navbar-logo-almond"></div>
                 <div class="navbar-logo-green-almond navbar-logo-almond"></div>
-              </div>
-            {% if user.is_authenticated %}
-            <a class="navbar-brand" href="{% url 'questions' %}"><span class="brand"><span class="red-o">coach</span><span
-                        class="thin">matrix</span></span></span></a>
-            {% else %}
-            <a class="navbar-brand" href="{% url 'home' %}"><span class="brand"><span class="red-o">coach</span><span
-                        class="thin">matrix</span></span></span></a>
-            {% endif %}
+            </div>
+            
+            <h1 class="navbar-brand" href="{% url 'questions' %}"><span class="brand"><span class="red-o">coach</span><span
+                        class="thin">matrix</span></span></span></h1>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                 aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>

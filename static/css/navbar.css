@@ -6,24 +6,23 @@ a.navbar-brand.navbar-logo {
     color: grey !important;
  }
 
-/* Define logo color variables */
-:root {
-    --primary-color: #009693; /* Green hex code */
-    --secondary-color: #F46B17; /* Orange hex code */
-  --navselector: #f2c2a5;
-    --circle-size: 42px;
-    --hollow-size: 37px; /* Size of the hollow circle, customize as needed */
-  --slant-width: 12px; /* Customizable width of the slant */
-  --slant-height: 12px; /* Customizable height of the slant */
-  --almond-size: 16px;
-}
-
+/* Define logo color variables */:root {
+ 	--primary-color: #009693;
+ 	--secondary-color: #F46B17;
+ 	--navselector: #f2c2a5;
+ 	--circle-size-navbar: 42px;
+ 	--hollow-size-navbar: 37px;
+ 	--slant-width-navbar: 12px;
+ 	--slant-height-navbar: 12px;
+ 	--almond-size-navbar: 16px;
+ }
 /* General styling for the logo container */
 .navbar-logo-logo {
-  margin-left: 1rem;
+	margin-left: 0rem;
+    margin-right: 12px;
     position: relative;
-    width: var(--circle-size); /* Logo width */
-    height: var(--circle-size); /* Logo height */
+    width: var(--circle-size-navbar); /* Logo width */
+    height: var(--circle-size-navbar); /* Logo height */
     background-color: grey; /* Assuming a white background */
     border-radius: 50%; /* Making the container circular */
 /*     overflow: hidden; /* Ensures semicircles don't exceed the circle's boundary */
@@ -34,7 +33,7 @@ a.navbar-brand.navbar-logo {
 .navbar-logo-green-semicircle {
     position: absolute;
     width: 21px; /* Half of the logo width */
-    height: var(--circle-size); /* Full height of the logo */
+    height: var(--circle-size-navbar); /* Full height of the logo */
     background-color: var(--primary-color);
     border-top-right-radius: 200px; /* Making it a semicircle */
     border-bottom-right-radius: 200px; /* Making it a semicircle */
@@ -45,7 +44,7 @@ a.navbar-brand.navbar-logo {
 .navbar-logo-orange-semicircle {
     position: absolute;
     width: 21px; /* Half of the logo width */
-    height: var(--circle-size); /* Full height of the logo */
+    height: var(--circle-size-navbar); /* Full height of the logo */
     background-color: var(--secondary-color);
     border-top-left-radius: 200px; /* Making it a semicircle */
     border-bottom-left-radius: 200px; /* Making it a semicircle */
@@ -56,8 +55,8 @@ a.navbar-brand.navbar-logo {
 .navbar-logo-logo::after {
     content: '';
     position: absolute;
-    width: var(--hollow-size, 100px); /* Default size is 100px, but you can customize it */
-    height: var(--hollow-size, 100px); /* Default size is 100px, but you can customize it */
+    width: var(--hollow-size-navbar, 100px); /* Default size is 100px, but you can customize it */
+    height: var(--hollow-size-navbar, 100px); /* Default size is 100px, but you can customize it */
     background-color: #FFF; /* White color for the hollow circle */
     border-radius: 50%;
     top: 50%;
@@ -69,9 +68,8 @@ a.navbar-brand.navbar-logo {
 .navbar-logo-logo::before {
     content: '';
     position: absolute;
-    width: var(--hollow-size
-); /* Customizable size of the hollow circle */
-    height: var(--hollow-size); /* Customizable size of the hollow circle */
+    width: var(--hollow-size-navbar); /* Customizable size of the hollow circle */
+    height: var(--hollow-size-navbar); /* Customizable size of the hollow circle */
 background-color: #FFF; /* White color for the hollow circle */
 border-radius: 50%;
 top: 50%;
@@ -85,9 +83,9 @@ z-index: 8; /* Ensure it's above the slants */
     position: absolute;
     background-color: #FFF; /* White color for the slant */
     border-radius: 0%;
-    width: var(--slant-width, 131px); /* Customizable width */
-    height: var(--slant-height, 50px); /* Customizable height */
-    z-index: 4; /* Above the semicircles, below the hollow circle */
+    width: var(---navbar, 131px); /* Customizable width */
+    height: var(--slant-height-navbar, 50px); /* Customizable height */
+    z-index: 4; /* Above the s-navbaremicircles, below the hollow circle */
 }
 
 
@@ -116,8 +114,8 @@ transform-origin: 0 0;
 
 .navbar-logo-green-almond {
     position: absolute;
-    width: var(--almond-size);
-    height: var(--almond-size);
+    width: var(--almond-size-navbar);
+    height: var(--almond-size-navbar);
     background-color: var(--primary-color);
     border-radius: 138% 0% 130% 0%;
     transform: rotate(-19deg);
@@ -128,8 +126,8 @@ transform-origin: 0 0;
 
 .navbar-logo-orange-almond {
     position: absolute;
-    width: var(--almond-size);
-    height: var(--almond-size);
+    width: var(--almond-size-navbar);
+    height: var(--almond-size-navbar);
     background-color: var(--secondary-color);
     border-radius: 0% 96% 0% 95%;
     transform: rotate(71deg);
