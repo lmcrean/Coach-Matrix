@@ -343,6 +343,7 @@ body {
     border: 1px solid;
     margin-bottom: 0.5em;
     margin-top: 0.5em;
+    color:#646464;
 }
 
 .form-modal .login,
