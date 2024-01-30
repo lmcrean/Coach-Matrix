@@ -46,7 +46,7 @@
     justify-content: center;
     gap: 0px;
     flex-direction: column;
-    margin-top: 10px;
+    margin: auto;
   }
 
 .circle {
@@ -125,7 +125,7 @@
 .number {
   font-size: 26px; /* Large number size */
   color: #333; /* Dark gray color for the text */
-  margin: 4px 0 4px; /* Spacing between circles and number */
+  margin: auto ; /* Spacing between circles and number */
   font-family: "Glacial Indifference", sans-serif;
 }
 

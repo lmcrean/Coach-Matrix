@@ -160,7 +160,7 @@
 .number {
     font-size: 26px; /* Large number size */
     color: #333; /* Dark gray color for the text */
-    margin: 4px 0 4px; /* Spacing between circles and number */
+    margin: 4px auto 4px; /* Spacing between circles and number */
     font-family: "Glacial Indifference", sans-serif;
 }
 
@@ -255,4 +255,12 @@
     border: none;
     border-top: 1px solid #000;
     margin: 0 1rem;
+}
+
+.answer-body {
+    margin: 30px auto auto 30px;
+}
+
+.total-answer-votes {
+    margin: auto;
 }
