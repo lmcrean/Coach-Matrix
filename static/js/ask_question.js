@@ -209,3 +209,20 @@ function showError(message) {
 }
 
 document.querySelector(".tag-input input").addEventListener("keyup", addTag);
+
+// quill editor
+    var quill = new Quill('#quill-editor', {
+        theme: 'snow' 
+    });
+
+    // Function to update hidden textarea
+    function updateContent() {
+        var content = document.querySelector('#quill-content');
+        content.value = JSON.stringify(quill.getContents());
+    }
+
+    // Listen for text change in the Quill editor
+    quill.on('text-change', updateContent);
+
+    document.getElementById('standards-form').addEventListener('submit', updateContent);
+

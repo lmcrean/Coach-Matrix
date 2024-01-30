@@ -47,7 +47,10 @@
                     <!-- Single row for date, answers, and read more -->
                     <p class="text-muted">{{ question.formatted_date }} </p>
                     <div class="px-2"></div> <!-- Spacing between date and answers -->
-                    <p class="text-muted">25 Answers </p>
+
+                    {% with question.answers.count as answer_count %}
+                    <p class="text-muted">{{ answer_count }}Answers </p>
+                    {% endwith %}
                     <div class="px-2"></div> <!-- Spacing between answers and read more -->
                     <a class="link-opacity-50 readmore" href="{% url 'question_detail' question.slug  %}">Read More...</a>
                   </div>

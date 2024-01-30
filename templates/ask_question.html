@@ -124,15 +124,15 @@
                     </label>
                 </div>
             </div>
-
-            <input type="hidden" name="csrfmiddlewaretoken" value="Ovi5yTwYi5Ym8xdMGPVNyexT6aVWjRoBhM6KZUnoMzLQ45eYP8MIZgIF8C8ASiPY">
-
+            
             <h2 class="text-center">Subject line</h2>
-            <div> <input type="text" name="subject" maxlength="100" class="textinput textInput form-control requiredField" required id="id_subject" placeholder="Enter your subject line here"> </div>
-
+            <div> <input type="text" name="subject" maxlength="100" class="textinput textInput form-control requiredField" required id="id_subject" placeholder="Enter your subject line here">
+            </div>
+            
             <br>
             <h2 class="text-center">Details</h2>
-            <textarea name="content" class="form-control" required id="id_content" placeholder="Enter your content here" rows="10">
+            <div id="quill-editor"></div>
+            <!-- <textarea name="content" class="form-control" required id="id_content" placeholder="Enter your content here" rows="10" >
 Enter your text here being specific about your question.
                 - Briefly describe the context of your teaching environment (e.g., class size, subject, student demographics).
                 - Outline the specific issue or challenge you are encountering.
@@ -140,7 +140,7 @@ Enter your text here being specific about your question.
                 - Express what you aim to achieve or what specific advice you are seeking.
                 - Include any particular constraints or resources that might be relevant (e.g., time, materials, support staff).
                   
-                </textarea>
+                </textarea> -->
             <!--simplified without Django_Quill-->
             <br>
             <h2 class="text-center">Tags</h2>
@@ -155,9 +155,9 @@ Enter your text here being specific about your question.
                 </div>
                 <div class="tag-list mb-4"></div>
             </div>
-
+            <button type="submit" class="btn btn-primary " id="question-submit">Submit</button>
         </form>
-        <button type="submit" class="btn btn-primary " id="question-submit">Submit</button>
+        
     </div>
 
 </main>
@@ -189,3 +189,6 @@ Enter your text here being specific about your question.
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div> -->
+
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
