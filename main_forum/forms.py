@@ -8,7 +8,6 @@ class QuestionForm(forms.ModelForm):
     """
     Form for asking a question. The user can enter a subject line and the main body of the question. They can also tag the question with up to 3 standards.
     """
-    
     subject = forms.CharField(
         max_length=100, 
         required=True, 
@@ -16,19 +15,13 @@ class QuestionForm(forms.ModelForm):
         help_text='Enter a subject line for your question.'
     )
     content = QuillFormField()
-    standard = forms.ModelChoiceField(
-        queryset=TeachingStandardTag.objects.all(),
-        required=False,
-        widget=forms.RadioSelect,
-        help_text='Select the standard for which you are asking the question.'
-    )
 
     class Meta:
         """
         the Meta class is used to specify the model to which the form is associated and the fields from the model you want the form to include.
         """
         model = Question  # Specifies the model in models.py associated with this form
-        fields = ['subject', 'content', 'standard']  
+        fields = ['subject', 'content']  
 
 class AnswerForm(forms.ModelForm) :
     body = QuillFormField()
