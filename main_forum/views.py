@@ -134,8 +134,20 @@ class QuestionDetail(View):
         print("Standard is:", standard)  # Debug statement
         total_votes = question.number_of_upvotes() - question.number_of_downvotes()
 
-        for answer in answers: # Add the total votes for each answer to the answer object
-            answer.total_votes = answer.total_votes()
+        # Retrieve the sort parameter from the request
+        sort_by = request.GET.get('sort_by', 'most_votes')
+        print(f"Sort by: {sort_by}")  # Debug print
+
+        # Sort the answers based on the sort_by parameter
+        if sort_by == 'most_votes':
+            answers = question.answers.filter(approved=True).annotate(total_votes=Count('upvotes') - Count('downvotes')).order_by('-total_votes', '-created_on')
+        elif sort_by == 'newest':
+            answers = question.answers.filter(approved=True).order_by('-created_on')
+        elif sort_by == 'oldest':
+            answers = question.answers.filter(approved=True).order_by('created_on')
+
+        for answer in answers:
+            print(f"Answer ID: {answer.id}, Total Votes: {getattr(answer, 'total_votes', 'N/A')}, Created On: {answer.created_on}")
 
         if question.upvotes.filter(id=self.request.user.id).exists(): # If the user has already upvoted the question, set upvoted to True
             upvoted = True

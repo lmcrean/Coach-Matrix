@@ -79,7 +79,9 @@
     {% with answers.count as total_answers %}
     <div class="answer-section-header d-flex justify-content-center ">
         <h1 class="answer-count text-center mr-2">{{ total_answers }} Answers</h1>
-        <button class="sort-options text-center">⇅ most votes</button>
+        <button class="sort-answers sort-options text-center" onclick="sortAnswers('most_votes')">⇅ most votes</button>
+        <button class="sort-answers sort-options text-center" onclick="sortAnswers('oldest')">⇅ oldest</button>
+        <button class="sort-answers sort-options text-center" onclick="sortAnswers('newest')">⇅ newest</button>
       </div>
       {% endwith %}
       {% for answer in answers %}
@@ -157,31 +159,7 @@
                 
             </div>
         </div>
-        <div class="container mb-4 mt-3 ">
-            <div class="card sticky-top">
-                {% if posted %}
-                <div class="alert alert-success" role="alert">
-                    Your answer is awaiting approval
-                </div>
-                {% else %}
-                {% endif %}
 
-                {% if user.is_authenticated %}
-                <h3>Leave a answer:</h3>
-                <p>Answering as: {{ user.username }}</p>
-                <form method="post" style="margin-top: 1.3em;">
-                    {% csrf_token %}
-                    {{ answer_form.media }}
-                    {{ answer_form | crispy }}
-                    <button type="submit" class="btn btn-primary btn-lg">Submit</button>
-                </form>
-                {% else %}
-                    <p>You must be logged in to leave an answer.</p>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
@@ -216,4 +194,30 @@
   <a href="{% url 'question_update' slug=question.slug %}" class="btn btn-primary">Edit this Question</a>
 {% endif %}
 {% endfor %}
+
+<div class="container mb-4 mt-3 ">
+  <div class="card sticky-top">
+      {% if posted %}
+      <div class="alert alert-success" role="alert">
+          Your answer is awaiting approval
+      </div>
+      {% else %}
+      {% endif %}
+
+      {% if user.is_authenticated %}
+      <h3>Leave a answer:</h3>
+      <p>Answering as: {{ user.username }}</p>
+      <form method="post" style="margin-top: 1.3em;">
+          {% csrf_token %}
+          {{ answer_form.media }}
+          {{ answer_form | crispy }}
+          <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+      </form>
+      {% else %}
+          <p>You must be logged in to leave an answer.</p>
+      {% endif %}
+  </div>
+</div>
+</div>
+</div>
 {% endblock %}
