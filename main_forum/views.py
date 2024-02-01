@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.views import generic, View
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from .models import Question, STATUS, TeachingStandardTag, Answer
+from .models import Question, STATUS, Tag, Answer
 from .forms import AnswerForm, QuestionForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
@@ -54,8 +54,19 @@ class QuestionCreate(generic.CreateView): # this class will create a question
         # Assign the current user as the author of the question
         form.instance.author = self.request.user
         form.instance.status = 1
-        # Then save the form and instance
-        return super(QuestionCreate, self).form_valid(form)
+        
+        # save the form instance before adding many-to-many relations
+        response = super(QuestionCreate, self).form_valid(form)
+        
+        # Get the tags data from the form, process it, and add the tags to the instance
+        tags = form.cleaned_data.get('tags', '')
+        if tags:
+            tag_list = [tag.strip() for tag in tags.split(',')]
+            for tag_name in tag_list:
+                tag, created = TeachingStandardTag.objects.get_or_create(name=tag_name)
+                self.object.standard.add(tag)  # Assuming `standard` is a many-to-many field in your Question model for tags
+
+        return response
     
     def get_success_url(self):
         # Redirect to the 'questions' page after form submission

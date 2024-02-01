@@ -1,29 +1,19 @@
 from django.contrib import admin
-from .models import Question, Answer, TeachingStandardTag
+from .models import Question, Answer, Tag
 
-@admin.register(TeachingStandardTag)
-class TeachingStandardTagAdmin(admin.ModelAdmin):
-    """
-    The 8 UK Teaching Standards are:
-    1. High Expectations
-    2. Promoting Progress
-    3. Subject Knowledge
-    4. Planning
-    5. Differentiation
-    6. Assessment
-    7. Behaviour Management
-    8. Professionalism
-    """
-    list_display = ('name',)  # This will display the name of the standard in the admin panel
-    
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('name', 'description', 'count')
+    search_fields = ['name', 'description']
+    readonly_fields = ('count',)
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('title', 'slug', 'status', 'created_on')
-    search_fields = ['title', 'content']
-    list_filter = ('status', 'created_on')
+    list_display = ('title', 'author', 'status', 'created_on', 'net_votes')
+    search_fields = ['title', 'content', 'tags__name']
+    list_filter = ('status', 'created_on', 'tags')
     prepopulated_fields = {'slug': ('title',)}
-    # filter_horizontal = ('standards',)  # This will add a nice widget to manage ManyToMany relationship
+    filter_horizontal = ('tags',)  # This will add a widget to manage ManyToMany relationship with tags.
 
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):

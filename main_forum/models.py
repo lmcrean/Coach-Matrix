@@ -15,12 +15,13 @@ from django.dispatch import receiver
 
 STATUS = ((0, "Draft"), (1, "Published"))
 
-
-class TeachingStandardTag(models.Model):
+class Tag(models.Model):
     """
-    Model representing the 8 Teaching Standards. This is fed into the Question model as a ManyToManyField. The tags were added manually on Django Admin.
+    This class will create a tag for a question. The tag will have a name, description, and count.
     """
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField(blank=True)
+    count = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -46,11 +47,11 @@ class Question(models.Model):
         User, related_name='questionpost_upvotes', blank=True)
     downvotes = models.ManyToManyField(User, related_name='questionpost_downvote', blank=True)
     subject = models.CharField(max_length=100, help_text='Enter a subject line for your question.', unique=True)
-    body = RichTextField(null=True, blank=True, default="")  # Allow null and blank, or remove the field if it's not needed
-    standard = models.ForeignKey(TeachingStandardTag, related_name='questions', on_delete=models.SET_NULL, null=True, blank=True)
     answercount = models.IntegerField(default=0)
     views = models.IntegerField(default=0) # number of views
     net_votes = models.IntegerField(default=0)
+    tags = models.ManyToManyField(Tag, related_name='questions', blank=True)
+
 
     def save(self, *args, **kwargs):
         # Determine whether this is a new instance or an update
