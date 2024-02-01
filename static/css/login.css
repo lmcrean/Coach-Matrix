@@ -64,7 +64,18 @@ body {
     
 }
 
+@keyframes fadeInColor { /* Full color as per class color-secondary-main or color-primary-main */
+    0% { color:  inherit; }
+  }
+  
+  
+
 /* Apply Animations to Elements */
+.coach-text, .matrix-text {
+    animation: fadeInColor 3s ease 3s backwards !important;
+}
+
+
 .form-modal {
     position: unset !important;
     margin: auto;
