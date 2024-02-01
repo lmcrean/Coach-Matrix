@@ -78,16 +78,23 @@
     <!-----------------------answers section----------------------->
     {% with answers.count as total_answers %}
     <div class="answer-section-header d-flex justify-content-center ">
-        <h1 class="answer-count text-center mr-2">{{ total_answers }} Answers</h1>
-        <button class="sort-answers sort-options text-center" onclick="sortAnswers('most_votes')">⇅ most votes</button>
-        <button class="sort-answers sort-options text-center" onclick="sortAnswers('oldest')">⇅ oldest</button>
-        <button class="sort-answers sort-options text-center" onclick="sortAnswers('newest')">⇅ newest</button>
-      </div>
-      {% endwith %}
-      {% for answer in answers %}
-
-      <div class="container">
-          <div class="body-and-gutter">
+      <h1 class="answer-count text-center mr-2">{{ total_answers }} Answers</h1>
+    
+      {% if request.GET.sort_by == 'most_votes' %}
+      <a href="?sort_by=newest" class="btn btn-secondary"><i class="fa-solid fa-medal"></i> Most Votes</a>
+      {% elif request.GET.sort_by == 'newest' %}
+      <a href="?sort_by=oldest" class="btn btn-secondary"><i class="fa-solid fa-sort-up"></i> Newest First</a>
+      {% elif request.GET.sort_by == 'oldest' %}
+      <a href="?sort_by=most_votes" class="btn btn-secondary"><i class="fa-solid fa-sort-down"></i> Oldest First</a>
+      {% else %} <!-- Default view, no filter pressed -->
+      <a href="?sort_by=newest" class="btn btn-secondary"><i class="fa-solid fa-medal"></i> Most Votes</a>
+      {% endif %}
+    </div>
+    {% endwith %}
+    {% for answer in answers %}
+    
+    <div class="container">
+      <div class="body-and-gutter">
               <div class="icon-column">
                   <!-- this column shouold be in a gutter/margin on the right of the main body of text, and just underneath the voting buttons-->
                   <!--voting component-->

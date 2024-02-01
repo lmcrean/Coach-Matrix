@@ -49,7 +49,7 @@
                     <div class="px-2"></div> <!-- Spacing between date and answers -->
 
                     {% with question.answers.count as answer_count %}
-                    <p class="text-muted">{{ answer_count }}Answers </p>
+                    <p class="text-muted">{{ answer_count }} Answers </p>
                     {% endwith %}
                     <div class="px-2"></div> <!-- Spacing between answers and read more -->
                     <a class="link-opacity-50 readmore" href="{% url 'question_detail' question.slug  %}">Read More...</a>

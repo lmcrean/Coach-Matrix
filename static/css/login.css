@@ -51,6 +51,19 @@ body {
     }
 }
 
+@keyframes rotatefadeIn {
+    from {
+        opacity: 0;
+        transform: rotate(40deg);
+    }
+
+    to {
+        opacity: 1;
+        transform: rotate(0deg);
+    }
+    
+}
+
 /* Apply Animations to Elements */
 .form-modal {
     position: unset !important;
@@ -62,7 +75,7 @@ body {
 .logo {
     opacity: 0;
     /* Initial state */
-    animation: fadeIn 2s ease forwards;
+    animation: rotatefadeIn 2s ease forwards;
     animation-delay: 1s;
 }
 
