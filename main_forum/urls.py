@@ -8,7 +8,11 @@ urlpatterns = [ # url patterns for the blog app here.
     path('index/', views.QuestionList.as_view(), name='index'), # home page
     path('questions/', views.QuestionList.as_view(), name='questions'), # questions page
     path('ask_question/', views.QuestionCreate.as_view(), name='ask_question'), # ask question page
+    path('profile/', views.ProfileView.as_view(), name='my_profile'),  # My Profile page
+    path('bookmarked/', views.BookmarkedQuestionsList.as_view(), name='bookmarked_questions'),  # Bookmarked Questions page
+
     path('<slug:slug>/', views.QuestionDetail.as_view(), name='question_detail'), # question detail page
+    
     path('upvote/<slug:slug>', views.Upvote.as_view(), name='question_upvote'), # question upvote
     path('downvote/<slug:slug>', views.Downvote.as_view(), name='question_downvote'), # question downvote
     path('questions/<slug:slug>/upvote/', views.QuestionUpvoteFromList.as_view(), name='question_upvote_from_list'), # question upvote from list

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% load socialaccount %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="col-12 mt-3 left">
+        <h1>Bookmarked Questions</h1>
+        <br>
+        <!-- Bookmarked Questions List -->
+        {% for question in bookmarked_question_list %}
+
+        <div class="question-card mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <a href="{% url 'question_detail' question.slug  %}" class="question-link">
+                        <h5 class="card-title">{{ question.title }}</h5>
+                    </a>
+                    <p class="card-text">{{ question.excerpt.html|safe }}</p>
+                    <div class="text-muted">{{ question.formatted_date }}</div>
+                </div>
+            </div>
+        </div>
+        
+        {% empty %}
+            <p>No bookmarked questions found.</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

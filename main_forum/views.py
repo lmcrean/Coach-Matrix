@@ -11,7 +11,7 @@ from .forms import AnswerForm, QuestionForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, UpdateView
-from django.views.generic import DeleteView
+from django.views.generic import DeleteView, TemplateView, ListView
 from django.core.exceptions import PermissionDenied
 from django.utils.text import slugify
 from django.contrib import messages
@@ -361,3 +361,18 @@ class AnswerDownvote(LoginRequiredMixin, View):
                 answer.downvotes.add(request.user)
                 messages.success(request, "You have downvoted this answer.")
         return redirect('question_detail', slug=answer.question.slug)
+
+class ProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'my_profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+class BookmarkedQuestionsList(LoginRequiredMixin, ListView):
+    model = Question
+    template_name = 'bookmarked_questions.html'
+    context_object_name = 'bookmarked_question_list'
+
+    def get_queryset(self):
+        return self.request.user.bookmarks.all()
