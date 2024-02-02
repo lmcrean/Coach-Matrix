@@ -1,13 +1,12 @@
 # main_forum/views.py
-
 from django.db import models
 from django.db.models import Count, F
 from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.views import generic, View
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from .models import Question, STATUS, Tag, Answer
-from .forms import AnswerForm, QuestionForm
+from ..models import Question, Tag, Answer
+from ..forms import AnswerForm, QuestionForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, UpdateView
@@ -17,7 +16,6 @@ from django.utils.text import slugify
 from django.contrib import messages
 import logging
 logger = logging.getLogger(__name__)
-
 
 class QuestionList(generic.ListView):
     model = Question
@@ -57,14 +55,20 @@ class QuestionCreate(generic.CreateView): # this class will create a question
         
         # save the form instance before adding many-to-many relations
         response = super(QuestionCreate, self).form_valid(form)
-        
+
         # Get the tags data from the form, process it, and add the tags to the instance
         tags = form.cleaned_data.get('tags', '')
         if tags:
-            tag_list = [tag.strip() for tag in tags.split(',')]
+            tag_list = [tag.strip() for tag in tags.split(' ')]
             for tag_name in tag_list:
                 tag, created = TeachingStandardTag.objects.get_or_create(name=tag_name)
                 self.object.standard.add(tag)  # Assuming `standard` is a many-to-many field in your Question model for tags
+
+        if form.is_valid():
+            # process and save the form
+            question = form.save(commit=False)
+        else:
+            print(form.errors) 
 
         return response
     
