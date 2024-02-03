@@ -1,7 +1,7 @@
 # main_forum/urls.py 
 # (called through coachmatrix/urls.py using path("", include("main_forum.urls"), name="main_forum-urls"))
 
-from .views.answers import QuestionDetail, AnswerUpdate, AnswerDelete
+from .views.question_detail_and_answers import QuestionDetail, AnswerUpdate, AnswerDelete
 from .views.questions import QuestionList, QuestionCreate, QuestionUpdate, QuestionDelete
 from .views.voting import Upvote, Downvote, QuestionUpvoteFromList, QuestionDownvoteFromList, AnswerUpvote, AnswerDownvote
 from .views.profile import ProfileView
