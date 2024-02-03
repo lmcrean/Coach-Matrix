@@ -71,7 +71,7 @@ INSTALLED_APPS = [
     'main_forum',
     'ckeditor',
     'django_quill',
-    'taggit',
+    'taggit'
 ]
 
 SOCIALACCOUNT_PROVIDERS = {

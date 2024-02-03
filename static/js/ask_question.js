@@ -182,7 +182,7 @@ function addTag(e) {
 
         tags.push(tag);
 
-        let tagItem = document.createElement("div");
+        let tagItem = document.createElement("div"); 
         tagItem.classList.add("item");
         tagItem.innerHTML = `
             <span class="delete-btn" onclick="deleteTag(this, '${tag}')">

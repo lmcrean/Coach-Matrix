@@ -16,11 +16,7 @@ class QuestionForm(forms.ModelForm):
         help_text='Enter a subject line for your question.'
     )
     content = QuillFormField()
-    tags = TagField(
-        label='Enter up to 5 tags for your question', 
-        help_text='Enter up to 5 tags for your question. Separate tags with a comma.',
-        required=True
-    )
+    tags = forms.CharField(required=False)
 
     class Meta:
         """
@@ -29,17 +25,20 @@ class QuestionForm(forms.ModelForm):
         model = Question  # Specifies the model in models.py associated with this form
         fields = ['subject', 'content', 'tags']  
 
+    def clean_tags(self):
+        tags = self.cleaned_data.get('tags', '')
+        return tags
+
     def save(self, *args, **kwargs):
-        instance = super().save(commit=False)
+        instance = super(QuestionForm, self).save(commit=False)
+        # Do not commit yet, need to save m2m relations (tags) after the instance is saved
         instance.save()
-        # If you're not using django-taggit and have a custom way to handle tags
-        tags = self.cleaned_data.get('tags')
-        if tags:
-            # Process the tags string and save each tag to the instance
-            for tag_name in tags.split(','):
-                tag, created = TagModel.objects.get_or_create(name=tag_name.strip())
-                instance.tags.add(tag)
-        instance.save()
+
+        # Handling tags here
+        tags = self.cleaned_data.get('tags', '')
+        tag_names = tags.split()  # Split the string into a list of tag names
+        instance.tags.set(tag_names, clear=True) # Set the tags for the instance
+
         return instance
 
 class AnswerForm(forms.ModelForm) :

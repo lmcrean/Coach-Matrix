@@ -10,6 +10,7 @@ from ckeditor.fields import RichTextField
 from django_quill.fields import QuillField
 from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
+from taggit.managers import TaggableManager
 
 
 
@@ -50,7 +51,7 @@ class Question(models.Model):
     answercount = models.IntegerField(default=0)
     views = models.IntegerField(default=0) # number of views
     net_votes = models.IntegerField(default=0)
-    tags = models.ManyToManyField(Tag, related_name='questions', blank=True)
+    tags = TaggableManager()
 
 
     def save(self, *args, **kwargs):

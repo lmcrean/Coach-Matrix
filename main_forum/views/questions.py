@@ -36,8 +36,8 @@ class QuestionCreateView(LoginRequiredMixin, generic.CreateView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        # Debugging print statement
-        print("Form is invalid:", form.errors)
+        print(form.cleaned_data)
+        print(form.errors)
         return super().form_invalid(form)
 
     def get_success_url(self):
