@@ -133,7 +133,7 @@
                   <span class="user-asked">Answered by {{ answer.name }} on {{ answer.created_on }}</span>
               </div>
               {% if user.is_authenticated and user == answer.author %}
-              <a href="{% url 'answer_update' answer.slug %}" class="btn btn-primary btn-sm">Edit</a>
+              <a href="{% url 'answer_update' answer.pk %}" class="btn btn-primary btn-sm">Edit</a>
               <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteAnswerModal-{{ answer.id }}">
                 Delete
               </button>
@@ -154,7 +154,7 @@
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <form method="post" action="{% url 'answer_delete' answer.slug %}">
+                            <form method="post" action="{% url 'answer_delete' answer.pk %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="answer_id" value="{{ answer.id }}">
                                 <button type="submit" class="btn btn-danger">Delete</button>
