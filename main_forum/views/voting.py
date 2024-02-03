@@ -7,59 +7,69 @@ from django.views import View
 from ..models import Question, Answer
 
 class BaseVotingView(LoginRequiredMixin, View):
+    """
+    Base view for upvoting and downvoting questions and answers. This view is inherited by the specific views for each type of vote from QuestionUpvote, QuestionDownvote, AnswerUpvote, and AnswerDownvote.
+    """
     model = None
     vote_type = None
 
     def post(self, request, *args, **kwargs):
-        # Adjusted to handle slug correctly
-        identifier = kwargs.get('pk') or kwargs.get('slug')
-        if 'slug' in kwargs:
-            obj = get_object_or_404(self.model, slug=identifier)
-        else:
-            obj = get_object_or_404(self.model, pk=identifier)
+        """ 
+        Method for handling the POST request. This method is called when a user clicks the upvote or downvote button on a question or answer.
+        """
+        identifier = kwargs.get('pk') or kwargs.get('slug') # Adjusted to handle slug correctly
+        obj = get_object_or_404(self.model, slug=identifier) if 'slug' in kwargs else get_object_or_404(self.model, pk=identifier)
 
         if obj.author == request.user:
             messages.error(request, "You cannot vote on your own post.")
             return self.get_redirect_url(obj)
 
+        opposite_vote_type = 'downvotes' if self.vote_type == 'upvotes' else 'upvotes'
         vote_attr = getattr(obj, self.vote_type)
-        if vote_attr.filter(id=request.user.id).exists():
+        opposite_vote_attr = getattr(obj, opposite_vote_type)
+
+        if opposite_vote_attr.filter(id=request.user.id).exists():
+            messages.error(request, "Please remove your existing vote before voting in the opposite direction.")
+        elif vote_attr.filter(id=request.user.id).exists():
             vote_attr.remove(request.user)
-            action_msg = "removed"
+            messages.success(request, "Your vote has been removed.")
         else:
             vote_attr.add(request.user)
-            action_msg = "added"
+            messages.success(request, "Your vote has been added.")
 
-        messages.success(request, f"Your vote has been {action_msg}.")
         return self.get_redirect_url(obj)
 
-    def get_redirect_url(self, obj):
-        if isinstance(obj, Question):
+    def get_redirect_url(self, obj): # get the redirect URL based on the type of object
+        if isinstance(obj, Question): # if the object is a question, redirect to the question detail page
             return HttpResponseRedirect(reverse('question_detail', args=[obj.slug]))
-        elif isinstance(obj, Answer):
+        elif isinstance(obj, Answer): # if the object is an answer, redirect to the question detail page
             return HttpResponseRedirect(reverse('question_detail', kwargs={'slug': obj.question.slug}))
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs): # only allow POST requests. This is to prevent users from voting by directly accessing the URL
         return HttpResponseNotAllowed(['POST'])
 
 class QuestionUpvote(BaseVotingView):
+    """ view for upvoting questions using the BaseVotingView class"""
     model = Question
     vote_type = 'upvotes'
 
 class QuestionDownvote(BaseVotingView):
+    """ view for downvoting questions using the BaseVotingView class"""
     model = Question
     vote_type = 'downvotes'
 
 class AnswerUpvote(BaseVotingView):
+    """ view for upvoting answers using the BaseVotingView class"""
     model = Answer
     vote_type = 'upvotes'
 
-    def get_redirect_url(self, obj):
+    def get_redirect_url(self, obj): # Adjusted to handle slug correctly
         return redirect('question_detail', slug=obj.question.slug)
 
 class AnswerDownvote(BaseVotingView):
+    """ view for downvoting answers using the BaseVotingView class """
     model = Answer
     vote_type = 'downvotes'
 
-    def get_redirect_url(self, obj):
+    def get_redirect_url(self, obj): # Adjusted to handle slug correctly
         return redirect('question_detail', slug=obj.question.slug)
