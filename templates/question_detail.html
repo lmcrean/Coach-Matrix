@@ -3,233 +3,236 @@
 
 {% if messages %}
 <div class="alert-container">
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} mt-3">
-        {{ message }}
-    </div>
-    {% endfor %}
+  {% for message in messages %}
+  <div class="alert alert-{{ message.tags }} mt-3">
+    {{ message }}
+  </div>
+  {% endfor %}
 </div>
 {% endif %}
 
 <div class="container">
-    <div class="row">
-      <div class="col">
-        <div class="sticky-top">
-          <div class="question-meta">
-            <h1>{{ question.title }}</h1>
-          </div>
-          <div class="question-tags">
-            <span>Mathematics</span>
-            <span>Algebra</span>
-            <span>Traffic Lights</span>
-            <span>Assessment</span>
-          </div>
-          <div class="question-info d-flex justify-content-left">
-            <span class="question-date">18th Nov</span>
-            <span class="spacer mx-1"></span>
-            <span class="question-answers">5 Answers</span>
-          </div>
-  
+  <div class="row">
+    <div class="col">
+      <div class="sticky-top">
+        <div class="question-meta">
+          <h1>{{ question.title }}</h1>
         </div>
-      </div>
-      <div class="col-auto">
-  
-        <!--voting component-->
-        <div class="voting-component text-center">
-          <form class="d-inline" action="{% url 'question_upvote' question.slug %}" method="POST">
-            {% csrf_token %}
-            <button type="submit" class="circle green" name="blogquestion_id" value="{{question.slug}}">
-                <div class="triangle upvote"></div>
-            </button>
-          </form>
-          <div class="number">{{ total_votes }}</div>
-          <form class="d-inline" action="{% url 'question_downvote' question.slug %}" method="POST">
-            {% csrf_token %}
-            <button type="submit" class="circle yellow" name="blogquestion_id" value="{{question.slug}}">
-              <div class="triangle downvote"></div>
-            </button>
-          </form>
+        <div class="question-tags">
+          {% for tag in question.tags.all %}
+          <span>{{ tag.name }}</span>
+          {% endfor %}
         </div>
+        <div class="question-info d-flex justify-content-left">
+          <span class="question-date">18th Nov</span>
+          <span class="spacer mx-1"></span>
+          <span class="question-answers">5 Answers</span>
+        </div>
+
       </div>
     </div>
-    
-    
-  <div class="body-and-gutter">
-    <div class="question-body">
-      <p>{{ question.content.html | safe }}</p>
-      </div>
-  
-      <div class="icon-column"> <!-- this column shouold be in a gutter/margin on the right of the main body of text, and just underneath the voting buttons-->
-        <div class="icon-action"><i class="far fa-bookmark"></i></div>
-        <div class="icon-action"><i class="far fa-flag"></i></div>
-      </div>
-    </div>
-    
-    
-      <div class="container">
-      <div class="user-info">
-        <i class="fa fa-user-circle user-icon"></i>
-        <span class="user-asked">Asked by {{ question.author }} on {{ question.created_on }}</span>
-              <hr>
-  
-      </div>
-    </div>
+    <div class="col-auto">
 
-    <!-----------------------answers section----------------------->
-    {% with answers.count as total_answers %}
-    <div class="answer-section-header d-flex justify-content-center ">
-      <h1 class="answer-count text-center mr-2">{{ total_answers }} Answers</h1>
-    
-      {% if request.GET.sort_by == 'most_votes' %}
-      <a href="?sort_by=newest" class="btn btn-secondary"><i class="fa-solid fa-medal"></i> Most Votes</a>
-      {% elif request.GET.sort_by == 'newest' %}
-      <a href="?sort_by=oldest" class="btn btn-secondary"><i class="fa-solid fa-sort-up"></i> Newest First</a>
-      {% elif request.GET.sort_by == 'oldest' %}
-      <a href="?sort_by=most_votes" class="btn btn-secondary"><i class="fa-solid fa-sort-down"></i> Oldest First</a>
-      {% else %} <!-- Default view, no filter pressed -->
-      <a href="?sort_by=newest" class="btn btn-secondary"><i class="fa-solid fa-medal"></i> Most Votes</a>
-      {% endif %}
-    </div>
-    {% endwith %}
-    {% for answer in answers %}
-    
-    <div class="container">
-      <div class="body-and-gutter">
-              <div class="icon-column">
-                  <!-- this column shouold be in a gutter/margin on the right of the main body of text, and just underneath the voting buttons-->
-                  <!--voting component-->
-                  <form method="post" action="{% url 'answer_upvote' answer.id %}"
-                    class="voting-component text-center">
-                    {% csrf_token %}
-                      <button class="circle green" type="submit">
-                          <div class="triangle upvote"></div>
-                      </button>
-                      </form>
-                      <div class="total-answer-votes number text-center justify-content-center">{{ answer.total_votes }}</div>
-                      <form method="post" action="{% url 'answer_downvote' answer.id %}" class="voting-component text-center">
-                        {% csrf_token %}
-                          <button class="circle yellow" type="submit">
-                              <div class="triangle downvote"></div>
-                          </button>
-                      </form>
-                      <div class="icon-action"><i class="far fa-bookmark"></i></div>
-                      <div class="icon-action"><i class="far fa-flag"></i></div>
-                      {% if user.is_authenticated and user == answer.author %}
-                      <div class="answer-actions">
-                          <!-- Edit Answer Button -->
-                          <a href="{% url 'answer_update' answer.pk %}" class="btn btn-outline-white btn-sm">
-                              <i class="fas fa-pencil-alt"></i><br>Edit
-                          </a>
-                          <br>
-                          <!-- Delete Answer Button -->
-                          <button type="button" class="btn btn-outline-white btn-sm" data-bs-toggle="modal" data-bs-target="#deleteAnswerModal-{{ answer.id }}">
-                              <i class="fas fa-trash"></i><br>Delete
-                          </button>
-                      </div>
-                      {% endif %}
-                  </div>
-                  <div class="answer-body">
-                  {{ answer.body.html|safe }}
-                  </div>
-              </div>
-              
-      
-                
-
-      
-          </div>
-      
-          <div class="container">
-              <div class="user-info">
-                  <hr>
-                  <i class="fa fa-user-circle user-icon"></i>
-                  <span class="user-asked">Answered by {{ answer.name }} on {{ answer.created_on }}</span>
-              </div>
-      
-
-
-                <!-- Delete Confirmation Modal -->
-                <div class="modal fade" id="deleteAnswerModal-{{ answer.id }}" tabindex="-1" aria-labelledby="deleteAnswerModalLabel-{{ answer.id }}" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h5 class="modal-title" id="deleteAnswerModalLabel-{{ answer.id }}">Are you sure you want to delete this answer?</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-                            <div class="modal-body">
-                            This action cannot be undone.
-                            </div>
-                            <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <form method="post" action="{% url 'answer_delete' answer.pk %}">
-                                {% csrf_token %}
-                                <input type="hidden" name="answer_id" value="{{ answer.id }}">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-
-
-<!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="deleteConfirmModalLabel">Confirm Delete</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          Are you sure you want to delete this question?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <!-- The action should point to your delete view -->
-          <form method="post" action="{% url 'question_delete' question.id %}">
-            {% csrf_token %}
-            <input type="submit" class="btn btn-danger" value="Delete">
-          </form>
-        </div>
+      <!--voting component-->
+      <div class="voting-component text-center">
+        <form class="d-inline" action="{% url 'question_upvote' question.slug %}" method="POST">
+          {% csrf_token %}
+          <button type="submit" class="circle green" name="blogquestion_id" value="{{question.slug}}">
+            <div class="triangle upvote"></div>
+          </button>
+        </form>
+        <div class="number">{{ total_votes }}</div>
+        <form class="d-inline" action="{% url 'question_downvote' question.slug %}" method="POST">
+          {% csrf_token %}
+          <button type="submit" class="circle yellow" name="blogquestion_id" value="{{question.slug}}">
+            <div class="triangle downvote"></div>
+          </button>
+        </form>
       </div>
     </div>
   </div>
-  
-  <!-- Trigger/Open The Modal -->
+
+
+  <div class="body-and-gutter">
+    <div class="question-body">
+      <p>{{ question.content.html | safe }}</p>
+    </div>
+
+    <div class="icon-column">
+      <!-- this column shouold be in a gutter/margin on the right of the main body of text, and just underneath the voting buttons-->
+      <div class="icon-action"><i class="far fa-bookmark"></i></div>
+      <div class="icon-action"><i class="far fa-flag"></i></div>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="user-info">
+      <i class="fa fa-user-circle user-icon"></i>
+      <span class="user-asked">Asked by {{ question.author }} on {{ question.created_on }}</span>
+      <hr>
+
+    </div>
+  </div>
+
+  <!-----------------------answers section----------------------->
+  {% with answers.count as total_answers %}
+  <div class="answer-section-header d-flex justify-content-center ">
+    <h1 class="answer-count text-center mr-2">{{ total_answers }} Answers</h1>
+
+    {% if request.GET.sort_by == 'most_votes' %}
+    <a href="?sort_by=newest" class="btn btn-secondary"><i class="fa-solid fa-medal"></i> Most Votes</a>
+    {% elif request.GET.sort_by == 'newest' %}
+    <a href="?sort_by=oldest" class="btn btn-secondary"><i class="fa-solid fa-sort-up"></i> Newest First</a>
+    {% elif request.GET.sort_by == 'oldest' %}
+    <a href="?sort_by=most_votes" class="btn btn-secondary"><i class="fa-solid fa-sort-down"></i> Oldest First</a>
+    {% else %} <!-- Default view, no filter pressed -->
+    <a href="?sort_by=newest" class="btn btn-secondary"><i class="fa-solid fa-medal"></i> Most Votes</a>
+    {% endif %}
+  </div>
+  {% endwith %}
+  {% for answer in answers %}
+
+  <div class="container">
+    <div class="body-and-gutter">
+      <div class="icon-column">
+        <!-- this column shouold be in a gutter/margin on the right of the main body of text, and just underneath the voting buttons-->
+        <!--voting component-->
+        <form method="post" action="{% url 'answer_upvote' answer.id %}" class="voting-component text-center">
+          {% csrf_token %}
+          <button class="circle green" type="submit">
+            <div class="triangle upvote"></div>
+          </button>
+        </form>
+        <div class="total-answer-votes number text-center justify-content-center">{{ answer.total_votes }}</div>
+        <form method="post" action="{% url 'answer_downvote' answer.id %}" class="voting-component text-center">
+          {% csrf_token %}
+          <button class="circle yellow" type="submit">
+            <div class="triangle downvote"></div>
+          </button>
+        </form>
+        <div class="icon-action"><i class="far fa-bookmark"></i></div>
+        <div class="icon-action"><i class="far fa-flag"></i></div>
+        {% if user.is_authenticated and user == answer.author %}
+        <div class="answer-actions">
+          <!-- Edit Answer Button -->
+          <a href="{% url 'answer_update' answer.pk %}" class="btn btn-outline-white btn-sm">
+            <i class="fas fa-pencil-alt"></i><br>Edit
+          </a>
+          <br>
+          <!-- Delete Answer Button -->
+          <button type="button" class="btn btn-outline-white btn-sm" data-bs-toggle="modal"
+            data-bs-target="#deleteAnswerModal-{{ answer.id }}">
+            <i class="fas fa-trash"></i><br>Delete
+          </button>
+        </div>
+        {% endif %}
+      </div>
+      <div class="answer-body">
+        {{ answer.body.html|safe }}
+      </div>
+    </div>
+
+
+
+
+
+  </div>
+
+  <div class="container">
+    <div class="user-info">
+      <hr>
+      <i class="fa fa-user-circle user-icon"></i>
+      <span class="user-asked">Answered by {{ answer.name }} on {{ answer.created_on }}</span>
+    </div>
+
+
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteAnswerModal-{{ answer.id }}" tabindex="-1"
+      aria-labelledby="deleteAnswerModalLabel-{{ answer.id }}" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteAnswerModalLabel-{{ answer.id }}">Are you sure you want to delete this
+              answer?</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            This action cannot be undone.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <form method="post" action="{% url 'answer_delete' answer.pk %}">
+              {% csrf_token %}
+              <input type="hidden" name="answer_id" value="{{ answer.id }}">
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteConfirmModalLabel">Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this question?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <!-- The action should point to your delete view -->
+        <form method="post" action="{% url 'question_delete' question.id %}">
+          {% csrf_token %}
+          <input type="submit" class="btn btn-danger" value="Delete">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Trigger/Open The Modal -->
 {% if user.is_authenticated and question.author == user %}
-  <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
-    Delete Question
-  </button>
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
+  Delete Question
+</button>
 
 <!-- Update Confirmation Modal -->
-  <a href="{% url 'question_update' slug=question.slug %}" class="btn btn-primary">Edit this Question</a>
+<a href="{% url 'question_update' slug=question.slug %}" class="btn btn-primary">Edit this Question</a>
 {% endif %}
 {% endfor %}
 
 <div class="container mb-4 mt-3 ">
   <div class="card sticky-top">
-      {% if posted %}
-      <div class="alert alert-success" role="alert">
-          Your answer is awaiting approval
-      </div>
-      {% else %}
-      {% endif %}
+    {% if posted %}
+    <div class="alert alert-success" role="alert">
+      Your answer is awaiting approval
+    </div>
+    {% else %}
+    {% endif %}
 
-      {% if user.is_authenticated %}
-      <h3>Leave a answer:</h3>
-      <p>Answering as: {{ user.username }}</p>
-      <form method="post" style="margin-top: 1.3em;">
-          {% csrf_token %}
-          {{ answer_form.media }}
-          {{ answer_form | crispy }}
-          <button type="submit" class="btn btn-primary btn-lg">Submit</button>
-      </form>
-      {% else %}
-          <p>You must be logged in to leave an answer.</p>
-      {% endif %}
+    {% if user.is_authenticated %}
+    <h3>Leave a answer:</h3>
+    <p>Answering as: {{ user.username }}</p>
+    <form method="post" style="margin-top: 1.3em;">
+      {% csrf_token %}
+      {{ answer_form.media }}
+      {{ answer_form | crispy }}
+      <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+    </form>
+    {% else %}
+    <p>You must be logged in to leave an answer.</p>
+    {% endif %}
   </div>
 </div>
 </div>
