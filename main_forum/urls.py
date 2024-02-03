@@ -2,16 +2,16 @@
 # (called through coachmatrix/urls.py using path("", include("main_forum.urls"), name="main_forum-urls"))
 
 from .views.question_detail_and_answers import QuestionDetail, AnswerUpdate, AnswerDelete
-from .views.questions import QuestionList, QuestionCreate, QuestionUpdate, QuestionDelete
+from .views.questions import QuestionListView, QuestionCreateView, QuestionUpdateView, QuestionDeleteView
 from .views.voting import Upvote, Downvote, QuestionUpvoteFromList, QuestionDownvoteFromList, AnswerUpvote, AnswerDownvote
 from .views.profile import ProfileView
 from .views.bookmarks import BookmarkedQuestionsList
 from django.urls import path
 
 urlpatterns = [ # url patterns for the blog app here.
-    path('index/', QuestionList.as_view(), name='index'), # home page
-    path('questions/', QuestionList.as_view(), name='questions'), # questions page
-    path('ask_question/', QuestionCreate.as_view(), name='ask_question'), # ask question page
+    path('index/', QuestionListView.as_view(), name='index'), # home page
+    path('questions/', QuestionListView.as_view(), name='questions'), # questions page
+    path('ask_question/', QuestionCreateView.as_view(), name='ask_question'), # ask question page
     path('profile/', ProfileView.as_view(), name='my_profile'),  # My Profile page
     path('bookmarked/', BookmarkedQuestionsList.as_view(), name='bookmarked_questions'),  # Bookmarked Questions page
 
@@ -21,8 +21,8 @@ urlpatterns = [ # url patterns for the blog app here.
     path('downvote/<slug:slug>', Downvote.as_view(), name='question_downvote'), # question downvote
     path('questions/<slug:slug>/upvote/', QuestionUpvoteFromList.as_view(), name='question_upvote_from_list'), # question upvote from list
     path('questions/<slug:slug>/downvote/', QuestionDownvoteFromList.as_view(), name='question_downvote_from_list'), # question downvote from list
-    path('question/<int:pk>/delete/', QuestionDelete.as_view(), name='question_delete'), # delete question
-    path('question/<slug:slug>/update/', QuestionUpdate.as_view(), name='question_update'), # update question
+    path('question/<int:pk>/delete/', QuestionDeleteView.as_view(), name='question_delete'), # delete question
+    path('question/<slug:slug>/update/', QuestionUpdateView.as_view(), name='question_update'), # update question
     path('answer/<slug:slug>/update/', AnswerUpdate.as_view(), name='answer_update'),  # Update answer
     path('answer/<slug:slug>/delete/', AnswerDelete.as_view(), name='answer_delete'), # Delete answer
     path('answer/<int:pk>/upvote/', AnswerUpvote.as_view(), name='answer_upvote'), # Answer upvote

@@ -1,131 +1,69 @@
-from django.db import models
-from django.db.models import Count, F
-from django.shortcuts import render, get_object_or_404, reverse, redirect
-from django.views import generic, View
-from django.http import HttpResponseRedirect
-from django.urls import reverse_lazy
-from ..models import Question, Tag, Answer
-from ..forms import AnswerForm, QuestionForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.decorators import login_required
-from django.views.generic.edit import CreateView, UpdateView
-from django.views.generic import DeleteView, TemplateView, ListView
-from django.core.exceptions import PermissionDenied
-from django.utils.text import slugify
-from django.contrib import messages
-import logging
-logger = logging.getLogger(__name__)
+from django.urls import reverse_lazy
+from django.views import generic
+from django.shortcuts import get_object_or_404, redirect
+from ..models import Question, Tag
+from ..forms import QuestionForm
 
-class QuestionList(generic.ListView):
+class QuestionListView(generic.ListView):
     model = Question
     template_name = "questions.html"
-    paginate_by = 50  # Display 50 questions per page
+    paginate_by = 50
 
-    def get_queryset(self): # This function will get the queryset for the view. A queryset is a list of objects of a given model. In this case, we are getting a list of questions.
-        sort_by = self.request.GET.get('sort_by', 'votes')  # Default sort by votes
-
+    def get_queryset(self): # get_queryset is a method that returns the queryset that will be used to retrieve the objects that will be displayed in the list view.
+        sort_by = self.request.GET.get('sort_by', 'votes')
         if sort_by == 'votes':
             return Question.objects.filter(status=1).order_by('-net_votes', '-created_on')
-        else:
-            return Question.objects.filter(status=1).order_by('-created_on')
+        return Question.objects.filter(status=1).order_by('-created_on')
 
-    def get_context_data(self, **kwargs): # This function will get the context data for the view. Context data is a dictionary of values that are passed to the template. In this case, we are passing the sort_by parameter to the template. This function will be called when the view is rendered.
-        context = super().get_context_data(**kwargs) # Call the super() method to get the context data from the parent class. The context data in this case is the list of questions.
-        context['sort_by'] = self.request.GET.get('sort_by', 'votes') # Get the sort_by parameter from the URL. If it doesn't exist, default to 'votes'.
-        return context # Return the context data
+    def get_context_data(self, **kwargs): # get_context_data is a method that returns the context data that will be used to render the list view. Context data is a dictionary that contains the data that will be used to render the list view.
+        context = super().get_context_data(**kwargs)
+        context['sort_by'] = self.request.GET.get('sort_by', 'votes') # get the sort_by parameter from the request and add it to the context
+        return context
 
-
-class QuestionCreate(generic.CreateView): # this class will create a question
-    """
-    Form for asking a question. The user can enter a subject line and the main body of the question. They can also tag the question.
-
-    This class should help create an instance of the Question model. It will also use the QuestionForm class to create the form.
-
-    *args and *kwargs are used to pass a variable number of arguments to a function.
-    """
+class QuestionCreateView(LoginRequiredMixin, generic.CreateView):
     model = Question
-    form_class = QuestionForm  # Use the custom form class
+    form_class = QuestionForm
     template_name = "ask_question.html"
 
     def form_valid(self, form):
-        # Assign the current user as the author of the question
         form.instance.author = self.request.user
         form.instance.status = 1
-        
-        # save the form instance before adding many-to-many relations
-        response = super(QuestionCreate, self).form_valid(form)
-
-        # Get the tags data from the form, process it, and add the tags to the instance
-        tags = form.cleaned_data.get('tags', '')
-        if tags:
-            tag_list = [tag.strip() for tag in tags.split(' ')]
-            for tag_name in tag_list:
-                tag, created = TeachingStandardTag.objects.get_or_create(name=tag_name)
-                self.object.standard.add(tag)  # Assuming `standard` is a many-to-many field in your Question model for tags
-
-        if form.is_valid():
-            # process and save the form
-            question = form.save(commit=False)
-        else:
-            print(form.errors) 
-
+        response = super().form_valid(form)
+        self.handle_tags(form)
         return response
-    
+
+    # def handle_tags(self, form):
+    #     tags = form.cleaned_data.get('tags', '')
+    #     if tags:
+    #         tag_list = [Tag.objects.get_or_create(name=tag.strip())[0] for tag in tags.split(' ')]
+    #         self.object.tags.set(tag_list)
+
     def get_success_url(self):
-        # Redirect to the 'questions' page after form submission
         return reverse_lazy('questions')
-    
-class QuestionUpdate(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+
+class QuestionUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
     model = Question
     form_class = QuestionForm
-    template_name = 'ask_question.html'  # Reuse the ask_question template or create a specific one for updates
-
-    def get_object(self):
-        # Override get_object to ensure the user can only edit their own question
-        question = get_object_or_404(Question, slug=self.kwargs['slug'], author=self.request.user)
-        return question
-
-    def get_queryset(self):
-        return Question.objects.filter(slug=self.kwargs['slug'], author=self.request.user)
+    template_name = 'ask_question.html'
+    context_object_name = 'question' # context_object_name is a variable that is used to specify the name of the variable that will be used to access the object in the template.
 
     def test_func(self):
-        obj = self.get_object()
-        return obj.author == self.request.user
+        return self.get_object().author == self.request.user or self.request.user.is_superuser
 
-    def form_valid(self, form):
-        # Save the form first without committing to get the instance
-        question = form.save(commit=False)
-        # Update the slug and title
-        question.title = form.cleaned_data['subject']
-        question.slug = slugify(form.cleaned_data['subject'])
-        # Save the instance
-        question.save()
-        # Now save many-to-many data
-        form.save_m2m()
-        # Use the updated slug for redirection
-        return HttpResponseRedirect(reverse('question_detail', kwargs={'slug': question.slug}))
+    def form_valid(self, form): # form_valid is a method that is called when the form is valid. It is used to save the form data to the database.
+        form.instance.slug = slugify(form.cleaned_data.get('subject', '')) # set the slug of the question to the slugified subject
+        response = super().form_valid(form) # call the form_valid method of the parent class. Super() is used to call the method of the parent class.
+        return response
 
     def get_success_url(self):
-        # Redirect to the updated question's detail page or some success page
-        question = self.get_object()
         return reverse_lazy('question_detail', kwargs={'slug': self.object.slug})
-    
-    
-class QuestionDelete(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
-    """
-    This class will delete a question.
 
-    Only the author of a question can delete it, or an admin/ superuser.
-
-    LoginRequiredMixin: Ensures that only authenticated users can access this view.
-    UserPassesTestMixin: Defines a test function (test_func) that must return True for the view to proceed. In this case, it checks if the current user is the author of the post or an admin/superuser.
-    """
+class QuestionDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
     model = Question
     template_name = "question_delete.html"
-    success_url = reverse_lazy('questions')  # Redirect to the questions list after deletion
+    success_url = reverse_lazy('questions')
 
     def test_func(self):
         question = self.get_object()
-        if self.request.user == question.author or self.request.user.is_superuser:
-            return True
-        return False
+        return question.author == self.request.user or self.request.user.is_superuser
