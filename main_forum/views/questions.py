@@ -6,6 +6,7 @@ from ..models import Question, Tag
 from ..forms import QuestionForm
 
 class QuestionListView(generic.ListView):
+    """ view for displaying a list of questions, this is the main page of the forum."""
     model = Question
     template_name = "questions.html"
     paginate_by = 50
@@ -22,15 +23,16 @@ class QuestionListView(generic.ListView):
         return context
 
 class QuestionCreateView(LoginRequiredMixin, generic.CreateView):
+    """ view for creating a new question."""
     model = Question
     form_class = QuestionForm
     template_name = "ask_question.html"
 
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        form.instance.status = 1
-        response = super().form_valid(form)
-        self.handle_tags(form)
+    def form_valid(self, form): 
+        form.instance.author = self.request.user # set the author of the question to the current user
+        form.instance.status = 1 # set the status of the question to 1, which means that the question is published
+        response = super().form_valid(form) # call the form_valid method of the parent class. Super() is used to call the method of the parent class.
+        self.handle_tags(form) # call the handle_tags method to handle the tags
         return response
 
     # def handle_tags(self, form):
@@ -48,7 +50,7 @@ class QuestionUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.Update
     template_name = 'ask_question.html'
     context_object_name = 'question' # context_object_name is a variable that is used to specify the name of the variable that will be used to access the object in the template.
 
-    def test_func(self):
+    def test_func(self): # test_func is a method that is called to check if the user has permission to update the question. It returns True if the user has permission, and False otherwise.
         return self.get_object().author == self.request.user or self.request.user.is_superuser
 
     def form_valid(self, form): # form_valid is a method that is called when the form is valid. It is used to save the form data to the database.
@@ -64,6 +66,6 @@ class QuestionDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.Delete
     template_name = "question_delete.html"
     success_url = reverse_lazy('questions')
 
-    def test_func(self):
+    def test_func(self): # test_func is a method that is called to check if the user has permission to delete the question. It returns True if the user has permission, and False otherwise.
         question = self.get_object()
         return question.author == self.request.user or self.request.user.is_superuser

@@ -114,6 +114,19 @@
                       </form>
                       <div class="icon-action"><i class="far fa-bookmark"></i></div>
                       <div class="icon-action"><i class="far fa-flag"></i></div>
+                      {% if user.is_authenticated and user == answer.author %}
+                      <div class="answer-actions">
+                          <!-- Edit Answer Button -->
+                          <a href="{% url 'answer_update' answer.pk %}" class="btn btn-outline-white btn-sm">
+                              <i class="fas fa-pencil-alt"></i><br>Edit
+                          </a>
+                          <br>
+                          <!-- Delete Answer Button -->
+                          <button type="button" class="btn btn-outline-white btn-sm" data-bs-toggle="modal" data-bs-target="#deleteAnswerModal-{{ answer.id }}">
+                              <i class="fas fa-trash"></i><br>Delete
+                          </button>
+                      </div>
+                      {% endif %}
                   </div>
                   <div class="answer-body">
                   {{ answer.body.html|safe }}
@@ -132,12 +145,6 @@
                   <i class="fa fa-user-circle user-icon"></i>
                   <span class="user-asked">Answered by {{ answer.name }} on {{ answer.created_on }}</span>
               </div>
-              {% if user.is_authenticated and user == answer.author %}
-              <a href="{% url 'answer_update' answer.pk %}" class="btn btn-primary btn-sm">Edit</a>
-              <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteAnswerModal-{{ answer.id }}">
-                Delete
-              </button>
-              {% endif %}
       
 
 

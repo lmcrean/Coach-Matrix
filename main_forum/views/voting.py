@@ -15,7 +15,11 @@ class BaseVotingView(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         """ 
-        Method for handling the POST request. This method is called when a user clicks the upvote or downvote button on a question or answer.
+        Method for handling the POST request. This method is called when a user clicks the upvote or downvote button on a question or answer. 
+        
+        1. If the user has already voted in the opposite direction, a message is displayed to remove the existing vote before voting in the opposite direction.  opposite_vote_type is used to determine the opposite vote type for the object. 
+        2. If the user has already voted in the same direction, the vote is removed. 
+        3. If the user has not voted, the vote is added. The method then calls the get_redirect_url method to redirect the user to the appropriate page.
         """
         identifier = kwargs.get('pk') or kwargs.get('slug') # Adjusted to handle slug correctly
         obj = get_object_or_404(self.model, slug=identifier) if 'slug' in kwargs else get_object_or_404(self.model, pk=identifier)
