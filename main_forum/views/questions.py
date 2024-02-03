@@ -28,21 +28,26 @@ class QuestionCreateView(LoginRequiredMixin, generic.CreateView):
     form_class = QuestionForm
     template_name = "ask_question.html"
 
-    def form_valid(self, form): 
-        form.instance.author = self.request.user # set the author of the question to the current user
-        form.instance.status = 1 # set the status of the question to 1, which means that the question is published
-        response = super().form_valid(form) # call the form_valid method of the parent class. Super() is used to call the method of the parent class.
-        self.handle_tags(form) # call the handle_tags method to handle the tags
-        return response
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.status = 1
+        # Debugging print statement
+        print("Form is valid, saving question...")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        # Debugging print statement
+        print("Form is invalid:", form.errors)
+        return super().form_invalid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('questions')
 
     # def handle_tags(self, form):
     #     tags = form.cleaned_data.get('tags', '')
     #     if tags:
     #         tag_list = [Tag.objects.get_or_create(name=tag.strip())[0] for tag in tags.split(' ')]
     #         self.object.tags.set(tag_list)
-
-    def get_success_url(self):
-        return reverse_lazy('questions')
 
 class QuestionUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
     model = Question
