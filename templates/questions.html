@@ -91,8 +91,64 @@
             </div>
           </div>
         </div>
+        <!-- Check if the current user is the author of the question -->
+        {% if user.is_authenticated and user == question.author %}
+        <div class="question-actions text-end mt-2">
+          <!-- Bookmark Button for author -->
+          <button class="btn btn-outline-secondary btn-sm">
+            <i class="far fa-bookmark"></i> Bookmark
+          </button>
+          <!-- Edit Button -->
+          <a href="{% url 'question_update' question.slug %}" class="btn btn-outline-primary btn-sm">
+            <i class="fas fa-pencil-alt"></i> Edit
+          </a>
+          <!-- Delete Button -->
+          <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+            data-bs-target="#deleteQuestionModal-{{ question.id }}">
+            <i class="fas fa-trash"></i> Delete
+          </button>
+          <!-- Flag Button -->
+          <button class="btn btn-outline-warning btn-sm">
+            <i class="fas fa-flag"></i> Flag
+          </button>
+        </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div class="modal fade" id="deleteQuestionModal-{{ question.id }}" tabindex="-1"
+          aria-labelledby="deleteQuestionModalLabel-{{ question.id }}" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="deleteQuestionModalLabel-{{ question.id }}">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to delete this question?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="post" action="{% url 'question_delete' question.slug %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% else %}
+        <div class="question-actions text-end mt-2">
+          <!-- Bookmark Button for author -->
+          <button class="btn btn-outline-secondary btn-sm">
+            <i class="far fa-bookmark"></i> Bookmark
+          </button>
+          <!-- Flag Button -->
+          <button class="btn btn-outline-warning btn-sm">
+            <i class="fas fa-flag"></i> Flag
+          </button>
+        {% endif %}
       </div>
     </div>
+
 
 
     {% if is_paginated %}
