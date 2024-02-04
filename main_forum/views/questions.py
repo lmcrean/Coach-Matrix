@@ -44,21 +44,43 @@ class QuestionCreateView(LoginRequiredMixin, generic.CreateView):
         return reverse_lazy('questions')
 
 class QuestionUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+    """ view for updating a question. This should only be accessible to the author of the question. """
     model = Question
     form_class = QuestionForm
     template_name = 'ask_question.html'
     context_object_name = 'question' # context_object_name is a variable that is used to specify the name of the variable that will be used to access the object in the template.
+    print("QuestionUpdateView")
 
     def test_func(self): # test_func is a method that is called to check if the user has permission to update the question. It returns True if the user has permission, and False otherwise.
+        print("test_func")
+        print(self.get_object().author)
         return self.get_object().author == self.request.user or self.request.user.is_superuser
 
-    def form_valid(self, form): # form_valid is a method that is called when the form is valid. It is used to save the form data to the database.
-        form.instance.slug = slugify(form.cleaned_data.get('subject', '')) # set the slug of the question to the slugified subject
-        response = super().form_valid(form) # call the form_valid method of the parent class. Super() is used to call the method of the parent class.
-        return response
+    def form_valid(self, form):
+    # Only update the slug if the subject has changed
+        if form.instance.subject != self.object.subject:
+            form.instance.slug = slugify(form.cleaned_data.get('subject'))
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy('question_detail', kwargs={'slug': self.object.slug})
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        print("Post")
+        
+        if form.is_valid():
+            # Check if the subject has changed and if the new subject already exists
+            subject = form.cleaned_data.get('subject')
+            print("Subject:", subject)
+            if subject != self.object.subject and Question.objects.filter(subject=subject).exclude(pk=self.object.pk).exists():
+                print("A question with this subject already exists, excluding pk self.")
+                form.add_error('subject', 'A question with this subject already exists.')
+                return self.form_invalid(form)
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 class QuestionDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
     model = Question
