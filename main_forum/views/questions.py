@@ -43,12 +43,6 @@ class QuestionCreateView(LoginRequiredMixin, generic.CreateView):
     def get_success_url(self):
         return reverse_lazy('questions')
 
-    # def handle_tags(self, form):
-    #     tags = form.cleaned_data.get('tags', '')
-    #     if tags:
-    #         tag_list = [Tag.objects.get_or_create(name=tag.strip())[0] for tag in tags.split(' ')]
-    #         self.object.tags.set(tag_list)
-
 class QuestionUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
     model = Question
     form_class = QuestionForm

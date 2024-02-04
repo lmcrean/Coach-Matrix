@@ -146,17 +146,7 @@ Enter your text here being specific about your question.
             <!--simplified without Django_Quill-->
             <br>
             <h2 class="text-center">Tags</h2>
-            <div class="tag-input">
-                <div class="input">
-                    <div>
-                        <i class="fa fa-tags"></i>
-                        <input name="tags" type="text" placeholder="Enter your tags seperated by spaces">
-                    </div>
-                    <span id="tag-error" style="color: red; display: none;"></span> <!-- Error message element -->
-
-                </div>
-                <div class="tag-list mb-4"></div>
-            </div>
+            {{ form.tags | as_crispy_field }}
             <button type="submit" class="btn btn-primary " id="question-submit">Submit</button>
         </form>
         
