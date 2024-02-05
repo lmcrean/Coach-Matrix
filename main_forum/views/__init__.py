@@ -4,3 +4,4 @@ from .questions import QuestionListView, QuestionCreateView, QuestionUpdateView,
 from .voting import QuestionUpvote, QuestionDownvote, AnswerUpvote, AnswerDownvote
 from .profile import ProfileView
 from .bookmarks import BookmarkedQuestionsList
+from .filters import FilterByTagView

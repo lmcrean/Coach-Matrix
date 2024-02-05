@@ -3,12 +3,13 @@ from .views import (
     QuestionListView, QuestionCreateView, QuestionUpdateView, QuestionDeleteView,
     QuestionDetail, AnswerUpdate, AnswerDelete,
     ProfileView, BookmarkedQuestionsList,
-    QuestionUpvote, QuestionDownvote, AnswerUpvote, AnswerDownvote
+    QuestionUpvote, QuestionDownvote, AnswerUpvote, AnswerDownvote, FilterByTagView
 )
 
 urlpatterns = [
     path('index/', QuestionListView.as_view(), name='index'),
     path('questions/', QuestionListView.as_view(), name='questions'),
+    path('questions/tag/<slug:tag_slug>/', FilterByTagView.as_view(), name='filter_by_tag'),
     path('ask_question/', QuestionCreateView.as_view(), name='ask_question'),
     path('profile/', ProfileView.as_view(), name='my_profile'),
     path('bookmarked/', BookmarkedQuestionsList.as_view(), name='bookmarked_questions'),

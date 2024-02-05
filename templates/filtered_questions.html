@@ -1,4 +1,5 @@
-<!--questions.html-->
+<!-- filtered questions.html -->
+<!-- currently copied from questions.html, needs to be updated -->
 
 {% extends "base.html" %}
 {% load socialaccount %}
@@ -23,8 +24,9 @@
       {% endif %}
     </div>
     <br>
+    
     <!-- Questions List -->
-    {% for question in question_list %}
+    {% for question in questions %}
 
     <div class="voting-card">
       <div class="container mt-5">
@@ -39,9 +41,7 @@
               </a>
               <div class="tags-placeholder p-2 tags">
                 {% for tag in question.tags.all %}
-                  {% if tag.slug %}
-                    <a href="{% url 'filter_by_tag' tag.slug %}" class="btn btn-outline-success tags">{{ tag.name }}</a>
-                  {% endif %}
+                <span class="btn btn-outline-success tags">{{ tag.name }}</span>
                 {% endfor %}
               </div>
               <div class="d-flex justify-content-evenly p-1 column-gap-3 ">

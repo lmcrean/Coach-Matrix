@@ -1,12 +1,6 @@
 from django.contrib import admin
 from .models import Question, Answer, Tag
 
-@admin.register(Tag)
-class TagAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description', 'count')
-    search_fields = ['name', 'description']
-    readonly_fields = ('count',)
-
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'status', 'created_on', 'net_votes')
