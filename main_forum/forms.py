@@ -58,6 +58,13 @@ class QuestionForm(forms.ModelForm):
         print('instance.tags.all:', instance.tags.all())
         return instance
 
+    def __init__(self, *args, **kwargs):
+        # This is for checking if the form is bound to an existing instance, i.e. if the form is being used to update an existing question
+        super(QuestionForm, self).__init__(*args, **kwargs)
+        if self.instance.pk:  # Check if this form is bound to an existing instance
+            self.fields['tags'].initial = ' '.join(tag.name for tag in self.instance.tags.all())
+            print('tags initial:', self.fields['tags'].initial)
+
 class AnswerForm(forms.ModelForm) :
     body = QuillFormField()
 

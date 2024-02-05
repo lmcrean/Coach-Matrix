@@ -150,7 +150,11 @@ Enter your text here being specific about your question.
             <!--simplified without Django_Quill-->
             <br>
             <h2 class="text-center">Tags</h2>
+            {% if question %}
+            <input type="text" name="tags" value="{{ form.fields.tags.initial }}" id="id_tags" class="form-control">
+            {% else %}
             {{ form.tags | as_crispy_field }}
+            {% endif %}
             <button type="submit" class="btn btn-primary " id="question-submit">Submit</button>
         </form>
         
