@@ -81,6 +81,12 @@ class QuestionUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.Update
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
+    
+    def get_context_data(self, **kwargs):
+        context = super(QuestionUpdateView, self).get_context_data(**kwargs)
+        context['question'] = self.get_object()
+        print("get Context:", context)
+        return context
 
 class QuestionDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
     model = Question

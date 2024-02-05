@@ -24,7 +24,11 @@
         <label>
             Select the most Relevant <a href="google.com">Teaching Standard</a> to your question:
         </label>
+        {% if question %}
+        <form id="standards-form" method="post" action="{% url 'question_update' slug=question.slug %}">
+        {% else %}
         <form id="standards-form" method="post" action="{% url 'ask_question' %}">
+        {% endif %}
             {% csrf_token %}
             <div class="row">
                 <!-- High Expectations -->
