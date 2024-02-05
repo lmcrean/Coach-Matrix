@@ -13,18 +13,20 @@
     <!-- Button to toggle sorting -->
     <div>
       {% if request.GET.sort_by == 'votes' %}
-      <h1>Top Questions</h1>
+      <h1>Top Questions tagged with "{{ tag.name }}"</h2></h1>
       <a href="?sort_by=recent" class="btn btn-secondary">Sort by Most Recent</a>
       {% elif request.GET.sort_by == 'recent' %}
-      <h1>Most Recent Questions</h1>
+      <h1>Most Recent Questions tagged with "{{ tag.name }}"</h1>
       <a href="?sort_by=votes" class="btn btn-secondary">Sort by Most Votes</a>
       {% else %} <!--default view, no filter pressed-->
-      <h1>Top Questions</h1>
+      <h1>Top Questions tagged with "{{ tag.name }}"</h1>
       <a href="?sort_by=recent" class="btn btn-secondary">Sort by Most Recent</a>
       {% endif %}
     </div>
+
+    <a href="{% url 'questions' %}" class="clear-filter-button">Clear Filter</a>
     <br>
-    
+
     <!-- Questions List -->
     {% for question in questions %}
 
