@@ -20,7 +20,9 @@
         </div>
         <div class="question-tags">
           {% for tag in question.tags.all %}
-          <span>{{ tag.name }}</span>
+          {% if tag.slug %}
+            <a href="{% url 'filter_by_tag' tag.slug %}" class="btn btn-outline-success tags">{{ tag.name }}</a>
+          {% endif %}
           {% endfor %}
         </div>
         <div class="question-info d-flex justify-content-left">
