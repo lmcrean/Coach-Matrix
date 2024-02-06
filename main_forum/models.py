@@ -8,7 +8,7 @@ from datetime import timedelta
 from django.utils.text import slugify
 from ckeditor.fields import RichTextField
 from django_quill.fields import QuillField
-from django.db.models.signals import m2m_changed
+from django.db.models.signals import m2m_changed, post_save
 from django.dispatch import receiver
 from taggit.managers import TaggableManager
 
@@ -179,3 +179,18 @@ class Downvote(models.Model):
 
     def __str__(self):
         return str(self.user) + " downvoted " + str(self.question) + " on " + str(self.downvotedate)
+
+# new code // yet to migrate 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    reputation = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.user.username
+
+# Signal to create or update user profile upon saving a User instance
+@receiver(post_save, sender=User)
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+    instance.profile.save()

@@ -41,6 +41,13 @@ class BaseVotingView(LoginRequiredMixin, View):
             vote_attr.add(request.user)
             messages.success(request, "Your vote has been added.")
 
+        user_profile = UserProfile.objects.get(user=obj.author)
+        if vote_attr.filter(id=request.user.id).exists():  # If vote is being added
+            user_profile.reputation += 1 if self.vote_type == 'upvotes' else -1
+        else:  # If vote is being removed
+            user_profile.reputation -= 1 if self.vote_type == 'upvotes' else 1
+        user_profile.save()
+
         return self.get_redirect_url(obj)
 
     def get_redirect_url(self, obj): # get the redirect URL based on the type of object
