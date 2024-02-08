@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponseNotAllowed
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views import View
-from ..models import Question, Answer
+from ..models import Question, Answer, UserProfile
 
 class BaseVotingView(LoginRequiredMixin, View):
     """
