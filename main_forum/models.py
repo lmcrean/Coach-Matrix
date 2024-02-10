@@ -180,7 +180,6 @@ class Downvote(models.Model):
     def __str__(self):
         return str(self.user) + " downvoted " + str(self.question) + " on " + str(self.downvotedate)
 
-# new code // yet to migrate 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     reputation = models.IntegerField(default=0)
