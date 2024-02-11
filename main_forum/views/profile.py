@@ -6,7 +6,7 @@ from django.views import generic, View
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from ..models import Question, Tag, Answer
-from ..forms import AnswerForm, QuestionForm, ProfileUpdateForm
+from ..forms import AnswerForm, QuestionForm, ProfileUpdateForm, CustomPasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, UpdateView
@@ -37,14 +37,24 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 def profile_view(request):
     if request.method == 'POST':
         form = ProfileUpdateForm(request.POST, instance=request.user)
-        if form.is_valid():
+        password_form = CustomPasswordChangeForm(user=request.user, data=request.POST)
+        if 'update_profile' in request.POST and form.is_valid():
             form.save()
-            messages.success(request, 'Your profile was successfully updated!')
+            messages.success(request, 'Your profile has been updated.')
+            return redirect('profile_view')
+        elif 'change_password' in request.POST and password_form.is_valid():
+            password_form.save()
+            messages.success(request, 'Your password has been changed.')
             return redirect('profile_view')
     else:
         form = ProfileUpdateForm(instance=request.user)
+        password_form = CustomPasswordChangeForm(user=request.user)
 
-    return render(request, 'my_profile.html', {'form': form})
+    context = {
+        'form': form,
+        'password_form': password_form,
+    }
+    return render(request, 'my_profile.html', context)
 
 @login_required
 def profile_update(request):

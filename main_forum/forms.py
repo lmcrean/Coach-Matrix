@@ -6,6 +6,7 @@ from .models import Question, Tag, Answer
 from ckeditor.widgets import CKEditorWidget
 from django_quill.forms import QuillFormField
 from taggit.forms import TagField
+from django.contrib.auth.forms import PasswordChangeForm
 
 
 
@@ -98,4 +99,10 @@ class ProfileUpdateForm(forms.ModelForm):
             raise forms.ValidationError('A user with that email already exists.')
         return email
 
-
+class CustomPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super(CustomPasswordChangeForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_method = 'post'
+        self.helper.form_action = 'change_password'
+        self.helper.add_input(Submit('submit', 'Change Password'))
