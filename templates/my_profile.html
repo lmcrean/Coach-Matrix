@@ -20,8 +20,7 @@
             <h2>Update Profile here:</h2>
             <form method="post" action="{% url 'profile_update' %}">
                 {% csrf_token %}
-                {{ form|crispy }}
-                <button type="submit" class="btn btn-primary">Update Profile</button>
+                {% crispy form %}
             </form>
         </div>
     </div>

@@ -30,24 +30,21 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['form'] = ProfileUpdateForm(instance=self.request.user)
         return context
 
-
+@login_required
 def profile_view(request):
-    user = request.user
-    context = {
-        'username': user.username,
-        'email': user.email,
-        'is_oauth': False
-    }
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your profile was successfully updated!')
+            return redirect('profile_view')
+    else:
+        form = ProfileUpdateForm(instance=request.user)
 
-    # Check if the user has logged in using social accounts
-    social_accounts = SocialAccount.objects.filter(user=user)
-    if social_accounts.exists():
-        context['is_oauth'] = True
-        context['provider'] = social_accounts.first().provider
-
-    return render(request, 'my_profile.html', context)
+    return render(request, 'my_profile.html', {'form': form})
 
 @login_required
 def profile_update(request):
