@@ -5,6 +5,8 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+
 import psycopg2
 from urllib.parse import urlparse
 import os
@@ -14,11 +16,14 @@ class UserQuestionTest(LiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        # Set up logging
-        logging.basicConfig(level=logging.INFO)
-        # Initialize the WebDriver
-        cls.driver = webdriver.Chrome()
-        cls.driver.implicitly_wait(10)
+        # Set up Chrome options for headless browsing
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--disable-gpu")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+
+        driver = webdriver.Chrome(options=chrome_options)
 
     @classmethod
     def tearDownClass(cls):
