@@ -6,7 +6,6 @@ from cloudinary.models import CloudinaryField
 from django.utils import timezone
 from datetime import timedelta
 from django.utils.text import slugify
-from ckeditor.fields import RichTextField
 from django_quill.fields import QuillField
 from django.db.models.signals import m2m_changed, post_save
 from django.dispatch import receiver

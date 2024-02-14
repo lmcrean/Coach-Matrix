@@ -69,7 +69,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'users',
     'main_forum',
-    'ckeditor',
     'django_quill',
     'taggit'
 ]

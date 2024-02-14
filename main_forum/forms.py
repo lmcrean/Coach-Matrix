@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from .models import Question, Tag, Answer
-from ckeditor.widgets import CKEditorWidget
 from django_quill.forms import QuillFormField
 from taggit.forms import TagField
 from django.contrib.auth.forms import PasswordChangeForm
