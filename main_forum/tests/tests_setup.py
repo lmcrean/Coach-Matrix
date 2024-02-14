@@ -4,8 +4,8 @@ from django.test import TestCase
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
-from main_forum.models import Question, Answer
 from django.utils import timezone
+from main_forum.models import Question, Answer
 import json
 
 class QuestionAnswerTests(TestCase):
