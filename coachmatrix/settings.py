@@ -152,8 +152,13 @@ WSGI_APPLICATION = 'coachmatrix.wsgi.application'
 # }
 
 DATABASES = {
-    'default': dj_database_url.parse(os.environ.get("DATABASE_URL")),
- }
+    'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+}
+
+DATABASES['default']['TEST'] = {
+    'NAME': 'oyeirsiw',  # Provide the name of the test database
+    'MIRROR': 'default',  # run tests in the same database as development
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
