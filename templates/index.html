@@ -37,8 +37,8 @@
     <div id="login-form">
       <form>
         <a href="{% provider_login_url 'google' %}?next=/questions/"><button type="button" class="btn -box-sd-effect" > <i class="fa fa-google fa-lg" aria-hidden="true"></i> sign in with google</button></a>
-        <button type="button" class="btn -box-sd-effect" > <i class="fa fa-linkedin fa-lg" aria-hidden="true"></i> sign in with linkedin</button>
-        <a href="{% provider_login_url 'microsoft' %}?next=/questions/"></a><button type="button" class="btn -box-sd-effect"> <i class="fa fa-windows fa-lg" aria-hidden="true"></i> sign in with microsoft</button></a>
+        <!-- <button type="button" class="btn -box-sd-effect" > <i class="fa fa-linkedin fa-lg" aria-hidden="true"></i> sign in with linkedin</button>
+        <a href="{% provider_login_url 'microsoft' %}?next=/questions/"></a><button type="button" class="btn -box-sd-effect"> <i class="fa fa-windows fa-lg" aria-hidden="true"></i> sign in with microsoft</button></a> -->
         <hr>
         <p class="text-center">or</p>
         <hr>
@@ -58,8 +58,8 @@
         <hr />
         <a href="{% provider_login_url 'google' %}?next=/questions/"><button type="button" class="btn -box-sd-effect"> <i class="fa fa-google fa-lg" aria-hidden="true"></i> sign up with google</button></a>
         </a>
-        <button type="button" class="btn -box-sd-effect"> <i class="fa fa-linkedin fa-lg" aria-hidden="true"></i> sign up with linkedin</button>
-        <a href="{% provider_login_url 'google' %}?next=/questions/"><button type="button" class="btn -box-sd-effect"> <i class="fa fa-windows fa-lg" aria-hidden="true"></i> sign up with microsoft</button></a>
+        <!-- <button type="button" class="btn -box-sd-effect"> <i class="fa fa-linkedin fa-lg" aria-hidden="true"></i> sign up with linkedin</button>
+        <a href="{% provider_login_url 'google' %}?next=/questions/"><button type="button" class="btn -box-sd-effect"> <i class="fa fa-windows fa-lg" aria-hidden="true"></i> sign up with microsoft</button></a> -->
   
       </form>
     </div>
@@ -69,35 +69,4 @@
   <button id="pause-video" class="btn-secondary" onclick="pauseVideo()">pause video</button>
 
 
-
-<!-- <div class="container-fluid">
-    <div class="row">
-
-    
-        <div class="col-12 mt-3 left">
-            <div class="row">
-                <img src="{% static 'media/logo1.png' %}" alt="CoachMatrixLogo" class="img-fluid" style="max-width: 300px;">
-                <h1>designed for teachers to collaborate</h1>
-                <h2>Sign in to gain access to our community platform</h2>
-                <a href="{% provider_login_url 'google' %}?next=/questions/">Login With Google</a>
-                <a href="{% provider_login_url 'microsoft' %}">Login With Microsoft</a>
-                <p>We'll only take your username and email, and won't share it with 3rd parties</p>
-
-            </div>
-        </div>
-    </div>
-    {% if is_paginated %}
-    <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-            {% if page_obj.has_previous %}
-            <li><a href="?page={{ page_obj.previous_page_number }}" class="page-link">&laquo; PREV </a></li>
-            {% endif %}
-            {% if page_obj.has_next %}
-            <li><a href="?page={{ page_obj.next_page_number }}" class="page-link"> NEXT &raquo;</a></li>
-
-            {% endif %}
-        </ul>
-    </nav>
-    {% endif %}
-</div> -->
 {%endblock%}
