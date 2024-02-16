@@ -1,3 +1,5 @@
+# main_forum/forms.py
+
 from django import forms
 from django.contrib.auth.models import User
 from crispy_forms.helper import FormHelper
@@ -51,16 +53,29 @@ class QuestionForm(forms.ModelForm):
         return tags
 
     def save(self, *args, **kwargs):
-        print('saving question')
         instance = super(QuestionForm, self).save(commit=False)
-        # Do not commit yet, need to save m2m relations (tags) after the instance is saved
+        # Save the instance to ensure it has an ID for many-to-many relationships
         instance.save()
+        print('saving question', instance)
+
         # Handling tags here
         tags = self.cleaned_data.get('tags', '')
         tag_names = tags.split()  # Split the string into a list of tag names
-        instance.tags.set(tag_names, clear=True) # Set the tags for the instance
-        print('instance.tags.all:', instance.tags.all())
+        print(tag_names, '=tag_names after tag.split') # expecting ['tag1', 'tag2', 'tag3'] etc.
+
+        # Clear existing tags first if needed, which is important when updating a question
+        instance.tags.clear()
+
+        # Add each tag individually
+        for tag_name in tag_names:
+            instance.tags.add(tag_name.strip())  # Ensure tag is stripped of extra whitespace
+
+        print('instance.tags.all:', instance.tags.all()) 
+
+        # If there are other many-to-many fields that need to be saved, call save_m2m() if necessary
+
         return instance
+
 
     def __init__(self, *args, **kwargs):
         # This is for checking if the form is bound to an existing instance, i.e. if the form is being used to update an existing question
