@@ -38,22 +38,27 @@
       <form>
         <a href="{% provider_login_url 'google' %}?next=/questions/"><button type="button" class="btn -box-sd-effect" > <i class="fa fa-google fa-lg" aria-hidden="true"></i> sign in with google</button></a>
         <!-- <button type="button" class="btn -box-sd-effect" > <i class="fa fa-linkedin fa-lg" aria-hidden="true"></i> sign in with linkedin</button>
-        <a href="{% provider_login_url 'microsoft' %}?next=/questions/"></a><button type="button" class="btn -box-sd-effect"> <i class="fa fa-windows fa-lg" aria-hidden="true"></i> sign in with microsoft</button></a> -->
+        <a href="{% provider_login_url 'microsoft' %}?next=/questions/"></a><button type="button" class="btn -box-sd-effect"> <i class="fa fa-windows fa-lg" aria-hidden="true"></i> sign in with microsoft</button></a> --></form>
         <hr>
         <p class="text-center">or</p>
         <hr>
-        <input type="text" placeholder="Enter username" />
-        <input type="password" placeholder="Enter password" />
-        <button id="signInBtn" class="btn-success">Sign In</button>
-      </form>
-    </div>
-  
+        <form method="post" action="{% url 'account_login' %}">
+          {% csrf_token %}
+          <input type="text" placeholder="Enter username" />
+          <input type="password" placeholder="Enter password" />
+          <button id="signInBtn" class="btn-success">Sign In</button>
+        </form>
+        </div>
     <div id="signup-form">
-      <form>
+      <form method="post" action="{% url 'account_signup' %}">
+
         <input type="email" placeholder="Enter your email" />
         <input type="text" placeholder="Choose username" />
         <input type="password" placeholder="Create password" />
-        <button type="button" class="btn signup">create account</button>
+          {% csrf_token %}
+          <!-- Your input fields for email, username, and password -->
+          <button type="submit" class="btn signup">Create Account</button>
+        </form>
         <p>Clicking <strong>create account</strong> means that you are agree to our <a href="https://generator.lorem-ipsum.info/terms-and-conditions" target="_blank" rel="noopener noreferrer"> terms of services</a>.</p>
         <hr />
         <a href="{% provider_login_url 'google' %}?next=/questions/"><button type="button" class="btn -box-sd-effect"> <i class="fa fa-google fa-lg" aria-hidden="true"></i> sign up with google</button></a>
