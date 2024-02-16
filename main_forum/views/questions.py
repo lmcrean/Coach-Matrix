@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views import generic
 from django.shortcuts import get_object_or_404, redirect
-from ..models import Question, Tag
+from ..models import Question
 from ..forms import QuestionForm
 
 class QuestionListView(generic.ListView):

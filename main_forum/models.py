@@ -11,20 +11,7 @@ from django.db.models.signals import m2m_changed, post_save
 from django.dispatch import receiver
 from taggit.managers import TaggableManager
 
-
-
 STATUS = ((0, "Draft"), (1, "Published"))
-
-class Tag(models.Model):
-    """
-    This class will create a tag for a question. The tag will have a name, description, and count.
-    """
-    name = models.CharField(max_length=100, unique=True)
-    description = models.TextField(blank=True)
-    count = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.name
 
 class Question(models.Model):
     """
