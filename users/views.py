@@ -38,6 +38,7 @@ def custom_login_view(request):
         else:
             logger.error('LoginForm is invalid: %s', form.errors)
             messages.error(request, 'Please correct the error below.')
+            messages.error(request, form.errors)
     else:
         # Redirect to home if the user is already logged in
         if request.user.is_authenticated:
