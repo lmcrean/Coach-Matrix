@@ -1,11 +1,11 @@
 #users/urls.py
 
-from django.urls import path, include
+from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("", views.home, name='home'), # home page
-    path("questions/", views.logintoquestions, name='questions'), # questions page
-    path("accounts/", include("allauth.urls")),
-    path("logout", views.logout_view)
+    path('', views.home, name='home'),  # Home page
+    path('login/', views.custom_login_view, name='custom_login'),  # Custom login page
+    path('questions/', views.questions_view, name='questions'),  # Questions page
+    path('logout/', views.logout_view, name='logout'),  # Logout view
 ]

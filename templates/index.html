@@ -44,11 +44,10 @@
         <hr>
         <p class="text-center">or</p>
         <hr>
-        <form class="login" method="post" action="{% url 'account_login' %}">
+        <form class="login" method="post" action="{% url 'custom_login' %}">
           {% csrf_token %}
           <input type="text" name="username" placeholder="Enter username" required />
           <input type="password" name="password" placeholder="Enter password" required />
-          <input type="hidden" name="next" value="/questions/" />
           <button id="signInBtn" class="btn-success" type="submit">Sign In</button>
         </form>
         </div>
