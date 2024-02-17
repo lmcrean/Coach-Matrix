@@ -4,14 +4,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout, authenticate, login
 from django.contrib import messages
 from django.urls import reverse
-from .forms import CustomLoginForm
+from .forms import CustomLoginForm, CustomSignupForm
+from django.contrib.auth import get_backends
 
 logger = logging.getLogger(__name__)
 
 def home(request):
-    # If the user is authenticated, redirect them to the questions page
-    if request.user.is_authenticated:
-        return redirect(reverse('questions'))
     return render(request, "index.html")
 
 def questions_view(request):
@@ -48,3 +46,22 @@ def custom_login_view(request):
 
     # Directly render the index page which contains the login form
     return render(request, 'index.html', {'form': form})
+
+def custom_signup_view(request):
+    if request.method == 'POST':
+        form = CustomSignupForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            # Specify the backend to use
+            backend = get_backends()[0]
+            user.backend = f'{backend.__module__}.{backend.__class__.__name__}'
+            login(request, user)
+            return redirect(reverse('questions'))  # Redirect to 'questions' after sign-up
+        else:
+            # If the form is invalid, render 'index.html' with form errors
+            messages.error(request, 'Please correct the error below.')
+            messages.error(request, form.errors)
+            return render(request, 'index.html', {'signup_form': form})
+    else:
+        form = CustomSignupForm()
+        return render(request, 'index.html', {'signup_form': form})

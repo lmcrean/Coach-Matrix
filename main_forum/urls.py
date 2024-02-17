@@ -10,7 +10,6 @@ from .views import (
 )
 
 urlpatterns = [
-    path('', QuestionListView.as_view(), name='index'),
     path('questions/', QuestionListView.as_view(), name='questions'),
     path('questions/tag/<slug:tag_slug>/', FilterByTagView.as_view(), name='filter_by_tag'),
     path('ask_question/', QuestionCreateView.as_view(), name='ask_question'),

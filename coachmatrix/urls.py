@@ -6,8 +6,8 @@ from django.urls import path, include
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),  # Admin page
-    path('login/', include('users.urls')),  # Login page handled by users app
-    path('', include('main_forum.urls')),  # Include the main_forum app URLs
+    path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),  # Include the allauth app URLs
+    path('', include('users.urls')),  # Include the users app URLs at the root
+    path('', include('main_forum.urls')), 
 ]

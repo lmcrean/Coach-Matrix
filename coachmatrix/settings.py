@@ -90,6 +90,7 @@ SITE_ID = 4
 
 LOGIN_REDIRECT_URL = '/questions/'
 LOGOUT_REDIRECT_URL = '/'
+ACCOUNT_SIGNUP_REDIRECT_URL = '/questions/'
 
 LOGGING = {
     'version': 1,
