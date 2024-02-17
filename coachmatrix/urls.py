@@ -1,4 +1,5 @@
-# coachmatrix/urls.py is the main URL configuration for the project. It is the first thing that is read when the server is started. It is responsible for routing requests to the appropriate app.
+# coachmatrix/urls.py 
+# this is the main URL configuration for the project. It is the first thing that is read when the server is started. It is responsible for routing requests to the appropriate app.
 
 from django.contrib import admin
 from django.urls import path, include
