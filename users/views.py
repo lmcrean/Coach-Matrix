@@ -8,6 +8,7 @@ def home(request):
     return render(request, "index.html")
 
 def logintoquestions(request):
+    print('users/views.py logintoquestions')
     return redirect("questions.html")
 
 def logout_view(request):

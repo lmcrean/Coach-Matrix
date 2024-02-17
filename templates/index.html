@@ -42,15 +42,16 @@
         <hr>
         <p class="text-center">or</p>
         <hr>
-        <form method="post" action="{% url 'account_login' %}">
+        <form class="login" method="post" action="{% url 'account_login' %}">
           {% csrf_token %}
           <input type="text" placeholder="Enter username" />
           <input type="password" placeholder="Enter password" />
+          {{ form.as_p }}
           <button id="signInBtn" class="btn-success">Sign In</button>
         </form>
         </div>
     <div id="signup-form">
-      <form method="post" action="{% url 'account_signup' %}">
+      <form class="login" method="post" action="{% url 'account_signup' %}">
 
         <input type="email" placeholder="Enter your email" />
         <input type="text" placeholder="Choose username" />

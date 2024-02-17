@@ -20,6 +20,6 @@ from django.urls import path, include
 urlpatterns = [ 
     path('admin/', admin.site.urls), # admin page
     path("", include("main_forum.urls"), name="main_forum-urls"), # this function will include the urls from the main_forum app
-    path("accounts/", include("allauth.urls")),
+    path("accounts/", include("allauth.urls")), # this function will include the urls from the allauth app
     path("", include("users.urls")),
 ]

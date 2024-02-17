@@ -1,3 +1,5 @@
+<!--templates/account/login.html-->
+
 {% extends "base.html" %}
 
 {% load i18n %}
@@ -19,7 +21,6 @@
         first.{% endblocktrans %}</p>
       
       <a href="{% provider_login_url 'google' %}?next=/">Login With Google</a>
-      <a href="{% provider_login_url 'microsoft' %}?next=/">Login With Microsoft</a>
     </div>
   </div>
   <div class="row">
@@ -30,7 +31,7 @@
         {% if redirect_field_value %}
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
         {% endif %}
-        <button class="btn btn-signup right" type="submit">{% trans "Sign In" %}</button>
+        <button class="btn btn-signup right" type="submit">Sign in</button>
       </form>
     </div>
   </div>
