@@ -6,26 +6,25 @@ from django.contrib import messages
 from django.urls import reverse
 from .forms import CustomLoginForm
 
+logger = logging.getLogger(__name__)
 
 def home(request):
+    # If the user is authenticated, redirect them to the questions page
+    if request.user.is_authenticated:
+        return redirect(reverse('questions'))
     return render(request, "index.html")
 
 def questions_view(request):
-    print('Redirecting to questions page')
-    return redirect(reverse('questions'))
+    return render(request, "questions.html")
 
 def logout_view(request):
     logout(request)
+    messages.info(request, "You have successfully logged out.")
     return redirect(reverse('home'))
-
-
-
-logger = logging.getLogger(__name__)
 
 def custom_login_view(request):
     if request.method == 'POST':
         logger.debug('Attempting to authenticate a user.')
-        
         form = CustomLoginForm(data=request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
@@ -33,19 +32,19 @@ def custom_login_view(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 logger.info(f'User {username} authenticated successfully.')
-                
                 login(request, user)
-                
                 return redirect(reverse('questions')) 
             else:
                 logger.warning(f'Failed login attempt for user {username}.')
-                
                 messages.error(request, 'Username or password is incorrect.')
         else:
             logger.error('LoginForm is invalid: %s', form.errors)
-            
             messages.error(request, 'Please correct the error below.')
     else:
+        # Redirect to home if the user is already logged in
+        if request.user.is_authenticated:
+            return redirect(reverse('questions'))
         form = CustomLoginForm()
 
-    return render(request, 'login.html', {'form': form})
+    # Directly render the index page which contains the login form
+    return render(request, 'index.html', {'form': form})
