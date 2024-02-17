@@ -48,4 +48,4 @@ def custom_login_view(request):
     else:
         form = CustomLoginForm()
 
-    return render(request, 'users/login.html', {'form': form})
+    return render(request, 'login.html', {'form': form})
