@@ -1,4 +1,4 @@
-# users/views.py
+# users/views/authentication.py
 import logging
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout, authenticate, login, update_session_auth_hash
