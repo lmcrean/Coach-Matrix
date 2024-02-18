@@ -16,27 +16,28 @@ class ProfileView(LoginRequiredMixin, View):
     template_name = 'my_profile.html'
 
     def get(self, request, *args, **kwargs):
-        profile_update_form = ProfileUpdateForm(instance=request.user)  # Corrected variable name
+        profile_update_form = ProfileUpdateForm(instance=request.user)
         password_form = CustomPasswordChangeForm(user=request.user)
         context = {
-            'profile_update_form': profile_update_form,  # Use corrected variable name
+            'profile_update_form': profile_update_form,
             'password_form': password_form,
         }
         return render(request, self.template_name, context)
 
-    def post(self, request, *args, **kwargs):
-        logger.debug("POST data received: %s", request.POST)
-        
+    def post(self, request, *args, **kwargs):        
+        profile_update_form = ProfileUpdateForm(instance=request.user)
+        password_form = CustomPasswordChangeForm(user=request.user)
+
         if 'update_profile' in request.POST:
-            profile_update_form = ProfileUpdateForm(request.POST, instance=request.user)  
-            if profile_update_form.is_valid():  
-                profile_update_form.save()  
+            profile_update_form = ProfileUpdateForm(request.POST, instance=request.user)
+            if profile_update_form.is_valid():
+                profile_update_form.save()
                 messages.success(request, 'Your profile has been updated.')
                 logger.debug("Profile update successful for user: %s", request.user.username)
-                return redirect('my_profile')  
+                return redirect('my_profile')
             else:
-                logger.error("Profile update errors: %s", profile_update_form.errors.as_json())  
-                for field, errors in profile_update_form.errors.items():  
+                logger.error("Profile update errors: %s", profile_update_form.errors.as_json())
+                for field, errors in profile_update_form.errors.items():
                     for error in errors:
                         messages.error(request, f"{field}: {error}")
 
@@ -46,15 +47,16 @@ class ProfileView(LoginRequiredMixin, View):
                 user = password_form.save()
                 update_session_auth_hash(request, user)
                 messages.success(request, 'Your password has been changed.')
-                return redirect('my_profile')  # Clear the form
+                return redirect('my_profile')
             else:
                 logger.error("Password change errors: %s", password_form.errors.as_json())
                 for field, errors in password_form.errors.items():
                     for error in errors:
                         messages.error(request, f"{field}: {error}")
-        
+
+        # Pass both forms to context, ensuring they're always defined
         context = {
-            'profile_update_form': profile_update_form, 
+            'profile_update_form': profile_update_form,
             'password_form': password_form,
         }
         return render(request, self.template_name, context)
