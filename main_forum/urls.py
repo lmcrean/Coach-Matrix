@@ -3,19 +3,14 @@
 from django.urls import path
 from .views import (
     QuestionListView, QuestionCreateView, QuestionUpdateView, QuestionDeleteView,
-    QuestionDetail, AnswerUpdate, AnswerDelete,
-    ProfileView, BookmarkedQuestionsList,
-    QuestionUpvote, QuestionDownvote, AnswerUpvote, AnswerDownvote, FilterByTagView,
-    profile_update, profile_view, change_password
+    QuestionDetail, AnswerUpdate, AnswerDelete, BookmarkedQuestionsList,
+    QuestionUpvote, QuestionDownvote, AnswerUpvote, AnswerDownvote, FilterByTagView
 )
 
 urlpatterns = [
     path('questions/', QuestionListView.as_view(), name='questions'),
     path('questions/tag/<slug:tag_slug>/', FilterByTagView.as_view(), name='filter_by_tag'),
     path('ask_question/', QuestionCreateView.as_view(), name='ask_question'),
-    path('profile/', ProfileView.as_view(), name='my_profile'),
-    path('profile/update/', profile_update, name='profile_update'),
-    path('profile/password/', change_password, name='change_password'),
 
     path('bookmarked/', BookmarkedQuestionsList.as_view(), name='bookmarked_questions'),
     path('<slug:slug>/', QuestionDetail.as_view(), name='question_detail'),

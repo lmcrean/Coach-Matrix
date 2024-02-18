@@ -1,11 +1,15 @@
 # users/views.py
 import logging
 from django.shortcuts import render, redirect
-from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth import logout, authenticate, login, update_session_auth_hash
 from django.contrib import messages
 from django.urls import reverse
-from .forms import CustomLoginForm, CustomSignupForm
+from ..forms import CustomLoginForm, CustomSignupForm, CustomPasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import get_backends
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
+
 
 logger = logging.getLogger(__name__)
 

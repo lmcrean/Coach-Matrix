@@ -5,8 +5,7 @@ from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.views import generic, View
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from ..models import Question, Answer
-from ..forms import AnswerForm, QuestionForm, ProfileUpdateForm, CustomPasswordChangeForm
+from ..forms import ProfileUpdateForm, CustomPasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, UpdateView
@@ -70,17 +69,24 @@ def profile_update(request):
         form = ProfileUpdateForm(instance=request.user)
     return render(request, 'my_profile.html', {'form': form})
 
+
+@login_required
+def profile_view(request):
+    # You might also want to pass other context variables that my_profile.html expects
+    return render(request, 'my_profile.html')
+
 @login_required
 def change_password(request):
     if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
+        form = CustomPasswordChangeForm(user=request.user, data=request.POST)
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)  # Important to keep the user logged in after changing the password
             messages.success(request, 'Your password was successfully updated!')
-            return redirect('change_password_done')
+            return redirect('profile')  # Redirect back to profile URL
         else:
             messages.error(request, 'Please correct the error below.')
+            messages.error(request, form.errors)
     else:
-        form = PasswordChangeForm(request.user)
-    return render(request, 'change_password.html', {'form': form})
+        form = CustomPasswordChangeForm(user=request.user)
+    return render(request, 'my_profile.html', {'password_form': form})

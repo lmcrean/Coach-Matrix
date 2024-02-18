@@ -1,3 +1,5 @@
+<!--templates/my_profile.html-->
+
 {% extends "base.html" %}
 {% load static %}
 {% load socialaccount %}
@@ -6,10 +8,16 @@
 {% block content %}
 
 <div class="container profile-page mt-5">
-    <div class="row">
-        <div class="col-12 col-md-6 mx-auto">
-            <div class="profile-header text-center mb-5">
-                <h1>My Profile</h1>
+    <div class="row"><div class="col-12 col-md-6 mx-auto">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div class="profile-header text-center mb-5">
+            <h1>My Profile</h1>
             </div>
             <hr>
             <div class="profile-info text-center mt-3">
@@ -20,7 +28,7 @@
             <h2>Update Profile here:</h2>
             <form method="post" action="{% url 'profile_update' %}">
                 {% csrf_token %}
-                {% crispy form %}
+                {{ form|crispy }}
             </form>
             <hr>
             <h2>Change Password here:</h2>
@@ -38,11 +46,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                    <form method="post" action="{% url 'profile_update' %}">
-                        {% csrf_token %}
-                        {{ password_form | crispy }}
-                        <input type="submit" class="btn btn-primary" name="password_change" value="Change Password">
-                    </form>
+                        <form method="post" action="{% url 'change_password' %}">
+                            {% csrf_token %}
+                            {{ password_form | crispy }}
+                            <input type="submit" class="btn btn-primary" name="password_change" value="Change Password">
+                        </form>
                     </div>
                 </div>
                 </div>
