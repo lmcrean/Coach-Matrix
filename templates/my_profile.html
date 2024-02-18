@@ -29,8 +29,9 @@
             <form method="post" action="{% url 'my_profile' %}">
                 {% csrf_token %}
                 <input type="hidden" name="form_type" value="update_profile">
-                {{ form|crispy }}
+                {{ profile_update_form|crispy }}  
                 <button type="submit" class="btn btn-primary">Update Profile</button>
+            </form>
             </form>
             {{ form.non_field_errors }}
             {% for field in form %}
