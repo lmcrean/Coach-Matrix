@@ -26,10 +26,13 @@
                 <p>Member since: {{ user.date_joined | date:"F d, Y" }} </p>   
             <hr>
             <h2>Update Profile here:</h2>
-            <form method="post" action="{% url 'profile_update' %}">
+            <form method="post" action="{% url 'my_profile' %}">
                 {% csrf_token %}
+                <input type="hidden" name="form_type" value="update_profile">
                 {{ form|crispy }}
+                <button type="submit">Update Profile</button>
             </form>
+            
             <hr>
             <h2>Change Password here:</h2>
             <!-- Button to trigger the password change modal -->
@@ -46,10 +49,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form method="post" action="{% url 'change_password' %}">
+                        <form method="post" action="{% url 'my_profile' %}">
                             {% csrf_token %}
-                            {{ password_form | crispy }}
-                            <input type="submit" class="btn btn-primary" name="password_change" value="Change Password">
+                            <!-- Hidden input to identify the form submission type -->
+                            <input type="hidden" name="form_type" value="change_password">
+                            {{ password_form|crispy }}
+                            <button type="submit">Change Password</button>
                         </form>
                     </div>
                 </div>
