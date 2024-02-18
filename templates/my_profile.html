@@ -32,7 +32,6 @@
                 {{ profile_update_form|crispy }}  
                 <button type="submit" class="btn btn-primary">Update Profile</button>
             </form>
-            </form>
             {{ profile_update_form.non_field_errors }}
             {% for field in profile_update_form %}
             {{ field.errors }}
