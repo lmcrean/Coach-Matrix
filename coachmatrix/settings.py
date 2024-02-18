@@ -104,7 +104,6 @@ LOGGING = {
         '': {  # root logger
             'handlers': ['console'],
             'level': 'DEBUG',
-            'propagate': False,
         },
     },
 }

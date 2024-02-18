@@ -30,7 +30,7 @@
                 {% csrf_token %}
                 <input type="hidden" name="form_type" value="update_profile">
                 {{ form|crispy }}
-                <button type="submit">Update Profile</button>
+                <button type="submit" class="btn btn-primary">Update Profile</button>
             </form>
             {{ form.non_field_errors }}
             {% for field in form %}
@@ -53,6 +53,10 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        {{ password_form.non_field_errors }}
+                        {% for field in password_form %}
+                        {{ field.errors }}
+                        {% endfor %}
                         <form method="post" action="{% url 'my_profile' %}">
                             {% csrf_token %}
                             <!-- Hidden input to identify the form submission type -->

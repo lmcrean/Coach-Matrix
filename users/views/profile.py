@@ -8,6 +8,10 @@ from ..forms import ProfileUpdateForm, CustomPasswordChangeForm
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 class ProfileView(LoginRequiredMixin, View):
     template_name = 'my_profile.html'
 
@@ -21,33 +25,48 @@ class ProfileView(LoginRequiredMixin, View):
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        # Initialize context with empty forms to be populated after determining which form is submitted
-        context = {
-            'form': ProfileUpdateForm(instance=request.user),
-            'password_form': CustomPasswordChangeForm(user=request.user),
-        }
-
+        print(request.POST)
         if 'update_profile' in request.POST:
-            # If the profile update form is submitted, only process this form
-            context['form'] = form = ProfileUpdateForm(request.POST, instance=request.user)
+            form = ProfileUpdateForm(request.POST, instance=request.user)
             if form.is_valid():
                 form.save()
                 messages.success(request, 'Your profile has been updated.')
+                print(f"Updated username: {updated_user.username}")
+                return redirect('my_profile')
             else:
-                messages.error(request, 'Please correct the error in the profile form.')
-                messages.error(request, form.errors)
-                print(form.errors)
+                logger.error(f"Profile update errors: {form.errors}")
+                for field, errors in form.errors.items():
+                    for error in errors:
+                        messages.error(request, f"{field}: {error}")
 
         elif 'change_password' in request.POST:
-            # If the password change form is submitted, only process this form
-            context['password_form'] = password_form = CustomPasswordChangeForm(user=request.user, data=request.POST)
+            password_form = CustomPasswordChangeForm(user=request.user, data=request.POST)
             if password_form.is_valid():
                 user = password_form.save()
                 update_session_auth_hash(request, user)
                 messages.success(request, 'Your password has been changed.')
+                return redirect('my_profile')  # Redirect to refresh the page and clear the form
             else:
-                messages.error(request, 'Please correct the error in the password form.')
-                messages.error(request, password_form.errors)
+                for field, errors in password_form.errors.items():
+                    for error in errors:
+                        messages.error(request, f"{field}: {error}")
 
-        # The context now contains either the profile form or the password form, depending on which one was submitted
+        else:
+            form = ProfileUpdateForm(instance=request.user)
+            password_form = CustomPasswordChangeForm(user=request.user)
+
+        context = {
+            'form': form,
+            'password_form': password_form,
+        }
+
+        if form.is_valid():
+            form.save()
+            updated_user = User.objects.get(id=request.user.id)  # Fetch the user again from the database
+            logger.debug(f"Updated username: {updated_user.username}")  # Log the updated username
+            messages.success(request, 'Your profile has been updated.')
+            return redirect('my_profile')
+
         return render(request, self.template_name, context)
+
+    
