@@ -1,4 +1,4 @@
-
+# main_forum/views/bookmarks.py
 from django.db import models
 from django.db.models import Count, F
 from django.shortcuts import render, get_object_or_404, reverse, redirect
@@ -24,4 +24,4 @@ class BookmarkedQuestionsList(LoginRequiredMixin, ListView):
     context_object_name = 'bookmarked_question_list'
 
     def get_queryset(self):
-        return self.request.user.bookmarks.all()
+        return Question.objects.filter(bookmarked_by__user=self.request.user)
