@@ -1,5 +1,7 @@
 # main_forum/models.py
 
+# this file will contain the models for the main_forum app. The models will include the Question, Answer, Upvote, Downvote, UserProfile, and Bookmark classes.
+
 from django.db import models
 from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField

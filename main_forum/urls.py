@@ -1,5 +1,7 @@
 # main_forum/urls.py
 
+# The URL Patterns are used to map the URL to the view, it is important to order the URL patterns so that the more specific patterns are placed before the more general patterns, so that the more specific patterns are matched first. 
+
 from django.urls import path
 from .views import (
     QuestionListView, QuestionCreateView, QuestionUpdateView, QuestionDeleteView,

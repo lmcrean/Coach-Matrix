@@ -9,7 +9,9 @@ from ..forms import AnswerForm
 
 class QuestionDetail(View):
     """
-    View for displaying a question and its answers.
+    View for displaying a question and its answers. 
+
+    This view will display the question and its answers, and allow the user to post a new answer. The user will also be able to sort the answers by most votes, newest, or oldest.
     """
     def get(self, request, slug, *args, **kwargs):
         """
@@ -38,7 +40,7 @@ class QuestionDetail(View):
         form = AnswerForm(data=request.POST)
 
         if form.is_valid():
-            # Save the answer and redirect to the question detail page
+            # if the form is valid, save the answer and redirect to the question detail page 
             self.save_answer(form, question, request.user)
             return redirect('question_detail', slug=slug)
         else:

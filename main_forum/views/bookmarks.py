@@ -1,4 +1,5 @@
 # main_forum/views/bookmarks.py
+
 from django.db import models
 from django.db.models import Count, F
 from django.shortcuts import render, get_object_or_404, reverse, redirect
@@ -19,6 +20,9 @@ logger = logging.getLogger(__name__)
 
 
 class BookmarkedQuestionsList(LoginRequiredMixin, ListView):
+    """
+    This class will create a view for the user's bookmarked questions. It will display the user's bookmarked questions in a list format that will be displayed in the bookmarked_questions.html template.
+    """
     model = Question
     template_name = 'bookmarked_questions.html'
     context_object_name = 'bookmarked_question_list'

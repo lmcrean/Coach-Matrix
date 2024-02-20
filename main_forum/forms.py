@@ -1,5 +1,7 @@
 # main_forum/forms.py
 
+# This file will contain the forms for the main_forum app. The forms will include the QuestionForm and AnswerForm classes.
+
 from django import forms
 from django.contrib.auth.models import User
 from crispy_forms.helper import FormHelper
@@ -13,7 +15,9 @@ from django.contrib.auth.forms import PasswordChangeForm
 
 class QuestionForm(forms.ModelForm):
     """
-    Form for asking a question. The user can enter a subject line and the main body of the question. They can also tag the question with up to 5 tags. If the user is updating a question, the form needs to be pre-populated with the existing data.
+    Form for asking a question as seen in ask_question.html. 
+    
+    The user can enter a subject line and the main body of the question. They can also tag the question with up to 5 tags. If the user is updating a question, the form needs to be pre-populated with the existing data.
     """
     subject = forms.CharField(
         max_length=100, 
@@ -85,6 +89,9 @@ class QuestionForm(forms.ModelForm):
             print('tags initial:', self.fields['tags'].initial)
 
 class AnswerForm(forms.ModelForm) :
+    """
+    Form for answering a question as seen in question_detail.html. The user can enter the main body of the answer with django_quill module. If the user is updating an answer, the form needs to be pre-populated with the existing data.
+    """
     body = QuillFormField()
 
     class Meta: # Meta class is used to specify the model to which the form is associated

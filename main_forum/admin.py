@@ -1,3 +1,7 @@
+# main_forum/admin.py
+
+# The admin settings will include the QuestionAdmin and AnswerAdmin classes, which will be used to customize the admin interface for the Question and Answer models.
+
 from django.contrib import admin
 from .models import Question, Answer
 
