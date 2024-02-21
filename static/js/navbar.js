@@ -1,4 +1,6 @@
-// ---------Responsive-navbar-active-animation-----------
+// static/js/navbar.js
+// This file is used to handle the navbar, specifically the animations.
+
 function test(){
 	var tabsNewAnim = $('#navbarSupportedContent');
 	var selectorNewAnim = $('#navbarSupportedContent').find('li').length;

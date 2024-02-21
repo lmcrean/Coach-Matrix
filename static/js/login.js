@@ -1,3 +1,8 @@
+// static/js/login.js
+// This file is used to handle the login form, specifically the following features:
+// 1. Video pause/play
+// 2. Signup and login form toggle
+
 var video = document.getElementById("myVideo");
 var btn = document.getElementById("pause-video");
 

@@ -1,5 +1,13 @@
-// Category selection UX
-// Wait for the DOM to load
+// static/js/ask_question.js
+// this file is used to handle the ask question form
+// It includes the following features:
+// 1. Category selection design
+// 2. Random subject line placeholder 
+// 3. Placeholders disappear when user starts typing
+// 4. Tags: map category to a "locked" tag
+
+// Category selection design. In the ask question form, the user can select a category by clicking on the image. The selected category will be highlighted and the value will be stored in the hidden input field.
+
 document.addEventListener("DOMContentLoaded", (event) => {
     // Get all the radio inputs
     let options = document.querySelectorAll(
@@ -28,8 +36,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     });
 });
 
-//random subject line placeholder
 
+//random subject line placeholder goes inside the subject input field
 document.addEventListener("DOMContentLoaded", (event) => {
     const prompts = [
         "struggling to implement differentiation into my mathematics lesson",
@@ -67,8 +75,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
         "Enter your subject line here e.g. " + randomPrompt;
 });
 
-//text placeholder disappears when user starts typing
 
+//text placeholder disappears when user starts typing
 document.addEventListener("DOMContentLoaded", (event) => {
     const contentArea = document.getElementById("id_content");
     contentArea.addEventListener(
@@ -82,8 +90,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     ); // The event will only trigger once
 });
 
-//tags: map category to a "locked" tag
 
+// Tags: map category to a "locked" tag
 document.addEventListener("DOMContentLoaded", (event) => {
     // Object mapping radio button values to tags
     const tagsMap = {
@@ -196,6 +204,7 @@ function addTag(e) {
 }
 
 function deleteTag(ref, tag) {
+    // Remove the tag from the array and the DOM
     let parent = ref.parentNode.parentNode;
     parent.removeChild(ref.parentNode);
     let index = tags.indexOf(tag);
@@ -203,6 +212,7 @@ function deleteTag(ref, tag) {
 }
 
 function showError(message) {
+    // Display error message
     let errorElement = document.getElementById("tag-error");
     errorElement.textContent = message;
     errorElement.style.display = "block";

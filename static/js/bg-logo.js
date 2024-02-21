@@ -1,3 +1,7 @@
+// static/js/bg-logo.js
+// This file is used to handle the background logo, so that it places itself randomly on the screen on every page load.
+
+
 document.addEventListener("DOMContentLoaded", (event) => {
     // Function to get a random number within a range
     function getRandomNumber(min, max) {
