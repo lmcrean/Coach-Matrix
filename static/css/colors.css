@@ -35,7 +35,38 @@
     /* Backgrounds */
     --background-color-body: #F9FAFC;
     --background-color-dark: var(--mono-darkest);
-}
+
+    --background-white: #ffffff;
+    --text-grey: #666;
+    --border-grey: #ccc;
+    --icon-grey: #666;
+    --color-dark-grey: #333;
+    --tag-background-grey: #f2f2f2;
+
+    --overlay-bg-color: rgba(0, 150, 136, 1);
+    --container-bg-color: #f5f5f5;
+    --container-shadow-color: rgba(0, 0, 0, 0.2);
+    --standard-option-border-color: #009693;
+    --tag-input-border-color: #888;
+    --tag-background-color: #007bff;
+    --tag-locked-bg-color: #6c757d;
+    --question-submit-bg-color: var(--primary-color-dark);
+    --delete-btn-color: #555;
+    --input-border-color: #888;
+    --text-color: #111;
+    --text-muted: #888;
+    --text-dark: #000;
+
+    --background-white: #fff;
+    --video-overlay-color: rgba(0, 150, 136, 0.5);
+    --pause-video-bg-normal: rgba(0, 150, 136, 0.8);
+    --pause-video-bg-hover: #ddd;
+    --form-modal-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
+    --link-color: #57b846;
+    --link-hover-color: #222;
+    --input-background: #ebebeb;
+    --input-placeholder-color: #222;
+    }
 
 /* Typography Colors */
 html, body, button, input, select, textarea, a, .brand, .footer-link, footer a {
@@ -94,12 +125,63 @@ body { background-color: var(--background-color-body);}
 .color-mono-darkest { color: var(--mono-darkest); }
 .dark-bg { color: var(--mono-darkest); }
 
+/* answer card */
+.answer-section-header { background: var(--background-white); box-shadow: 0 2px 5px var(--shadow-color); }
+.sticky-top { background: var(--background-white); border: 1px solid var(--border-grey); box-shadow: 0 2px 4px var(--shadow-light); }
+.sort-options { background-color: var(--background-white); border-color: var(--border-grey); }
+.question-tags span { background-color: var(--tag-background-grey); }
+.question-date, .question-answers { color: var(--text-grey); }
+.icon-action i { color: var(--icon-grey); background: var(--background-white); }
+.circle.green { background-color: var(--circle-green-default); }
+.circle.yellow { background-color: var(--circle-yellow-default); }
+.number { color: var(--color-dark-grey); }
 
-/* Hover Effects */
+/* Color styles for ask_question.css */
+.bg-overlay { background-color: var(--overlay-bg-color); }
+.container-question { background: var(--container-bg-color); box-shadow: 0px 10px 20px var(--container-shadow-color); }
+.standard-option .card { background-color: var(--primary-light); }
+.standard-option .card:hover,
+.standard-option input:checked + .card { border-color: var(--standard-option-border-color); }
+.tag-input .input label { color: var(--text-color); }
+.tag-input .input div i.fa { color: var(--text-muted); }
+.tag-input .input div #tag-ip { border: 1px solid var(--input-border-color); color: var(--text-color); }
+.tag-input .tag-list .item { background: var(--background-white); border: 1px solid var(--tag-input-border-color); color: var(--text-dark); }
+.tag-input .tag-list .item .delete-btn { color: var(--delete-btn-color); }
+.tag-input .tag-list .tag { background-color: var(--tag-background-color); }
+.tag-input .tag-list .tag.locked { background-color: var(--tag-locked-bg-color); }
+.user-info hr { border-top: 1px solid var(--text-dark); }
 
-/* Buttons hover */
-.form-modal .login:hover,
-.form-modal .signup:hover {
-    background: var(--primary-color);
-    color: #fff;
+
+.form-modal {
+    background: var(--background-white);
+    box-shadow: var(--form-modal-shadow);
+}
+
+.video-overlay {
+    background-color: var(--video-overlay-color);
+}
+
+#pause-video {
+    background-color: var(--pause-video-bg-normal);
+}
+
+#pause-video:hover {
+    background: var(--pause-video-bg-hover);
+    color: black;
+}
+
+.form-modal p a {
+    color: var(--link-color);
+}
+
+.form-modal p a:hover {
+    color: var(--link-hover-color);
+}
+
+.form-modal input {
+    background: var(--input-background);
+}
+
+.form-modal input::-webkit-input-placeholder {
+    color: var(--input-placeholder-color);
 }

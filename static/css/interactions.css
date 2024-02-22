@@ -1,0 +1,98 @@
+/* static/css/interactions.css */
+
+/* 
+    this is the CSS file for the interactions, such as hover effects, active states, and transitions.
+
+    Formatted in single lines for more efficient readability.
+*/
+/* Buttons hover */
+.form-modal .login:hover, .form-modal .signup:hover { background: var(--primary-color); color: #fff; }
+
+/* Interaction styles for answercard.css */
+.circle.green:hover { background-color: var(--circle-green-hover); }
+.circle.green:active { background-color: var(--circle-green-active); }
+.circle.yellow:hover { background-color: var(--circle-yellow-hover); }
+.circle.yellow:active { background-color: var(--circle-yellow-active); }
+.circle.green .triangle, .circle.yellow .triangle { border-top: 0px solid transparent; border-left: 13px solid transparent; border-right: 13px solid transparent; transition: border-bottom-color 0.3s; }
+
+/* Smooth transition for triangle color */
+.circle.green .triangle { border-bottom: 10px solid var(--triangle-default); }
+.circle.yellow .triangle { border-top: 10px solid var(--triangle-default); }
+.circle:hover .triangle { border-bottom-color: var(--triangle-hover); }
+.circle:active .triangle { border-bottom-color: var(--triangle-active); }
+
+/* ask_question.html options hover */
+
+.standard-option .card-img-top {
+    filter: grayscale(70%);
+    transform: translateY(30px);
+    transition: filter 0.5s ease, transform 0.5s ease, background-color 0.5s;
+}
+
+.standard-option .card:hover .card-img-top {
+    filter: grayscale(0%);
+    transform: translateY(0);
+}
+
+.standard-option input:checked + .card .card-img-top {
+    filter: none;
+    transition: filter 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease-in-out;
+}
+
+.standard-option input:checked + .card {
+    background-color: var(--background-white);
+    filter: none !important;
+    transition: background-color 0.5s ease-in-out;
+}
+
+#question-submit:hover {
+    background-color: var(--question-submit-hover-bg-color);
+}
+
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes rotatefadeIn {
+    from {
+        opacity: 0;
+        transform: rotate(40deg);
+    }
+    to {
+        opacity: 1;
+        transform: rotate(0deg);
+    }
+}
+
+.form-modal {
+    animation: fadeInUp 1s ease forwards 0.5s;
+}
+
+.logo {
+    animation: rotatefadeIn 2s ease forwards 1s;
+}
+
+#landing-logo .almond {
+    animation: fadeIn 5s ease forwards 2s;
+}
+
+#myVideo {
+    animation: fadeIn 5s ease forwards 3s;
+}

@@ -3,11 +3,8 @@
 .answer-section-header {
     position: sticky;
     top: 0;
-    background: #ffffff;
     padding: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     z-index: 1000;
-    padding: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -16,13 +13,9 @@
 .answer-count {
     font-weight: bold;
     font-size: 30px;
-    padding: 0px 30px;
-    margin: auto 0px;
 }
 
 .sort-options {
-    background-color: white;
-    border-color: grey;
     border-radius: 3px;
     border-width: 1.5px;
     cursor: pointer;
@@ -35,14 +28,11 @@
 }
 
 .sticky-top {
-    background: white;
     margin-top: 10px;
     z-index: 1020;
-    border: 1px solid #ccc;
     padding: 10px;
     border-radius: 8px;
     margin-bottom: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .question-meta {
@@ -56,117 +46,48 @@
     font-weight: bold;
     margin-bottom: 0.5rem;
 }
+
 .question-tags {
     padding: 0.5rem 0;
 }
+
 .question-tags span {
     display: inline-block;
-    background-color: #f2f2f2;
     border-radius: 15px;
     padding: 0.25rem 0.75rem;
     font-size: 0.8rem;
     margin-right: 1rem;
     cursor: pointer;
 }
-.question-date,
-.question-answers {
-    font-size: 0.9rem;
-    color: #666;
-}
+
 .question-content {
     padding: 1rem 0;
 }
+
 .voting-component {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0px;
     flex-direction: column;
     margin-top: 10px;
     margin-bottom: 25px;
 }
 
 .circle {
-    width: 35px; /* Circle size */
-    height: 35px; /* Circle size */
-    border-radius: 50%; /* Make it round */
-    display: inline-flex; /* Align inline and allow flexbox properties */
-    justify-content: center; /* Center triangle horizontally */
-    align-items: center; /* Center triangle vertically */
-    margin: auto; /* Spacing between circles */
-    cursor: pointer; /* Pointer cursor on hover */
-    transition: background-color 0.3s; /* Smooth transition for background color */
-}
-
-/* Default state for the green circle */
-.circle.green {
-    background-color: grey; /* Light green background */
-}
-
-/* Hover state for the green circle */
-.circle.green:hover {
-    background-color: #5cd65c; /* Darker green background */
-}
-
-/* Active/Clicked state for the green circle */
-.circle.green:active {
-    background-color: #3cb371; /* Even darker green for the click effect */
-}
-
-/* Default state for the yellow circle */
-.circle.yellow {
-    background-color: grey; /* Light yellow background */
-}
-
-/* Hover state for the yellow circle */
-.circle.yellow:hover {
-    background-color: #ffd54f; /* Darker yellow background */
-}
-
-/* Active/Clicked state for the yellow circle */
-.circle.yellow:active {
-    background-color: #ffb300; /* Even darker yellow for the click effect */
-}
-
-.circle.green .triangle {
-    width: 3;
-    height: 3;
-    border-top: 0px solid transparent;
-    border-left: 13px solid transparent; /* Triangle size and transparent borders */
-    border-right: 13px solid transparent; /* Triangle size and transparent borders */
-    border-bottom: 10px solid white; /* Triangle color */
-    transition: border-bottom-color 0.3s; /* Smooth transition for triangle color */
-    margin: 0 0 5px;
-}
-
-/* Upside-down triangle for the yellow circle (downvote button) */
-.circle.yellow .triangle {
-    width: 0;
-    height: 0;
-    margin: 6px 0 0;
-    border-left: 13px solid transparent;
-    border-right: 13px solid transparent;
-    border-top: 10px solid white; /* The color of the triangle */
-}
-
-/* Change triangle color on .circle hover */
-.circle:hover .triangle {
-    border-bottom-color: #f5f5f5; /* Light gray to match the body background */
-}
-
-/* Change triangle color on .circle active */
-.circle:active .triangle {
-    border-bottom-color: #e0e0e0; /* Darker gray for the click effect */
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    cursor: pointer;
 }
 
 .number {
-    font-size: 26px; /* Large number size */
-    color: #333; /* Dark gray color for the text */
-    margin: 4px auto 4px; /* Spacing between circles and number */
-    font-family: "Glacial Indifference", sans-serif;
+    font-size: 26px;
+    margin: 4px auto;
 }
-
-/* question container and gutter for bookmark/flag */
 
 .body-and-gutter {
     display: flex;
@@ -174,58 +95,40 @@
 }
 
 .question-body {
-    flex-grow: 1; /* Allows the question body to fill the space */
+    flex-grow: 1;
     margin: 30px auto auto 38px;
 }
 
 .icon-column {
-    flex-shrink: 0; /* Prevent the icon column from shrinking */
-    margin-top: 10px; /* Adjust this value to align with the bottom of the voting component */
+    flex-shrink: 0;
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
-    align-items: flex-end; /* Align icons to the right */
+    align-items: flex-end;
 }
 
 .icon-action {
     margin-bottom: 10px;
     cursor: pointer;
-}
-
-.icon-action i {
-    color: #666;
-    background: #fff;
-    border: 0px solid #ccc;
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1021; /* Make sure this is higher if you want the icon to be on top */
 }
 
 .question-container {
     position: relative;
-    padding-left: 50px; /* Space for the gutter column */
+    padding-left: 50px;
 }
 
 .icon-column {
     position: sticky;
-    top: 43px; /* Adjust based on your navbar height */
+    top: 43px;
     left: 0;
-    height: 400;
-    z-index: 1020;
-}
-.icon-action {
-    display: block;
-    position: block;
-    margin-bottom: 10px;
-    cursor: pointer;
-    color: #666;
-    font-size: 1.5rem; /* Adjust icon size as needed */
 }
 
-/*tailend author*/
+.icon-action {
+    display: block;
+    margin-bottom: 10px;
+    cursor: pointer;
+    font-size: 1.5rem;
+}
 
 .user-info {
     display: flex;
@@ -254,8 +157,6 @@
 
 .user-info hr {
     flex-grow: 1;
-    border: none;
-    border-top: 1px solid #000;
     margin: 0 1rem;
 }
 

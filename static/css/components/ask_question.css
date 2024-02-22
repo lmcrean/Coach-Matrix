@@ -6,13 +6,7 @@
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: rgba(
-        0,
-        150,
-        136,
-        1
-    ); /* Adjust the alpha for transparency */
-    z-index: -11; /* Above the video, but below the form */
+    z-index: -11;
 }
 
 .container-question {
@@ -21,23 +15,15 @@
     width: 95%;
     max-width: 800px;
     padding: 20px;
-    background: #f5f5f5;
     border-radius: 20px;
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
     margin: auto;
 }
 
-label {
-    margin: auto;
-}
+label { margin: auto; }
 
-.standard-option {
-    cursor: pointer;
-}
+.standard-option { cursor: pointer; }
 
-.standard-option input[type="radio"] {
-    display: none;
-}
+.standard-option input[type="radio"] { display: none; }
 
 /* animations */
 /* Initial state for images */
@@ -82,20 +68,17 @@ label {
     border-color: #009693; /* Bootstrap primary color */
 }
 
+/* Structural styles for .card-img-top */
+
 .standard-option .card-img-top {
-    max-height: 150px; /* Adjust as needed */
+    max-height: 150px;
     object-fit: contain;
     margin-bottom: 20px;
 }
 
-.standard-option .card-body {
-    text-align: center;
-}
+.standard-option .card-body { text-align: center; }
 
-input,
-#id_content {
-    border-radius: 21px !important;
-}
+input, #id_content { border-radius: 21px !important; }
 
 /* Responsive adjustments */
 @media (max-width: 300.98px) {
@@ -135,86 +118,58 @@ input,
 }
 
 /*-------tags---------*/
-.tag-input .input {
-    margin-bottom: 20px;
+/* Tag input structural styles */
+.tag-input .input { 
+    margin-bottom: 20px; 
 }
+
 .tag-input .input label {
     font-size: 16px;
-    color: #111;
-    margin-bottom: 8px;
     display: block;
 }
-.tag-input .input div {
+
+.tag-input .input div { 
     position: relative;
 }
+
 .tag-input .input div i.fa {
     position: absolute;
     top: 50%;
     left: 10px;
     transform: translateY(-50%);
     font-size: 16px;
-    color: #888;
 }
+
 .tag-input .input div #tag-ip {
     padding: 10px;
     width: 100%;
     font-size: 16px;
-    color: #111;
     text-indent: 25px;
-    border: 1px solid #888;
     outline: none;
 }
-.tag-input .tag-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
+
+.tag-input .tag-list { 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 8px; }
+
+/* Tag item structural styles */
 .tag-input .tag-list .item {
     padding: 5px 8px;
-    background: #fff;
-    border: 1px solid #888;
-    border-radius: 5px;
-    color: #111;
     user-select: none;
 }
+
 .tag-input .tag-list .item .delete-btn {
     display: inline-block;
     margin: 0px 2px;
     width: 8px;
     text-align: center;
-    color: #555;
-}
-
-.tag-input .tag-list .tag {
-    padding: 0.25em 0.6em;
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: #fff;
-    background-color: #007bff; /* Use a Bootstrap color for consistency */
-    border: none;
-    border-radius: 10rem; /* Fully rounded edges for pill effect */
-    display: inline-flex;
-    align-items: center;
-    white-space: nowrap;
-}
-
-.tag-input .tag-list .tag.locked {
-    background-color: #6c757d; /* Bootstrap secondary color for locked tag */
-    pointer-events: none; /* Makes the tag non-interactive */
-}
-
-.tag-input .tag-list .tag i.fa-lock {
-    font-size: 0.75rem;
-    margin-right: 0.3em;
 }
 
 #question-submit {
     margin: auto;
     display: block;
-    font-family: "Glacial Indifference";
     font-weight: 700;
     font-size: 23px;
-    background: var(--primary-color-dark);
     border-color: unset;
-    color: #ffff;
 }

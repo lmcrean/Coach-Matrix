@@ -9,6 +9,7 @@
 /* Import foundational styles */
 @import url('colors.css');
 @import url('typefaces.css');
+@import url('interactions.css');
 
 /* Import component-specific styles from the components directory */
 @import url('components/answercard.css');

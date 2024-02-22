@@ -53,3 +53,9 @@ p {
     font-size: 1.4rem;
     font-weight: 700;
 }
+
+
+#pause-video {
+    font-style: italic;
+    font-family: 'Glacial Indifference', sans-serif;
+}
