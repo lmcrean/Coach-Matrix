@@ -53,14 +53,6 @@ a:hover, a .readmore:hover { color: var(--text-color-hover);}
 /* Body Background Color */
 body { background-color: var(--background-color-body);}
 
-/* Utility Classes for Background Colors and Colors, used as Fallback and in case further dcevelopment needed */
-[class*="primary-"] { background-color: var(--primary-color-dark); }
-[class*="secondary-"] { background-color: var(--secondary-color-dark);  }
-[class*="mono-"] { background-color: var(--mono-dark);  }
-[class*="color-primary-"] { color: var(--primary-color-dark);  }
-[class*="color-secondary-"] { color: var(--secondary-color-dark);  }
-[class*="color-mono-"] { color: var(--mono-dark);  }
-
 /* Utility Classes for Background Colors and Colors */
 
 .primary-lightest { background-color: var(--primary-color-lightest); }
