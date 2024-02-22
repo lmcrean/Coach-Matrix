@@ -364,16 +364,6 @@ body {
     color:#646464;
 }
 
-.form-modal .login,
-.form-modal .signup {
-    background: var(--primary-color);
-    color: #fff;
-}
-
-.form-modal .login:hover,
-.form-modal .signup:hover {
-    background: var(--primary-color);
-}
 
 .form-toggle {
     position: relative;

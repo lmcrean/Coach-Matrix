@@ -93,3 +93,13 @@ body { background-color: var(--background-color-body);}
 .color-mono-dark { color: var(--mono-dark); }
 .color-mono-darkest { color: var(--mono-darkest); }
 .dark-bg { color: var(--mono-darkest); }
+
+
+/* Hover Effects */
+
+/* Buttons hover */
+.form-modal .login:hover,
+.form-modal .signup:hover {
+    background: var(--primary-color);
+    color: #fff;
+}
