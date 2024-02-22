@@ -18,30 +18,3 @@
 @import url('components/navbar.css');
 @import url('components/question_detail.css');
 @import url('components/votingcard.css');
-
-
-/* General styling for the entire website, ideally needs to be placed in a specific stylesheet */
-
-#text {
-    display: none;
-}
-
-
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    /* Creates a 5-column layout */
-    grid-gap: 10px;
-    padding: 10px;
-}
-
-.color-tile {
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 16px;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
