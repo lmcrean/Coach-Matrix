@@ -1,0 +1,103 @@
+/* static/css/colors.css */
+
+/*
+    This is the CSS file for the color palette. 
+    It contains the color variables and utility classes for background and text colors. The Utility Classes are used to apply the colors to different elements in the HTML, and are used for further development if needed.
+*/
+
+:root {
+    /* Primary Color Palette */
+    --primary-color-lightest: #4dd0e1;
+    --primary-color-light: #26c6da;
+    --primary-color-medium: #00acc1;
+    --primary-color-dark: #009693;
+    --primary-color-darkest: #00897b;
+
+    /* Secondary Color Palette */
+    --secondary-color-lightest: #ffccbc;
+    --secondary-color-light: #ffab91;
+    --secondary-color-medium: #ff8a65;
+    --secondary-color-dark: #f46b17;
+    --secondary-color-darkest: #e64a19;
+
+    /* Monochrome Color Palette */
+    --mono-lightest: #cfd8dc;
+    --mono-light: #b0bec5;
+    --mono-medium: #90a4ae;
+    --mono-dark: #737373;
+    --mono-darkest: #546e7a;
+
+    /* Typography */
+    --text-color-main: #4A4A4F;
+    --text-color-hover: #445261;
+    --text-color-footer: white;
+
+    /* Backgrounds */
+    --background-color-body: #F9FAFC;
+    --background-color-dark: var(--mono-darkest);
+}
+
+/* Typography Colors */
+html, body, button, input, select, textarea, a, .brand, .footer-link, footer a {
+    color: var(--text-color-main);
+}
+
+/* No text decoration for Link Styles */
+a { text-decoration: none; }
+
+a:hover, a .readmore:hover { color: var(--text-color-hover);}
+
+/* Footer Link Colors */
+.footer-link, footer a { color: var(--text-color-footer) !important; }
+
+/* Body Background Color */
+body { background-color: var(--background-color-body);}
+
+/* Utility Classes for Background Colors and Colors, used as Fallback and in case further dcevelopment needed */
+[class*="primary-"] { background-color: var(--primary-color-dark); }
+[class*="secondary-"] { background-color: var(--secondary-color-dark);  }
+[class*="mono-"] { background-color: var(--mono-dark);  }
+[class*="color-primary-"] { color: var(--primary-color-dark);  }
+[class*="color-secondary-"] { color: var(--secondary-color-dark);  }
+[class*="color-mono-"] { color: var(--mono-dark);  }
+
+/* Utility Classes for Background Colors and Colors */
+
+.primary-lightest { background-color: var(--primary-color-lightest); }
+.primary-light { background-color: var(--primary-color-light); }
+.primary-medium { background-color: var(--primary-color-medium); }
+.primary-main { background-color: var(--primary-color-dark); }
+.primary-darkest { background-color: var(--primary-color-darkest); }
+
+.secondary-lightest { background-color: var(--secondary-color-lightest); }
+.secondary-light { background-color: var(--secondary-color-light); }
+.secondary-medium { background-color: var(--secondary-color-medium); }
+.secondary-main { background-color: var(--secondary-color-dark); }
+.secondary-darkest { background-color: var(--secondary-color-darkest); }
+
+.mono-lightest { background-color: var(--mono-lightest); }
+.mono-light { background-color: var(--mono-light); }
+.mono-medium { background-color: var(--mono-medium); }
+.mono-dark { background-color: var(--mono-dark); }
+.mono-darkest { background-color: var(--mono-darkest); }
+.dark-bg { background-color: var(--background-color-dark); }
+
+
+.color-primary-lightest { color: var(--primary-color-lightest); }
+.color-primary-light { color: var(--primary-color-light); }
+.color-primary-medium { color: var(--primary-color-medium); }
+.color-primary-main { color: var(--primary-color-dark); }
+.color-primary-mainest { color: var(--primary-color-darkest); }
+
+.color-secondary-lightest { color: var(--secondary-color-lightest); }
+.color-secondary-light { color: var(--secondary-color-light); }
+.color-secondary-medium { color: var(--secondary-color-medium); }
+.color-secondary-main { color: var(--secondary-color-dark); }
+.color-secondary-mainest { color: var(--secondary-color-darkest); }
+
+.color-mono-lightest { color: var(--mono-lightest); }
+.color-mono-light { color: var(--mono-light); }
+.color-mono-medium { color: var(--mono-medium); }
+.color-mono-dark { color: var(--mono-dark); }
+.color-mono-darkest { color: var(--mono-darkest); }
+.dark-bg { color: var(--mono-darkest); }

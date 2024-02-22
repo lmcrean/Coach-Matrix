@@ -1,3 +1,9 @@
+/* static/css/votingcard.css */
+
+/*
+  This is the voting card component that appears on the questions list template.
+*/
+
 
 .voting-card .container {
   text-align: center;

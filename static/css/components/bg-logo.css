@@ -1,3 +1,12 @@
+/* static/css/bg-logo.css */
+
+/* 
+    This is the CSS file for the animated background logo. 
+    It contains the styles for the logo container, the green and orange semicircles, the hollow circle, and the slants. 
+    You can customize the colors, sizes, and positions of the elements to fit your needs. 
+    The comments in the code explain the purpose of each section and how to customize it. 
+*/
+
 /* Define color variables */
 :root {
     --primary-color: #009693;
