@@ -7,7 +7,7 @@ from django.contrib.auth import update_session_auth_hash
 from ..forms import ProfileUpdateForm, CustomPasswordChangeForm
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.models import User
+
 
 # import logging
 
@@ -29,21 +29,20 @@ class ProfileView(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):        
         profile_update_form = ProfileUpdateForm(instance=request.user)
-        password_form = CustomPasswordChangeForm(user=request.user)
-        print('posting...')
-        print(request.POST)
-        print('user')
-        print(request.user)
-        print('username')
-        print(request.user.username)
-        print('saving...')
+        try:
+            password_form = CustomPasswordChangeForm(data=request.POST, user=request.user) # this section was tested as working, or at least it was tested as not throwing an error
+            print('password updating part 2...') # this line was tested as working, or at least it was tested as not throwing an error
+        except Exception as e:
+            print(f"Error instantiating CustomPasswordChangeForm: {e}")
+            messages.error(request, "An error occurred during form processing.")
+            password_form = CustomPasswordChangeForm(user=request.user)  # Re-initialize form for context
 
-        if request.POST.get('form_type') == 'update_profile':
+        if request.POST.get('form_type') == 'update_profile': # this section was tested as working
             profile_update_form = ProfileUpdateForm(request.POST, instance=request.user)
             print('profile updating...')
             print(profile_update_form)
             
-            if profile_update_form.is_valid():
+            if profile_update_form.is_valid(): # this section was tested as working
                 print('profile is valid')
                 profile_update_form.save()
                 messages.success(request, 'Your profile has been updated.')
@@ -58,16 +57,13 @@ class ProfileView(LoginRequiredMixin, View):
                     for error in errors:
                         messages.error(request, f"{field}: {error}")
 
-        elif 'change_password' in request.POST:
-            password_form = CustomPasswordChangeForm(user=request.user, data=request.POST)
+        elif request.POST.get('form_type') == 'change_password': 
             if password_form.is_valid():
-                user = password_form.save()
+                user = password_form.save()  
                 update_session_auth_hash(request, user)
-                messages.success(request, 'Your password has been changed.')
-                return redirect('my_profile')
+                messages.success(request, 'Your password has been changed.') 
+                return redirect('my_profile') # this line was tested as working, or at least it was tested as not throwing an error
             else:
-                print("Password not updated")
-                print(password_form.errors)
                 for field, errors in password_form.errors.items():
                     for error in errors:
                         messages.error(request, f"{field}: {error}")

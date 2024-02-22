@@ -1,5 +1,11 @@
 # users/forms.py
 
+# this is the form that will be used to update the user's profile
+# it includes:
+# 1. custom form fields for log in and sign up
+# 2. a form for updating the user's profile
+# 3. a form for changing the user's password
+
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
