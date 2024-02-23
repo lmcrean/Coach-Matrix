@@ -6,6 +6,8 @@
 {% extends "base.html" %}
 {% load socialaccount %}
 {% load static %}
+{% load question_tags %}
+
 
 {% block content %}
 
@@ -100,9 +102,21 @@
         {% if user.is_authenticated and user == question.author %}
         <div class="question-actions text-end mt-2">
           <!-- Bookmark Button for author -->
+          {% if question|is_bookmarked_by:user %}
+          <form method="POST" action="{% url 'delete_bookmark' question.id %}">
+            {% csrf_token %}
+          <button class="btn btn-outline-secondary btn-sm">
+            <i class="far fa-bookmark"></i> Delete Bookmark
+          </button>
+          </form>
+          {% else %}
+          <form method="POST" action="{% url 'create_bookmark' question.id %}">
+            {% csrf_token %}
           <button class="btn btn-outline-secondary btn-sm">
             <i class="far fa-bookmark"></i> Bookmark
           </button>
+          </form>
+          {% endif %}
           <!-- Edit Button -->
           <a href="{% url 'question_update' question.slug %}" class="btn btn-outline-primary btn-sm">
             <i class="fas fa-pencil-alt"></i> Edit

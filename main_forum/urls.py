@@ -6,7 +6,7 @@ from django.urls import path
 from .views import (
     QuestionListView, QuestionCreateView, QuestionUpdateView, QuestionDeleteView,
     QuestionDetail, AnswerUpdate, AnswerDelete, BookmarkedQuestionsList,
-    QuestionUpvote, QuestionDownvote, AnswerUpvote, AnswerDownvote, FilterByTagView
+    QuestionUpvote, QuestionDownvote, AnswerUpvote, AnswerDownvote, FilterByTagView, CreateBookmark, DeleteBookmark
 )
 
 urlpatterns = [
@@ -20,6 +20,8 @@ urlpatterns = [
     path('question/<slug:slug>/downvote/', QuestionDownvote.as_view(), name='question_downvote'),
     path('question/<slug:slug>/update/', QuestionUpdateView.as_view(), name='question_update'),
     path('question/<slug:slug>/delete/', QuestionDeleteView.as_view(), name='question_delete'),
+    path('bookmark/create/<int:question_id>/', CreateBookmark.as_view(), name='create_bookmark'),
+    path('bookmark/delete/<int:question_id>/', DeleteBookmark.as_view(), name='delete_bookmark'),
     path('answer/<int:pk>/update/', AnswerUpdate.as_view(), name='answer_update'),
     path('answer/<int:pk>/delete/', AnswerDelete.as_view(), name='answer_delete'),
     path('answer/<int:pk>/upvote/', AnswerUpvote.as_view(), name='answer_upvote'),

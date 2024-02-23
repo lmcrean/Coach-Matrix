@@ -5,8 +5,8 @@ from django.db.models import Count, F
 from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.views import generic, View
 from django.http import HttpResponseRedirect
-from django.urls import reverse_lazy
-from ..models import Question, Answer
+from django.urls import reverse_lazy, reverse
+from ..models import Question, Bookmark
 from ..forms import AnswerForm, QuestionForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
@@ -23,9 +23,24 @@ class BookmarkedQuestionsList(LoginRequiredMixin, ListView):
     """
     This class will create a view for the user's bookmarked questions. It will display the user's bookmarked questions in a list format that will be displayed in the bookmarked_questions.html template.
     """
-    model = Question
+    model = Question # should this not be Bookmark?
     template_name = 'bookmarks.html'
     context_object_name = 'bookmarked_question_list'
 
     def get_queryset(self):
         return Question.objects.filter(bookmarked_by__user=self.request.user)
+
+
+class CreateBookmark(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        question_id = self.kwargs.get('question_id')
+        question = get_object_or_404(Question, id=question_id)
+        Bookmark.objects.get_or_create(user=request.user, question=question)
+        return HttpResponseRedirect(reverse('question_detail', args=[question.slug]))
+
+class DeleteBookmark(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        question_id = self.kwargs.get('question_id')
+        question = get_object_or_404(Question, id=question_id)
+        Bookmark.objects.filter(user=request.user, question=question).delete()
+        return HttpResponseRedirect(reverse('question_detail', args=[question.slug]))

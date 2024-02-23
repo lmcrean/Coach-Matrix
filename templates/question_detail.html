@@ -5,6 +5,7 @@
 
 {% extends 'base.html' %} {% block content %}
 {% load crispy_forms_tags %}
+{% load question_tags %}
 
 {% if messages %}
 <div class="alert-container">
@@ -103,6 +104,17 @@
 
     <div class="icon-column">
       <!-- this column shouold be in a gutter/margin on the right of the main body of text, and just underneath the voting buttons-->
+      {% if question|is_bookmarked_by:user %}
+          <form method="POST" action="{% url 'delete_bookmark' question.id %}">
+            {% csrf_token %}
+            <i class="far fa-bookmark delete-bookmark"></i> Delete
+          </form>
+          {% else %}
+          <form method="POST" action="{% url 'create_bookmark' question.id %}">
+            {% csrf_token %}
+            <i class="far fa-bookmark add-bookmark"></i> Bookmark
+          </form>
+          {% endif %}
       <div class="icon-action"><i class="far fa-bookmark"></i></div>
       <div class="icon-action"><i class="far fa-flag"></i></div>
     </div>
