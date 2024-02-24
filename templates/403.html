@@ -1,0 +1,17 @@
+{% extends 'base.html'%}
+
+{% block content %}
+
+<div class="error .d-flex h-100 align-items-center">
+    <div class="card text-center align-middle align-center">
+      <div class="error-modal px-10">
+        <h1>403 Error</h1>
+        <p>Page Forbidden. Looks like you're trying to access forbidden content. Please log out and signed in to the correct account.</p>
+        <a href="javascript:history.back()" class="back-button"><button>Go Back</button></a>
+        <a href="{% url 'account_logout' %}"><button>Logout</button></a>
+        <a href="{% url 'home' %}" class="home"><button>Home</button></a>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

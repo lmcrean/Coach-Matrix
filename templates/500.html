@@ -1,0 +1,17 @@
+{% extends 'base.html'%}
+
+{% block content %}
+
+<div class="error .d-flex h-100 align-items-center">
+    <div class="card text-center align-middle align-center">
+      <div class="error-modal px-10">
+        <h1>500 error</h1>
+        <p>Server error - Coach Matrix is currently unavailable to handle this request.</p>
+        <a href="javascript:history.back()" class="back-button"><button>Go Back</button></a>
+        <a href="{% url 'home' %}" class="home"><button>Home</button></a><br>
+        <a href="mailto:issues@coachmatrix.org"><button>Contact Support</button></a>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

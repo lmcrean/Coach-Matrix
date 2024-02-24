@@ -12,6 +12,7 @@
 @import url('interactions.css');
 @import url('animations.css');
 @import url('styling.css');
+@import url('errors.css');
 
 /* Import component-specific styles from the components directory */
 @import url('components/answercard.css');

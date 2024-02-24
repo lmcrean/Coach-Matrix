@@ -1,0 +1,19 @@
+/*static/css/errors.css*/
+
+.error {
+    height: 100vh !important;
+    margin: auto;
+  }
+  
+  .error .card {
+    max-width: 800px;
+    min-height: 300px !important;
+    margin: auto;
+    margin-top: 10vh;
+  }
+  
+  .error-modal {
+    margin: auto;
+    padding: 30px;
+  }
+  
