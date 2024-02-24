@@ -5,10 +5,6 @@
     Formatted in single lines for more efficient readability.
 */
 
-
-/* Buttons hover */
-.form-modal .login:hover, .form-modal .signup:hover { background: var(--primary-color); color: #fff; }
-
 /* Interaction styles for answercard.css */
 .circle.green:hover { background-color: var(--circle-green-hover); }
 .circle.green:active { background-color: var(--circle-green-active); }

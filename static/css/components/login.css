@@ -319,11 +319,6 @@ body {
     color: #fff;
 }
 
-.form-modal .login:hover,
-.form-modal .signup:hover {
-    background: var(--primary-color);
-}
-
 .form-toggle {
     position: relative;
     width: 80%;

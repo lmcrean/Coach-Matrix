@@ -185,7 +185,3 @@ body { background-color: var(--background-color-body);}
 .form-modal input::-webkit-input-placeholder {
     color: var(--input-placeholder-color);
 }
-
-#login-form button .login,  .form-modal .signup {
-  background: var(--primary-color-dark) !important;
-}
