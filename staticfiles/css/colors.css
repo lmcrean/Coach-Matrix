@@ -185,3 +185,9 @@ body { background-color: var(--background-color-body);}
 .form-modal input::-webkit-input-placeholder {
     color: var(--input-placeholder-color);
 }
+
+#login-toggle,
+#signInBtn, #create-account {
+    background: var(--primary-color);
+    color: #ffff;
+}

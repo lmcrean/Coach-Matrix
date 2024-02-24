@@ -380,12 +380,6 @@ body {
     }
 }
 
-#login-toggle,
-#signInBtn {
-    background: var(--primary-color);
-    color: #ffff;
-}
-
 .form-modal form {
     position: relative;
     width: 90%;
