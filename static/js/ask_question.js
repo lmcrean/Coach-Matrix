@@ -7,15 +7,32 @@
 // 4. Tags: map category to a "locked" tag
 
 // Category selection design. In the ask question form, the user can select a category by clicking on the image. The selected category will be highlighted and the value will be stored in the hidden input field.
-console.log('ask_question.js loaded'); // this does not load and I want it to load
+console.log('ask_question.js loaded'); // passed test
+
+console.log('Adding event listener to .tag-input input');
+const tagInputEl = document.querySelector(".tag-input input");
+if (tagInputEl) {
+  tagInputEl.addEventListener("keyup", addTag);
+} else {
+  console.error('.tag-input input not found');
+}
+
+console.log('Initializing Quill editor');
+const quillEditorEl = document.querySelector('#quill-editor');
+if (quillEditorEl) {
+  var quill = new Quill(quillEditorEl, { theme: 'snow' });
+  // ... rest of Quill setup code
+} else {
+  console.error('#quill-editor not found');
+}
 
 document.addEventListener("DOMContentLoaded", (event) => {
     // Get all the radio inputs
     let options = document.querySelectorAll(
         '.standard-option input[type="radio"]'
     );
-    console.log('options', options);
-    console.log('options', options[0].value);
+    console.log('options', options); // passed test
+    console.log('options', options[0].value); // passed test
 
     // Add a click event listener to each radio input
     options.forEach((option) => {
@@ -35,7 +52,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             );
             img.style.filter = "grayscale(0%)";
             img.style.transform = "translateY(0)";
-            console.log('selected', e.target.value); // doesn't seem to work
+            console.log('selected', e.target.value); // passed test
         });
     });
 });
@@ -43,7 +60,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 //random subject line placeholder goes inside the subject input field
 document.addEventListener("DOMContentLoaded", (event) => {
-    console.log('random subject line placeholder');
+    console.log('random subject line placeholder'); // passed test
     const prompts = [
         "struggling to implement differentiation into my mathematics lesson",
         "How could I prepare my art lessons more effectively with 1 technician available?",
@@ -83,7 +100,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 //text placeholder disappears when user starts typing
 document.addEventListener("DOMContentLoaded", (event) => {
-    console.log('text placeholder disappears when user starts typing');
+    console.log('text placeholder disappears when user starts typing'); // failed test
     const contentArea = document.getElementById("id_content");
     contentArea.addEventListener(
         "focus",
@@ -101,7 +118,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 // Tags: map category to a "locked" tag
 document.addEventListener("DOMContentLoaded", (event) => {
-    console.log('tags: map category to a "locked" tag');
+    console.log('tags: map category to a "locked" tag'); // failed test
 
     // Object mapping radio button values to tags
     const tagsMap = {
@@ -117,16 +134,16 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     // Function to update the tag list
     function updateTag(selectedValue) {
-        console.log('selectedValue', selectedValue);
+        console.log('selectedValue', selectedValue); // failed test
         // Get the tag list and locked tag elements
         const tagList = document.querySelector(".tag-list");
         const lockedTag = document.querySelector(".tag.locked");
-        console.log('tagList', tagList);
-        console.log('lockedTag', lockedTag);
+        console.log('tagList', tagList); // failed test
+        console.log('lockedTag', lockedTag); // failed test
 
         // Create a new locked tag only if it doesn't exist
         if (!lockedTag) {
-            console.log('creating new locked tag');
+            console.log('creating new locked tag'); // failed test
             const tag = document.createElement("span");
             tag.className = "tag badge badge-secondary locked"; // Include Bootstrap classes for consistent styling
             tag.textContent = tagsMap[selectedValue];
@@ -138,7 +155,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             // Append the new locked tag to the tag list
             tagList.appendChild(tag);
         } else {
-            console.log('updating existing locked tag');
+            console.log('updating existing locked tag'); // failed test
             // Update the text and value of the existing locked tag
             lockedTag.textContent = tagsMap[selectedValue];
             const lockIcon = document.createElement("i");
@@ -168,12 +185,12 @@ let tags = [];
 console.log('tags', tags);
 
 function addTag(e) {
-    console.log('addTag');
+    console.log('addTag'); // failed test
     let code = e.keyCode ? e.keyCode : e.which;
     let errorElement = document.getElementById("tag-error");
     errorElement.style.display = "none"; // Hide error initially
     if (code === 13 || code === 32) {
-        console.log('enter key or space bar pressed');
+        console.log('enter key or space bar pressed'); // failed test
         // Enter key or Space bar
         e.preventDefault(); // Prevent default form submission
         e.stopPropagation(); // Stop event from propagating to parent elements
@@ -227,7 +244,7 @@ function addTag(e) {
 
 function deleteTag(ref, tag) {
     // Remove the tag from the array and the DOM
-    console.log('deleteTag');
+    console.log('deleteTag'); // failed test
     let parent = ref.parentNode.parentNode;
     parent.removeChild(ref.parentNode);
     let index = tags.indexOf(tag);
@@ -236,7 +253,7 @@ function deleteTag(ref, tag) {
 
 function showError(message) {
     // Display error message
-    console.log('showError');
+    console.log('showError'); // failed test
     let errorElement = document.getElementById("tag-error");
     errorElement.textContent = message;
     errorElement.style.display = "block";
@@ -251,14 +268,14 @@ var quill = new Quill('#quill-editor', {
     theme: 'snow'
 });
 
-console.log('quill', quill);
+console.log('quill', quill); // failed test
 
 // Function to update hidden textarea with Quill content
 function updateContent() {
-    console.log('updateContent');
+    console.log('updateContent'); // failed test
     var content = document.querySelector('#quill-content');
     content.value = JSON.stringify(quill.getContents());
-    console.log('content', content.value);
+    console.log('content', content.value); // failed test
 }
 
 // Listen for text change in the Quill editor
