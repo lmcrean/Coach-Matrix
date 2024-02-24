@@ -7,12 +7,15 @@
 // 4. Tags: map category to a "locked" tag
 
 // Category selection design. In the ask question form, the user can select a category by clicking on the image. The selected category will be highlighted and the value will be stored in the hidden input field.
+console.log('ask_question.js loaded'); // this does not load and I want it to load
 
 document.addEventListener("DOMContentLoaded", (event) => {
     // Get all the radio inputs
     let options = document.querySelectorAll(
         '.standard-option input[type="radio"]'
     );
+    console.log('options', options);
+    console.log('options', options[0].value);
 
     // Add a click event listener to each radio input
     options.forEach((option) => {
@@ -32,6 +35,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             );
             img.style.filter = "grayscale(0%)";
             img.style.transform = "translateY(0)";
+            console.log('selected', e.target.value); // doesn't seem to work
         });
     });
 });
@@ -39,6 +43,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 //random subject line placeholder goes inside the subject input field
 document.addEventListener("DOMContentLoaded", (event) => {
+    console.log('random subject line placeholder');
     const prompts = [
         "struggling to implement differentiation into my mathematics lesson",
         "How could I prepare my art lessons more effectively with 1 technician available?",
@@ -78,21 +83,26 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 //text placeholder disappears when user starts typing
 document.addEventListener("DOMContentLoaded", (event) => {
+    console.log('text placeholder disappears when user starts typing');
     const contentArea = document.getElementById("id_content");
     contentArea.addEventListener(
         "focus",
         function () {
             if (this.defaultValue === this.value) {
                 this.value = "";
+                console.log('placeholder removed');
             }
-        },
-        { once: true }
+        }, {
+            once: true
+        }
     ); // The event will only trigger once
 });
 
 
 // Tags: map category to a "locked" tag
 document.addEventListener("DOMContentLoaded", (event) => {
+    console.log('tags: map category to a "locked" tag');
+
     // Object mapping radio button values to tags
     const tagsMap = {
         1: "high_expectations",
@@ -107,12 +117,16 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     // Function to update the tag list
     function updateTag(selectedValue) {
+        console.log('selectedValue', selectedValue);
         // Get the tag list and locked tag elements
         const tagList = document.querySelector(".tag-list");
         const lockedTag = document.querySelector(".tag.locked");
+        console.log('tagList', tagList);
+        console.log('lockedTag', lockedTag);
 
         // Create a new locked tag only if it doesn't exist
         if (!lockedTag) {
+            console.log('creating new locked tag');
             const tag = document.createElement("span");
             tag.className = "tag badge badge-secondary locked"; // Include Bootstrap classes for consistent styling
             tag.textContent = tagsMap[selectedValue];
@@ -124,6 +138,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
             // Append the new locked tag to the tag list
             tagList.appendChild(tag);
         } else {
+            console.log('updating existing locked tag');
             // Update the text and value of the existing locked tag
             lockedTag.textContent = tagsMap[selectedValue];
             const lockIcon = document.createElement("i");
@@ -136,22 +151,29 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const standardOptions = document.querySelectorAll(
         '.standard-option input[type="radio"]'
     );
-    standardOptions.forEach((option) => {
-        option.addEventListener("change", (e) => {
+    console.log('standardOptions', standardOptions);
+    standardOptions.forEach((option) => { // this is for each radio button
+        option.addEventListener("change", (e) => { // when the radio button is changed
             updateTag(e.target.value);
+            console.log('e.target.value', e.target.value);
         });
     });
+    c
 });
 
 //tags: standard input
 
 let tags = [];
 
+console.log('tags', tags);
+
 function addTag(e) {
+    console.log('addTag');
     let code = e.keyCode ? e.keyCode : e.which;
     let errorElement = document.getElementById("tag-error");
     errorElement.style.display = "none"; // Hide error initially
     if (code === 13 || code === 32) {
+        console.log('enter key or space bar pressed');
         // Enter key or Space bar
         e.preventDefault(); // Prevent default form submission
         e.stopPropagation(); // Stop event from propagating to parent elements
@@ -190,7 +212,7 @@ function addTag(e) {
 
         tags.push(tag);
 
-        let tagItem = document.createElement("div"); 
+        let tagItem = document.createElement("div");
         tagItem.classList.add("item");
         tagItem.innerHTML = `
             <span class="delete-btn" onclick="deleteTag(this, '${tag}')">
@@ -205,6 +227,7 @@ function addTag(e) {
 
 function deleteTag(ref, tag) {
     // Remove the tag from the array and the DOM
+    console.log('deleteTag');
     let parent = ref.parentNode.parentNode;
     parent.removeChild(ref.parentNode);
     let index = tags.indexOf(tag);
@@ -213,6 +236,7 @@ function deleteTag(ref, tag) {
 
 function showError(message) {
     // Display error message
+    console.log('showError');
     let errorElement = document.getElementById("tag-error");
     errorElement.textContent = message;
     errorElement.style.display = "block";
@@ -220,19 +244,24 @@ function showError(message) {
 
 document.querySelector(".tag-input input").addEventListener("keyup", addTag);
 
+console.log('tags', tags);
+
 // quill editor
-    var quill = new Quill('#quill-editor', {
-        theme: 'snow' 
-    });
+var quill = new Quill('#quill-editor', {
+    theme: 'snow'
+});
 
-    // Function to update hidden textarea
-    function updateContent() {
-        var content = document.querySelector('#quill-content');
-        content.value = JSON.stringify(quill.getContents());
-    }
+console.log('quill', quill);
 
-    // Listen for text change in the Quill editor
-    quill.on('text-change', updateContent);
+// Function to update hidden textarea with Quill content
+function updateContent() {
+    console.log('updateContent');
+    var content = document.querySelector('#quill-content');
+    content.value = JSON.stringify(quill.getContents());
+    console.log('content', content.value);
+}
 
-    document.getElementById('standards-form').addEventListener('submit', updateContent);
+// Listen for text change in the Quill editor
+quill.on('text-change', updateContent);
 
+document.getElementById('standards-form').addEventListener('submit', updateContent);
