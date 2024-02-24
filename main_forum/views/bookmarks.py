@@ -32,10 +32,15 @@ class BookmarkedQuestionsList(LoginRequiredMixin, ListView):
 
 
 class CreateBookmark(LoginRequiredMixin, View):
+    print('CreateBookmark')
     def post(self, request, *args, **kwargs):
+        print('CreateBookmark_post')
         question_id = self.kwargs.get('question_id')
+        print('question_id', question_id)
         question = get_object_or_404(Question, id=question_id)
+        print('question', question)
         Bookmark.objects.get_or_create(user=request.user, question=question)
+        print('Bookmark.objects.get_or_create')
         return HttpResponseRedirect(reverse('question_detail', args=[question.slug]))
 
 class DeleteBookmark(LoginRequiredMixin, View):

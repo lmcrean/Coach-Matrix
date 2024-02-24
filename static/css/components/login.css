@@ -35,21 +35,18 @@ body {
 
 .logo {
     opacity: 0;
-    /* Initial state */
     animation: rotatefadeIn 2s ease forwards;
     animation-delay: 1s;
 }
 
 #landing-logo .almond {
     opacity: 0;
-    /* Initial state */
     animation: fadeIn 5s ease forwards;
     animation-delay: 2s;
 }
 
 #myVideo {
     opacity: 0;
-    /* Initial opacity */
     animation: fadeIn 5s ease forwards;
     animation-delay: 3s;
     width: 100vw;
@@ -68,8 +65,7 @@ body {
     bottom: 0;
     left: 0;
     background-color: rgba(0, 150, 136, 0.5);
-    /* Adjust the alpha for transparency */
-    /* Above the video, but below the form */
+
     z-index: -3;
 }
 
@@ -82,7 +78,6 @@ body {
 
 .video-container {
     position: absolute;
-    /* if your modal is also positioned relative or absolute */
     overflow: hidden;
 }
 
@@ -110,9 +105,7 @@ body {
     font-style: italic;
     padding: 10px;
     border: none;
-    background: #000;
-    background-color: rgba(0, 150, 136, 0.8);
-    /* Adjust the alpha for transparency */
+    background: #000;    background-color: rgba(0, 150, 136, 0.8);
     cursor: pointer;
     z-index: 30;
     position: sticky;
@@ -129,15 +122,10 @@ body {
 /* Define color variables for logo */
 :root {
     --primary-color: #009693;
-    /* Green hex code */
     --secondary-color: #f46b17;
-    /* Orange hex code */
     --hollow-size: 182px;
-    /* Size of the hollow circle, customize as needed */
     --slant-width: 25px;
-    /* Customizable width of the slant */
     --slant-height: 42px;
-    /* Customizable height of the slant */
     --almond-size: 80px;
 }
 
@@ -148,14 +136,9 @@ body {
     margin: 30px auto 30px;
     position: relative;
     width: 200px;
-    /* Logo width */
     height: 200px !important;
-    /* Logo height */
     background-color: grey;
-    /* Assuming a white background */
     border-radius: 50%;
-    /* Making the container circular */
-    /*     overflow: hidden; /* Ensures semicircles don't exceed the circle's boundary */
     transform: rotate(-3deg);
 }
 
@@ -163,32 +146,18 @@ body {
 #landing-logo .green-semicircle {
     position: absolute;
     width: 100px;
-    /* Half of the logo width */
     height: 200px;
-    /* Full height of the logo */
     background-color: var(--primary-color);
     border-top-right-radius: 200px;
-    /* Making it a semicircle */
     border-bottom-right-radius: 200px;
-    /* Making it a semicircle */
     right: 0;
-    /* Align to the right */
 }
 
 /* Styling for the orange semicircle */
 #landing-logo .orange-semicircle {
     position: absolute;
     width: 100px;
-    /* Half of the logo width */
-    height: 200px;
-    /* Full height of the logo */
-    background-color: var(--secondary-color);
     border-top-left-radius: 200px;
-    /* Making it a semicircle */
-    border-bottom-left-radius: 200px;
-    /* Making it a semicircle */
-    left: 0;
-    /* Align to the left */
 }
 
 /* Hollow circle in the center */
@@ -196,11 +165,8 @@ body {
     content: "";
     position: absolute;
     width: var(--hollow-size, 100px);
-    /* Default size is 100px, but you can customize it */
     height: var(--hollow-size, 100px);
-    /* Default size is 100px, but you can customize it */
     background-color: #fff;
-    /* White color for the hollow circle */
     border-radius: 50%;
     top: 50%;
     left: 50%;
@@ -212,31 +178,23 @@ body {
     content: "";
     position: absolute;
     width: var(--hollow-size);
-    /* Customizable size of the hollow circle */
     height: var(--hollow-size);
-    /* Customizable size of the hollow circle */
     background-color: #fff;
-    /* White color for the hollow circle */
     border-radius: 50%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 8;
-    /* Ensure it's above the slants */
 }
 
 /* Additional slant styles */
 #landing-logo .slant {
     position: absolute;
     background-color: #fff;
-    /* White color for the slant */
     border-radius: 0%;
     width: var(--slant-width, 131px);
-    /* Customizable width */
     height: var(--slant-height, 50px);
-    /* Customizable height */
     z-index: 4;
-    /* Above the semicircles, below the hollow circle */
 }
 
 #landing-logo .top-slant {
@@ -246,7 +204,6 @@ body {
     left: 58%;
     width: 14px;
     transform: translate(-52%, 0) rotate(52deg);
-    /* Adjust rotation angle as needed */
     transform-origin: 0 0;
     z-index: 10;
 }
@@ -256,7 +213,6 @@ body {
     left: 60%;
     width: 14px;
     transform: translate(-52%, 0) rotate(52deg);
-    /* Adjust rotation angle as needed */
     transform-origin: 0 0;
 }
 
@@ -339,29 +295,22 @@ body {
     border-radius: 15px;
 }
 
-/* Initial active state on load */
+
 #login-toggle {
-    /* The Log In button starts as active */
     background-color: var(--primary-color);
-    /* Green background */
     color: #fff;
-    /* White text */
 }
 
 #signup-toggle {
-    /* The Sign Up button starts as inactive */
     background-color: #fff;
-    /* White background */
     color: var(--primary-color);
-    /* Green text */
+
 }
 
 #login-toggle .active,
 #signup-toggle .active {
     background-color: var(--primary-color);
-    /* Green background */
     color: #fff;
-    /* White text */
 }
 
 #google-signup {
@@ -374,16 +323,8 @@ body {
 @media only screen and (max-width: 300px) {
     .form-toggle button {
         width: 100%;
-        /* Make button full width */
         display: block;
-        /* Stack buttons vertically */
     }
-}
-
-#login-toggle,
-#signInBtn {
-    background: var(--primary-color);
-    color: #ffff;
 }
 
 .form-modal form {
