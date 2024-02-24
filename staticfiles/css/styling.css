@@ -1,0 +1,5 @@
+/* static/css/styling.css */
+
+#myVideo  { 
+    filter: blur(5px);
+  }

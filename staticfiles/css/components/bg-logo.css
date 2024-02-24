@@ -1,0 +1,199 @@
+/* static/css/bg-logo.css */
+
+/* 
+    This is the CSS file for the animated background logo. 
+    It contains the styles for the logo container, the green and orange semicircles, the hollow circle, and the slants. 
+    You can customize the colors, sizes, and positions of the elements to fit your needs. 
+    The comments in the code explain the purpose of each section and how to customize it. 
+*/
+
+/* Define color variables */
+:root {
+    --primary-color: #009693;
+    /* Green hex code */
+    --secondary-color: #F46B17;
+    /* Orange hex code */
+    --main-size-bg-logo: 120vw;
+    --half-size-bg-logo: 60vw;
+    --hollow-size-bg-logo: 110vw;
+    /* Size of the hollow circle, customize as needed */
+    --slant-width-bg-logo: 15vw;
+    /* Customizable width of the slant */
+    --slant-height-bg-logo: 27vw;
+    /* Customizable height of the slant */
+    --almond-size-bg-logo: 46vw;
+}
+
+/* General styling for the logo container */
+
+body {
+    margin: 0px;
+}
+
+.bg-logo {
+    position: fixed;
+    width: 100%;
+    overflow-x: clip;
+    left: 0;
+    height: 100vh;
+    overflow-y: hidden;
+    right: 0;
+    z-index: -3;
+}
+
+.bg-logo .logo {
+    margin: 3vw auto;
+    position: fixed;
+    top: 5vw;
+    left: 8vw;
+    filter: opacity(0.3);
+    position: absolute;
+    background-color: var(--primary-color) !important;
+    width: var(--main-size);
+    /* Logo width */
+    height: var(--main-size);
+    /* Logo height */
+    background-color: grey;
+    /* Assuming a white background */
+    border-radius: 50%;
+    /* Making the container circular */
+    transform: rotate(-3deg);
+    z-index: -3;
+}
+
+/* Styling for the green semicircle */
+.bg-logo .green-semicircle,
+.orange-semicircle {
+    position: absolute;
+    width: var(--half-size);
+    /* Half of the logo width */
+    height: var(--main-size);
+    /* Full height of the logo */
+    right: 0;
+    /* Align to the right */
+}
+
+.bg-logo .green-semicircle {
+    background-color: var(--primary-color);
+    right: 0;
+    /* Align to the right */
+    border-top-right-radius: var(--main-size);
+    /* Making it a semicircle */
+    border-bottom-right-radius: var(--main-size);
+    /* Making it a semicircle */
+}
+
+/* Styling for the orange semicircle */
+.bg-logo .orange-semicircle {
+    background-color: var(--secondary-color);
+    left: 0;
+    /* Align to the left */
+    border-top-left-radius: var(--main-size);
+    /* Making it a semicircle */
+    border-bottom-left-radius: var(--main-size);
+    /* Making it a semicircle */
+}
+
+/* Hollow circle in the center */
+.bg-logo .logo::after {
+    content: '';
+    position: absolute;
+    width: var(--hollow-size, 1200px);
+    /* Default size is 100px, but you can customize it */
+    height: var(--hollow-size, 100px);
+    /* Default size is 100px, but you can customize it */
+    background-color: #FFF;
+    /* White color for the hollow circle */
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Hollow circle in the center */
+.bg-logo .logo::before {
+    content: '';
+    position: absolute;
+    width: var(--hollow-size);
+    /* Customizable size of the hollow circle */
+    height: var(--hollow-size);
+    /* Customizable size of the hollow circle */
+    background-color: #FFF;
+    /* White color for the hollow circle */
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 8;
+    /* Ensure it's above the slants */
+}
+
+/* Additional slant styles */
+.bg-logo .slant {
+    position: absolute;
+    background-color: white;
+    /* White color for the slant */
+    border-radius: 0%;
+    width: var(--slant-width);
+    /* Customizable width */
+    height: var(--slant-height);
+    /* Customizable height */
+    z-index: 4;
+    /* Above the semicircles, below the hollow circle */
+}
+
+
+.bg-logo .top-slant {
+    margin: -6vw 0 auto;
+    bottom: auto;
+    left: 63vw;
+    width: 6vw;
+    height: 20vw;
+    transform: translate(2vw, 0) rotate(52deg);
+    transform-origin: 0 0;
+    z-index: 10;
+    overflow: unset;
+    background-color: white;
+}
+
+.bg-logo .bottom-slant {
+    margin: auto 0 -6vw;
+    top: auto;
+    bottom: 0;
+    left: 63vw;
+    width: 6vw;
+    height: 20vw;
+    transform: translate(-4vw, 0) rotate(52deg);
+    z-index: 10;
+}
+
+
+
+
+.bg-logo .almond {
+    z-index: 50;
+}
+
+.bg-logo .green-almond {
+    position: absolute;
+    width: var(--almond-size);
+    height: var(--almond-size);
+    background-color: var(--primary-color);
+    border-radius: 138% 0% 130% 0%;
+    transform: rotate(-19deg);
+    top: 7%;
+    left: 25%;
+    z-index: 10;
+}
+
+.bg-logo .orange-almond {
+    position: absolute;
+    width: var(--almond-size);
+    height: var(--almond-size);
+    background-color: var(--secondary-color);
+    border-radius: 0% 96% 0% 95%;
+    transform: rotate(71deg);
+    bottom: 8%;
+    left: 38%;
+
+}
