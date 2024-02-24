@@ -1,7 +1,23 @@
 /* static/css/login.css */
 
+@import url('https://fonts.googleapis.com/css?family=YesevaOne');
+
 * {
     box-sizing: border-box;
+}
+
+h1 {
+    font-family: 'Yeseva One', sans-serif;
+    color: var(--mono-dark);
+}
+
+form {
+    font-family: 'Glacial Indifference', sans-serif;
+    font-weight: 400;
+}
+
+body {
+    background: #fff;
 }
 
 .form-modal {
@@ -9,12 +25,92 @@
     height: auto;
     margin-top: 4em;
     left: 50%;
+    background: #fff;
     border-radius: 20px;
+    box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1)
 }
+
+/* Keyframe Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes rotatefadeIn {
+    from {
+        opacity: 0;
+        transform: rotate(40deg);
+    }
+
+    to {
+        opacity: 1;
+        transform: rotate(0deg);
+    }
+    
+}
+
+@keyframes fadeInColor { /* Full color as per class color-secondary-main or color-primary-main */
+    0% { color:  inherit; }
+  }
+  
+  
+
+/* Apply Animations to Elements */
+.coach-text, .matrix-text {
+    animation: fadeInColor 3s ease 3s backwards !important;
+}
+
 
 .form-modal {
     position: unset !important;
     margin: auto;
+    animation: fadeInUp 1s ease forwards;
+    animation-delay: 0.5s;
+}
+
+.logo {
+    opacity: 0;
+    /* Initial state */
+    animation: rotatefadeIn 2s ease forwards;
+    animation-delay: 1s;
+}
+
+#landing-logo .almond {
+    opacity: 0;
+    /* Initial state */
+    animation: fadeIn 5s ease forwards;
+    animation-delay: 2s;
+}
+
+#myVideo {
+    opacity: 0;
+    /* Initial opacity */
+    animation: fadeIn 5s ease forwards;
+    animation-delay: 3s;
+}
+
+
+/* Video Background */
+
+* {
+    box-sizing: border-box;
 }
 
 .video-overlay {
@@ -23,11 +119,24 @@
     right: 0;
     bottom: 0;
     left: 0;
+    background-color: rgba(0, 150, 136, 0.5);
+    /* Adjust the alpha for transparency */
+    /* Above the video, but below the form */
     z-index: -3;
 }
 
+
+body {
+    margin: 0;
+    font-family: Arial;
+    font-size: 17px;
+}
+
+/*video background*/
+
 .video-container {
     position: absolute;
+    /* if your modal is also positioned relative or absolute */
     overflow: hidden;
 }
 
@@ -36,6 +145,7 @@
     bottom: 0;
     min-width: 110vh;
     height: 110vh;
+    filter: blur(5px);
     z-index: -6;
     transform: translate(-1%, 0%);
 }
@@ -43,78 +153,234 @@
 .content {
     position: fixed;
     bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: #f1f1f1;
     width: 100%;
     padding: 20px;
 }
 
 #pause-video {
     width: 139px;
+    font-size: 17px;
+    font-style: italic;
+    font-family: 'Glacial Indifference';
     padding: 10px;
     border: none;
+    background: #000;
+    background-color: rgba(0, 150, 136, 0.8);
+    /* Adjust the alpha for transparency */
     cursor: pointer;
     z-index: 30;
     position: sticky;
     margin-top: 6rem;
 }
 
+#pause-video:hover {
+    background: #ddd;
+    color: black;
+}
+
+/* Logo */
+
+/* Define color variables for logo */
+:root {
+    --primary-color: #009693;
+    /* Green hex code */
+    --secondary-color: #F46B17;
+    /* Orange hex code */
+    --hollow-size: 182px;
+    /* Size of the hollow circle, customize as needed */
+    --slant-width: 25px;
+    /* Customizable width of the slant */
+    --slant-height: 42px;
+    /* Customizable height of the slant */
+    --almond-size: 80px;
+}
+
+/* General styling for the logo container */
+
 .logo {
     top: 20px;
     margin: 30px auto 30px;
     position: relative;
     width: 200px;
+    /* Logo width */
     height: 200px !important;
+    /* Logo height */
+    background-color: grey;
+    /* Assuming a white background */
     border-radius: 50%;
+    /* Making the container circular */
+    /*     overflow: hidden; /* Ensures semicircles don't exceed the circle's boundary */
     transform: rotate(-3deg);
 }
 
+/* Styling for the green semicircle */
 #landing-logo .green-semicircle {
     position: absolute;
     width: 100px;
+    /* Half of the logo width */
     height: 200px;
+    /* Full height of the logo */
+    background-color: var(--primary-color);
+    border-top-right-radius: 200px;
+    /* Making it a semicircle */
+    border-bottom-right-radius: 200px;
+    /* Making it a semicircle */
     right: 0;
+    /* Align to the right */
 }
 
+/* Styling for the orange semicircle */
 #landing-logo .orange-semicircle {
     position: absolute;
     width: 100px;
+    /* Half of the logo width */
     height: 200px;
+    /* Full height of the logo */
+    background-color: var(--secondary-color);
+    border-top-left-radius: 200px;
+    /* Making it a semicircle */
+    border-bottom-left-radius: 200px;
+    /* Making it a semicircle */
     left: 0;
+    /* Align to the left */
 }
 
-.logo::after,
-.logo::before {
+/* Hollow circle in the center */
+.logo::after {
     content: '';
     position: absolute;
+    width: var(--hollow-size, 100px);
+    /* Default size is 100px, but you can customize it */
+    height: var(--hollow-size, 100px);
+    /* Default size is 100px, but you can customize it */
+    background-color: #FFF;
+    /* White color for the hollow circle */
+    border-radius: 50%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
-#landing-logo .slant {
+/* Hollow circle in the center */
+.logo::before {
+    content: '';
     position: absolute;
+    width: var(--hollow-size);
+    /* Customizable size of the hollow circle */
+    height: var(--hollow-size);
+    /* Customizable size of the hollow circle */
+    background-color: #FFF;
+    /* White color for the hollow circle */
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 8;
+    /* Ensure it's above the slants */
 }
 
-#landing-logo .top-slant,
-#landing-logo .bottom-slant {
+/* Additional slant styles */
+#landing-logo .slant {
     position: absolute;
+    background-color: #FFF;
+    /* White color for the slant */
+    border-radius: 0%;
+    width: var(--slant-width, 131px);
+    /* Customizable width */
+    height: var(--slant-height, 50px);
+    /* Customizable height */
+    z-index: 4;
+    /* Above the semicircles, below the hollow circle */
+}
+
+
+#landing-logo .top-slant {
+    margin: -18px 0 auto;
+    top: 4%;
+    bottom: auto;
+    left: 58%;
+    width: 14px;
+    transform: translate(-52%, 0) rotate(52deg);
+    /* Adjust rotation angle as needed */
+    transform-origin: 0 0;
+    z-index: 10;
+}
+
+#landing-logo .bottom-slant {
+    bottom: -9%;
+    left: 60%;
+    width: 14px;
+    transform: translate(-52%, 0) rotate(52deg);
+    /* Adjust rotation angle as needed */
+    transform-origin: 0 0;
 }
 
 #landing-logo .almond {
     z-index: 50;
 }
 
-#landing-logo .green-almond,
-#landing-logo .orange-almond {
+#landing-logo .green-almond {
     position: absolute;
+    width: var(--almond-size);
+    height: var(--almond-size);
+    background-color: var(--primary-color);
+    border-radius: 138% 0% 130% 0%;
+    transform: rotate(-19deg);
+    top: 8%;
+    left: 25%;
+    z-index: 10;
 }
 
-.form-modal button,
-.form-modal .btn {
+#landing-logo .orange-almond {
+    position: absolute;
+    width: var(--almond-size);
+    height: var(--almond-size);
+    background-color: var(--secondary-color);
+    border-radius: 0% 96% 0% 95%;
+    transform: rotate(71deg);
+    bottom: 9%;
+    left: 36%;
+
+}
+
+
+/* form modal */
+
+.form-modal button {
     cursor: pointer;
     position: relative;
     text-transform: capitalize;
     font-size: 1em;
     z-index: 2;
+    outline: none;
+    background: #fff;
+    transition: 0.2s;
+}
+
+.form-modal .btn {
+    border-radius: 20px;
+    border: none;
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: 0.8em 1em 0.8em 1em !important;
+    transition: 0.5s;
+    border: 1px solid;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+    color:#646464;
+}
+
+.form-modal .login,
+.form-modal .signup {
+    background: var(--primary-color);
+    color: #fff;
+}
+
+.form-modal .login:hover,
+.form-modal .signup:hover {
+    background: var(--primary-color);
 }
 
 .form-toggle {
@@ -130,12 +396,52 @@
     float: left;
     padding: 1.5em;
     margin-bottom: 1.5em;
+    border-width: 0;
+    transition: 0.2s;
+    font-size: 1.1em;
+    font-weight: bold;
+    border-radius: 15px;
+}
+
+/* Initial active state on load */
+#login-toggle {
+    /* The Log In button starts as active */
+    background-color: var(--primary-color);
+    /* Green background */
+    color: #fff;
+    /* White text */
+}
+
+#signup-toggle {
+    /* The Sign Up button starts as inactive */
+    background-color: #fff;
+    /* White background */
+    color: var(--primary-color);
+    /* Green text */
+}
+
+#login-toggle .active,
+#signup-toggle .active {
+    background-color: var(--primary-color);
+    /* Green background */
+    color: #fff;
+    /* White text */
 }
 
 @media only screen and (max-width: 300px) {
     .form-toggle button {
         width: 100%;
+        /* Make button full width */
+        display: block;
+        /* Stack buttons vertically */
     }
+}
+
+
+#login-toggle,
+#signInBtn {
+    background: var(--primary-color);
+    color: #ffff;
 }
 
 .form-modal form {
@@ -151,7 +457,17 @@
     position: relative;
     width: 100%;
     height: auto;
+    padding-bottom: 1em;
 }
+
+#login-form {
+    padding-bottom: 5em;
+}
+
+#signup-form {
+    display: none;
+}
+
 
 #login-form button,
 #signup-form button {
@@ -163,10 +479,65 @@
 .form-modal input {
     position: relative;
     width: 100%;
+    font-size: 1em;
     padding: 1.2em 1.7em 1.2em 1.7em;
     margin-top: 0.6em;
     margin-bottom: 0.6em;
     border-radius: 20px;
+    border: none;
+    background: #ebebeb;
+    outline: none;
+    font-weight: bold;
+    transition: 0.4s;
+}
+
+.form-modal input:focus,
+.form-modal input:active {
+    transform: scaleX(1.02);
+}
+
+.form-modal input::-webkit-input-placeholder {
+    color: #222;
+}
+
+
+.form-modal p {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.form-modal p a {
+    color: #57b846;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.form-modal p a:hover {
+    color: #222;
+}
+
+
+.form-modal i {
+    position: absolute;
+    left: 10%;
+    top: 50%;
+    transform: translateX(-10%) translateY(-50%);
+}
+
+.fa-google {
+    color: #dd4b39;
+}
+
+.fa-linkedin {
+    color: #3b5998;
+}
+
+.fa-windows {
+    color: #0072c6;
+}
+
+.-box-sd-effect:hover {
+    box-shadow: 0 4px 8px hsla(210, 2%, 84%, .2);
 }
 
 @media only screen and (max-width:500px) {
@@ -176,7 +547,7 @@
 }
 
 @media only screen and (max-width:400px) {
-    .form-modal i {
+    i {
         display: none !important;
     }
 }
