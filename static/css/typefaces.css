@@ -30,7 +30,7 @@ h1 {
     font-weight: 400;
 }
 
-h2, h3, p, a, .brand, form {
+h2, h3, p, a, .brand, form, #pause-video {
     font-family: 'GlacialIndifference', sans-serif;
 }
 

@@ -1,18 +1,15 @@
 /* static/css/login.css */
 
-@import url('https://fonts.googleapis.com/css?family=YesevaOne');
 
 * {
     box-sizing: border-box;
 }
 
 h1 {
-    font-family: 'Yeseva One', sans-serif;
     color: var(--mono-dark);
 }
 
 form {
-    font-family: 'Glacial Indifference', sans-serif;
     font-weight: 400;
 }
 
@@ -128,7 +125,6 @@ body {
 
 body {
     margin: 0;
-    font-family: Arial;
     font-size: 17px;
 }
 
@@ -163,7 +159,6 @@ body {
     width: 139px;
     font-size: 17px;
     font-style: italic;
-    font-family: 'Glacial Indifference';
     padding: 10px;
     border: none;
     background: #000;
