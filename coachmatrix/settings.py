@@ -44,7 +44,9 @@ ALLOWED_HOSTS = [
     '8000-lmcrean-coachmatrix-zp6cz7sdhxw.ws-eu107.gitpod.io',
     '8000-lmcrean-classroommatrix-zp6cz7sdhxw.ws-eu107.gitpod.io',
     'coach-matrix-d2cd1e717f81.herokuapp.com',
-    'coach-matrix-new-1b407ab07b60.herokuapp.com'
+    'coach-matrix-new-1b407ab07b60.herokuapp.com',
+    'coachmatrix.org',
+    'www.coachmatrix.org'
 ]
 
 
