@@ -23,7 +23,7 @@ console.log('Starting tags.js script'); // test passed
 // Ensure that all the DOM content is loaded before attempting to bind events or manipulate elements
 document.addEventListener("DOMContentLoaded", (event) => {
 
-    console.log('DOM fully loaded and parsed'); // testing
+    console.log('DOM fully loaded and parsed'); // testing PASSED
 
     // Object mapping radio button values to tags
     const tagsMap = {
@@ -38,52 +38,44 @@ document.addEventListener("DOMContentLoaded", (event) => {
     };
 
     // Function to update the tag list
-    function updateTag(selectedValue) {
-        console.log('selectedValue', selectedValue); // passed test
-        // Get the tag list and locked tag elements
-        const tagList = document.querySelector(".tag-list");
-        const lockedTag = document.querySelector(".tag.locked");
-        console.log('tagList', tagList); // passed test
-        console.log('lockedTag', lockedTag); // passed test 
-
-        // Create a new locked tag only if it doesn't exist
-        if (!lockedTag) {
-            console.log('creating new locked tag'); // passed test
-            const tag = document.createElement("span");
-            console.log('tag', tag); // testing 
-            tag.className = "tag badge badge-secondary locked"; // Include Bootstrap classes for consistent styling
-            console.log('tag', tag.className); // testing
-            tag.textContent = tagsMap[selectedValue];
-            // Add a Font Awesome lock icon to the tag
-            console.log('tag.textContent', tag.textContent); // testing
-            const lockIcon = document.createElement("i");
-            lockIcon.className = "fas fa-lock mr-2"; // 'mr-2' for a little space between icon and text
-            console.log('lockIcon', lockIcon); // testing
-            tag.prepend(lockIcon); // Add the lock icon before the tag text
-            console.log('tag.prepend', tag); // testing
-            // Append the new locked tag to the tag list
-            tagList.appendChild(tag); // failed: Uncaught TypeError: Cannot read properties of null (reading 'appendChild')
-            console.log('tag appended!', tagList); // testing
-        } else {
-            console.log('updating existing locked tag'); // failed test
-            // Update the text and value of the existing locked tag
-            lockedTag.textContent = tagsMap[selectedValue];
-            console.log('lockedTag.textContent', lockedTag.textContent); // failed test
-            const lockIcon = document.createElement("i");
-            console.log('lockIcon', lockIcon); // failed test
-            lockIcon.className = "fas fa-lock mr-2";
-            console.log('lockIcon.className', lockIcon.className); // failed test
-            lockedTag.prepend(lockIcon);
-            console.log('lockedTag.prepend', lockedTag); // failed test
-            console.log('tag successfully updated!'); // failed test
-        }
+function updateTag(selectedValue) {
+    console.log('selectedValue', selectedValue);
+    // Get the tag list and locked tag elements
+    const tagList = document.querySelector(".tag-list");
+    if (!tagList) {
+        console.error('Error: .tag-list does not exist in the DOM.');
+        return; // Exit the function if tagList is not found
     }
+    const lockedTag = document.querySelector(".tag.locked");
+
+    // Create a new locked tag only if it doesn't exist
+    if (!lockedTag) {
+        console.log('Creating a new locked tag');
+        const tag = document.createElement("span");
+        tag.className = "tag badge badge-secondary locked";
+        tag.textContent = tagsMap[selectedValue];
+        // Add a Font Awesome lock icon to the tag
+        const lockIcon = document.createElement("i");
+        lockIcon.className = "fas fa-lock mr-2";
+        tag.prepend(lockIcon);
+        tagList.appendChild(tag);
+        console.log('New locked tag appended to the tag list');
+    } else {
+        console.log('Updating existing locked tag');
+        // Update the text and value of the existing locked tag
+        lockedTag.textContent = tagsMap[selectedValue];
+        const lockIcon = document.createElement("i");
+        lockIcon.className = "fas fa-lock mr-2";
+        lockedTag.prepend(lockIcon);
+        console.log('Locked tag updated');
+    }
+}
 
     // Attach event listeners to radio buttons
     const standardOptions = document.querySelectorAll(
         '.standard-option input[type="radio"]'
     );
-    console.log('standardOptions', standardOptions); // passed test
+    console.log('standardOptions', standardOptions); // passed test, lists all 8 ID's correctly.
     standardOptions.forEach((option) => { // this is for each radio button
         option.addEventListener("change", (e) => { // when the radio button is changed
             updateTag(e.target.value); // update the tag... failed: Uncaught TypeError: Cannot read properties of null (reading 'appendChild')
