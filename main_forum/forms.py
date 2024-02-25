@@ -36,10 +36,10 @@ class QuestionForm(forms.ModelForm):
         fields = ['subject', 'content', 'tags']
 
     def clean_subject(self):
-        print('cleaning subject')
+        print('cleaning subject') # PASS
         subject = self.cleaned_data.get('subject')
         if self.instance.pk:  # if this form is updating an existing instance
-            print('checking if question with same subject exists')
+            print('checking if question with same subject exists') # FAIL
             if Question.objects.filter(subject=subject).exclude(pk=self.instance.pk).exists(): # Check if a question with the same subject exists, excluding the current question
                 print('question with same subject exists')
                 print('raising error')
@@ -51,21 +51,21 @@ class QuestionForm(forms.ModelForm):
   
 
     def clean_tags(self):
-        print('cleaning tags')
+        print('cleaning tags') # PASS
         tags = self.cleaned_data.get('tags', '')
-        print('saving cleaned tags', tags)
+        print('saving cleaned tags', tags) # PASS
         return tags
 
     def save(self, *args, **kwargs):
         instance = super(QuestionForm, self).save(commit=False)
         # Save the instance to ensure it has an ID for many-to-many relationships
         instance.save()
-        print('saving question', instance)
+        print('saving question', instance) # PASS
 
         # Handling tags here
         tags = self.cleaned_data.get('tags', '')
         tag_names = tags.split()  # Split the string into a list of tag names
-        print(tag_names, '=tag_names after tag.split') # expecting ['tag1', 'tag2', 'tag3'] etc.
+        print(tag_names, '=tag_names after tag.split') # expecting ['tag1', 'tag2', 'tag3'] etc. PASS 
 
         # Clear existing tags first if needed, which is important when updating a question
         instance.tags.clear()
@@ -74,7 +74,7 @@ class QuestionForm(forms.ModelForm):
         for tag_name in tag_names:
             instance.tags.add(tag_name.strip())  # Ensure tag is stripped of extra whitespace
 
-        print('instance.tags.all:', instance.tags.all()) 
+        print('instance.tags.all:', instance.tags.all()) # PASS <QuerySet [<Tag: tag1>, <Tag: tag2>, <Tag: tag3>]> etc.
 
         # If there are other many-to-many fields that need to be saved, call save_m2m() if necessary
 
