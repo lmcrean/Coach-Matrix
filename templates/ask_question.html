@@ -25,6 +25,13 @@
     <!-- If there is no primary key, we are creating a new question -->
 
     <div class="container-question my-5">
+        {% if form.instance.pk %} -->
+        <!-- If the form instance has a primary key, we are updating an existing question -->
+        <h2>Update Your Question</h2>
+        {% else %}
+        <!-- If there is no primary key, we are creating a new question -->
+        <h2>Ask a Question</h2>
+        {% endif %}
         <h1 class="text-center">Ask a Question</h1>
         <hr>
         <h2 class="text-center">Category</h2>
