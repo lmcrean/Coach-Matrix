@@ -6,13 +6,14 @@ from django.urls import path
 from .views import (
     QuestionListView, QuestionCreateView, QuestionUpdateView, QuestionDeleteView,
     QuestionDetail, AnswerUpdate, AnswerDelete, BookmarkedQuestionsList,
-    QuestionUpvote, QuestionDownvote, AnswerUpvote, AnswerDownvote, FilterByTagView, CreateBookmark, DeleteBookmark
+    QuestionUpvote, QuestionDownvote, AnswerUpvote, AnswerDownvote, FilterByTagView, CreateBookmark, DeleteBookmark, AboutView
 )
 
 urlpatterns = [
     path('questions/', QuestionListView.as_view(), name='questions'),
     path('questions/tag/<slug:tag_slug>/', FilterByTagView.as_view(), name='filter_by_tag'),
     path('ask_question/', QuestionCreateView.as_view(), name='ask_question'),
+    path('about/', AboutView.as_view(), name='about'),
 
     path('bookmarked/', BookmarkedQuestionsList.as_view(), name='bookmarked_questions'),
     path('<slug:slug>/', QuestionDetail.as_view(), name='question_detail'),

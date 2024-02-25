@@ -1,0 +1,35 @@
+/*static/css/components/about.css*/
+
+.about {
+    height: 100vh !important;
+    margin: auto;
+  }
+  
+  .about .card {
+    max-width: 800px;
+    min-height: 300px !important;
+    margin: auto;
+    margin-top: 10vh;
+  }
+  
+  .about-modal {
+    margin: auto;
+    padding: 30px;
+  }
+  
+  .btn-github {
+    display: inline-block;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: transparent;
+    padding: 0.4em 0.8em;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+      border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    color: #333; /* Or any color you prefer */
+    border: 1px solid;
+  }  

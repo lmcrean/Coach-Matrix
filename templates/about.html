@@ -1,0 +1,22 @@
+<!--templates/about.html-->
+
+{% extends 'base.html'%}
+
+{% block content %}
+
+<div class="about d-flex flex-column h-100 align-items-center">
+    <div class="card text-center align-middle align-center">
+      <div class="about-modal px-10">
+        <h1>About</h1>
+        <p>Hi there, welcome to my site</p>
+        <a href="https://github.com/lmcrean/Coach-Matrix">
+        <button class="btn btn-github">
+          <i class="fa fa-github"></i> View my respository on GitHub
+        </button></a><br>
+        <a href="javascript:history.back()" class="back-button"><button>Go Back</button></a>
+        <a href="{% url 'home' %}" class="home"><button>Home</button></a>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
