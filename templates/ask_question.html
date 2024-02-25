@@ -145,23 +145,23 @@
             <br>
             <h2 class="text-center">Details</h2>
             {{ form.content | as_crispy_field }}
-            <!-- <textarea name="content" class="form-control" required id="id_content" placeholder="Enter your content here" rows="10" >
-Enter your text here being specific about your question.
-                - Briefly describe the context of your teaching environment (e.g., class size, subject, student demographics).
-                - Outline the specific issue or challenge you are encountering.
-                - Detail any strategies you have already implemented and their outcomes.
-                - Express what you aim to achieve or what specific advice you are seeking.
-                - Include any particular constraints or resources that might be relevant (e.g., time, materials, support staff).
-                  
-                </textarea> -->
-            <!--simplified without Django_Quill-->
             <br>
             <h2 class="text-center">Tags</h2>
-            {% if question %}
-            <input type="text" name="tags" value="{{ form.fields.tags.initial }}" id="id_tags" class="form-control">
-            {% else %}
-            {{ form.tags | as_crispy_field }}
-            {% endif %}
+            <div class="tag-input">
+                <div class="input">
+                    <div>
+                        <i class="fa fa-tags"></i>
+                        {% if question %}
+                            <!-- if the question exists, we are updating an existing question, will need to add an if else statement-->
+                            <input type="text" name="tags" value="{{ form.fields.tags.initial }}" id="id_tags" class="form-control">
+                        {% else %}
+                            <!-- otherwise we are creating a new question-->
+                            {{ form.tags | as_crispy_field }}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="tag-list mb-4"></div>
+            </div>
             <button type="submit" class="btn btn-primary " id="question-submit">Submit</button>
         </form>
         

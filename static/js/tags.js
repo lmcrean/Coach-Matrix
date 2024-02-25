@@ -39,18 +39,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     // Function to update the tag list
     function updateTag(selectedValue) {
-        console.log('selectedValue', selectedValue);
+        console.log('selectedValue', selectedValue); // PASS
         // Get the tag list and locked tag elements
-        const tagList = document.querySelector(".tag-list");
+        const tagList = document.querySelector(".tag-list"); // there is no .tag-list in the DOM
         if (!tagList) {
-            console.error('Error: .tag-list does not exist in the DOM.');
+            console.error('Error: .tag-list does not exist in the DOM.'); // appears in the console, so tagList is not found
             return; // Exit the function if tagList is not found
         }
         const lockedTag = document.querySelector(".tag.locked");
 
         // Create a new locked tag only if it doesn't exist
         if (!lockedTag) {
-            console.log('Creating a new locked tag');
+            console.log('Creating a new locked tag'); // FAIL
             const tag = document.createElement("span");
             tag.className = "tag badge badge-secondary locked";
             tag.textContent = tagsMap[selectedValue];
@@ -59,15 +59,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
             lockIcon.className = "fas fa-lock mr-2";
             tag.prepend(lockIcon);
             tagList.appendChild(tag);
-            console.log('New locked tag appended to the tag list');
-        } else {
+            console.log('New locked tag appended to the tag list'); // FAIL
+        } else { // or update the existing locked tag
             console.log('Updating existing locked tag');
             // Update the text and value of the existing locked tag
             lockedTag.textContent = tagsMap[selectedValue];
             const lockIcon = document.createElement("i");
             lockIcon.className = "fas fa-lock mr-2";
             lockedTag.prepend(lockIcon);
-            console.log('Locked tag updated');
+            console.log('Locked tag updated'); // FAIL
         }
     }
 

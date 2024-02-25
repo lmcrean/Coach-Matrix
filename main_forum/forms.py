@@ -84,9 +84,12 @@ class QuestionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         # This is for checking if the form is bound to an existing instance, i.e. if the form is being used to update an existing question
         super(QuestionForm, self).__init__(*args, **kwargs)
+        self.fields['tags'].widget.attrs['id'] = 'id_tags'  # Add an id to the tags field for front-end manipulation
         if self.instance.pk:  # Check if this form is bound to an existing instance
+            # If the form is bound to an existing instance, pre-populate the tags field with the existing tags
             self.fields['tags'].initial = ' '.join(tag.name for tag in self.instance.tags.all())
             print('tags initial:', self.fields['tags'].initial)
+        
 
 class AnswerForm(forms.ModelForm) :
     """
