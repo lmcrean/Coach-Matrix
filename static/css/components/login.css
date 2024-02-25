@@ -83,11 +83,14 @@ body {
 
 #myVideo {
     position: fixed;
-    bottom: 0;
+    top: 0;
     min-width: 110vh;
+    min-height: 110vh;
+    object-fit: cover;
+    margin: auto;
     filter: blur(5px);
     z-index: -6;
-    transform: translate(-1%, 0%);
+    transform: translate(0, 0%);
 }
 
 .content {
@@ -137,7 +140,7 @@ body {
     position: relative;
     width: 200px;
     height: 200px !important;
-    background-color: grey;
+    background-color: #f46b17;
     border-radius: 50%;
     transform: rotate(-3deg);
 }
