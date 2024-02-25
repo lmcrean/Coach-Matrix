@@ -137,13 +137,12 @@
             </div>
             
             <h2 class="text-center">Subject line</h2>
-            <!-- <div> <input type="text" name="subject" maxlength="100" class="textinput textInput form-control requiredField" required id="id_subject" placeholder="Enter your subject line here">
-            </div> -->
             {{ form.subject | as_crispy_field }}
 
             
             <br>
             <h2 class="text-center">Details</h2>
+            {{ form.media }}
             {{ form.content | as_crispy_field }}
             <br>
             <h2 class="text-center">Tags</h2>
