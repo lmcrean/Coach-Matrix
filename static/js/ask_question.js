@@ -117,3 +117,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
         }
     ); // The event will only trigger once
 });
+
+// quill editor
+var quill = new Quill('#quill-editor', {
+    theme: 'snow'
+});
+
+console.log('quill', quill); // failed test
+
+
+// Listen for text change in the Quill editor
+quill.on('text-change', updateContent);

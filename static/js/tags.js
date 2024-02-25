@@ -15,14 +15,15 @@
     // 2.2 When the user presses enter or space, add the tag to the list
     // 2.3 If the tag is already used, show an error message
 
-console.log('Starting tags.js script');
+console.log('Starting tags.js script'); // test passed
 
 
 // 1. Tags: map category to a "locked" tag
-document.addEventListener
 
-("DOMContentLoaded", (event) => {
-    console.log('tags: map category to a "locked" tag'); // failed test
+// Ensure that all the DOM content is loaded before attempting to bind events or manipulate elements
+document.addEventListener("DOMContentLoaded", (event) => {
+
+    console.log('DOM fully loaded and parsed'); // testing
 
     // Object mapping radio button values to tags
     const tagsMap = {
@@ -38,33 +39,43 @@ document.addEventListener
 
     // Function to update the tag list
     function updateTag(selectedValue) {
-        console.log('selectedValue', selectedValue); // failed test
+        console.log('selectedValue', selectedValue); // passed test
         // Get the tag list and locked tag elements
         const tagList = document.querySelector(".tag-list");
         const lockedTag = document.querySelector(".tag.locked");
-        console.log('tagList', tagList); // failed test
-        console.log('lockedTag', lockedTag); // failed test
+        console.log('tagList', tagList); // passed test
+        console.log('lockedTag', lockedTag); // passed test 
 
         // Create a new locked tag only if it doesn't exist
         if (!lockedTag) {
-            console.log('creating new locked tag'); // failed test
+            console.log('creating new locked tag'); // passed test
             const tag = document.createElement("span");
+            console.log('tag', tag); // testing 
             tag.className = "tag badge badge-secondary locked"; // Include Bootstrap classes for consistent styling
+            console.log('tag', tag.className); // testing
             tag.textContent = tagsMap[selectedValue];
             // Add a Font Awesome lock icon to the tag
+            console.log('tag.textContent', tag.textContent); // testing
             const lockIcon = document.createElement("i");
             lockIcon.className = "fas fa-lock mr-2"; // 'mr-2' for a little space between icon and text
+            console.log('lockIcon', lockIcon); // testing
             tag.prepend(lockIcon); // Add the lock icon before the tag text
-
+            console.log('tag.prepend', tag); // testing
             // Append the new locked tag to the tag list
-            tagList.appendChild(tag);
+            tagList.appendChild(tag); // failed: Uncaught TypeError: Cannot read properties of null (reading 'appendChild')
+            console.log('tag appended!', tagList); // testing
         } else {
             console.log('updating existing locked tag'); // failed test
             // Update the text and value of the existing locked tag
             lockedTag.textContent = tagsMap[selectedValue];
+            console.log('lockedTag.textContent', lockedTag.textContent); // failed test
             const lockIcon = document.createElement("i");
+            console.log('lockIcon', lockIcon); // failed test
             lockIcon.className = "fas fa-lock mr-2";
+            console.log('lockIcon.className', lockIcon.className); // failed test
             lockedTag.prepend(lockIcon);
+            console.log('lockedTag.prepend', lockedTag); // failed test
+            console.log('tag successfully updated!'); // failed test
         }
     }
 
@@ -72,22 +83,20 @@ document.addEventListener
     const standardOptions = document.querySelectorAll(
         '.standard-option input[type="radio"]'
     );
-    console.log('standardOptions', standardOptions);
+    console.log('standardOptions', standardOptions); // passed test
     standardOptions.forEach((option) => { // this is for each radio button
         option.addEventListener("change", (e) => { // when the radio button is changed
-            updateTag(e.target.value); // update the tag
-            console.log('e.target.value', e.target.value);
+            updateTag(e.target.value); // update the tag... failed: Uncaught TypeError: Cannot read properties of null (reading 'appendChild')
+            console.log('e.target.value', e.target.value); // failed test
         });
     });
-    c
-});
 
 
 // 2. tags: standard input
 
 let tags = [];
 
-console.log('tags', tags);
+console.log('tags', tags); // passed test
 
 function addTag(e) {
     console.log('addTag'); // failed test
@@ -147,6 +156,9 @@ function addTag(e) {
     }
 }
 
+});
+
+
 function deleteTag(ref, tag) {
     // Remove the tag from the array and the DOM
     console.log('deleteTag'); // failed test
@@ -164,16 +176,9 @@ function showError(message) {
     errorElement.style.display = "block";
 }
 
-document.querySelector(".tag-input input").addEventListener("keyup", addTag);
+document.querySelector(".tag-input input").addEventListener("keyup", addTag); // failed: Uncaught TypeError: Cannot read properties of null (reading 'addEventListener')
 
-console.log('tags', tags);
-
-// quill editor
-var quill = new Quill('#quill-editor', {
-    theme: 'snow'
-});
-
-console.log('quill', quill); // failed test
+console.log('tags', tags); // passed
 
 // Function to update hidden textarea with Quill content
 function updateContent() {
@@ -182,8 +187,5 @@ function updateContent() {
     content.value = JSON.stringify(quill.getContents());
     console.log('content', content.value); // failed test
 }
-
-// Listen for text change in the Quill editor
-quill.on('text-change', updateContent);
 
 document.getElementById('standards-form').addEventListener('submit', updateContent);
