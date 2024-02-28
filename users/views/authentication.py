@@ -14,6 +14,8 @@ from django.contrib.auth.decorators import login_required
 logger = logging.getLogger(__name__)
 
 def home(request):
+    if request.user.is_authenticated:
+        return redirect(reverse('questions'))
     return render(request, "index.html")
 
 def questions_view(request):
