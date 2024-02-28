@@ -149,21 +149,14 @@
             
             <br>
             <h2 class="text-center">Details</h2>
-            {{ form.media }}
-            {{ form.content | as_crispy_field }}
+            {{ form.content | as_crispy_field }} <!--not rendering as expected-->
             <br>
             <h2 class="text-center">Tags</h2>
             <div class="tag-input">
                 <div class="input">
                     <div>
                         <i class="fa fa-tags"></i>
-                        {% if question %}
-                            <!-- if the question exists, we are updating an existing question, will need to add an if else statement-->
-                            <input type="text" name="tags" value="{{ form.fields.tags.initial }}" id="id_tags" class="form-control">
-                        {% else %}
-                            <!-- otherwise we are creating a new question-->
-                            {{ form.tags | as_crispy_field }}
-                        {% endif %}
+                            {{ form.tags | as_crispy_field }} <!--not rendering as expected-->
                     </div>
                 </div>
                 <div class="tag-list mb-4"></div>
