@@ -1,6 +1,4 @@
-# main_forum/models.py
-
-# this file will contain the models for the main_forum app. The models will include the Question, Answer, Upvote, Downvote, UserProfile, and Bookmark classes.
+# main_forum/models/question_model.py
 
 from django.db import models
 from django.contrib.auth.models import User

@@ -3,13 +3,14 @@
 # The admin settings will include the QuestionAdmin and AnswerAdmin classes, which will be used to customize the admin interface for the Question and Answer models.
 
 from django.contrib import admin
-from .models import Question, Answer
+from .models.question_model import Question
+from .models.answer_model import Answer
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'status', 'created_on', 'net_votes')
     search_fields = ['title', 'content', 'tags__name']
-    list_filter = ('status', 'created_on', 'tags')
+    list_filter = ('status', 'created_on')
     prepopulated_fields = {'slug': ('title',)}
     filter_horizontal = ('tags',)  # This will add a widget to manage ManyToMany relationship with tags.
 
