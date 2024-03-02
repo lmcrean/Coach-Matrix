@@ -40,6 +40,11 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container-fluid">
+            {% if user.is_authenticated %}
+            <a class="d-flex flex-row" href="{% url 'questions' %}">
+            {% else %}
+            <a class="d-flex flex-row" href="{% url 'home' %}">
+            {% endif %}
             <div class="navbar-logo-logo">
                 <div class="navbar-logo-green-semicircle"></div>
                 <div class="navbar-logo-orange-semicircle"></div>
@@ -51,6 +56,7 @@
             
             <h1 class="navbar-brand" href="{% url 'questions' %}"><span class="brand"><span class="color-secondary-main">coach</span><span
                         class="color-primary-main">matrix</span></span></span></h1>
+            </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                 aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,10 +64,17 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <!--Navbar Home link depending on authentication-->
                     {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'questions' %}">Home</a>
+                        <a class="nav-link" aria-current="page" href="{% url 'questions' %}"><i class="fa-solid fa-home"></i>Home</a>
                     </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{% url 'home' %}"><i class="fa-solid fa-home"></i>Home</a><!--leads to landing-->
+                    </li>
+                    {% endif %}
+
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'questions' %}"><i class="fa-solid fa-briefcase"></i>Top Questions</a>
                     </li>
@@ -69,33 +82,22 @@
                         <a class="nav-link" href="{% url 'ask_question' %}"><i class="fa-solid fa-message"></i>Ask A Question</a>
                     </li>
                     <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}"><i class="fa-solid fa-circle-info"></i>About</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                    <a class="nav-link" href="{% url 'bookmarked_questions' %}"><i class="fa-solid fa-bookmark"></i>My Bookmarks</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'account_logout' %}"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
                     </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'about' %}"><i class="fa-solid fa-circle-info"></i>About</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'bookmarked_questions' %}"><i class="fa-solid fa-bookmark"></i>My Favourites</a>
-                      </li>
-                      <!-- <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0);"><i class="fa-solid fa-moon"></i>Dark Mode</a>
-                      </li> -->
+                    <li class="nav-item">
                     {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'questions' %}"><i class="fa-solid fa-briefcase"></i>Top Questions</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'account_signup' %}"><i class="fa-solid fa-user-plus"></i>Register</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'account_login' %}"><i class="far fa-address-book"></i>Login</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'about' %}"><i class="fa-solid fa-circle-info"></i>About</a>
-                      </li>
                     {% endif %}
 
                 </ul>
