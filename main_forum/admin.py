@@ -8,10 +8,10 @@ from .models.answer_model import Answer
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'status', 'created_on', 'net_votes')
-    search_fields = ['title', 'content', 'tags__name']
+    list_display = ('subject', 'author', 'status', 'created_on', 'net_votes')
+    search_fields = ['subject', 'content', 'tags__name']
     list_filter = ('status', 'created_on')
-    prepopulated_fields = {'slug': ('title',)}
+    prepopulated_fields = {'slug': ('subject',)}
     filter_horizontal = ('tags',)  # This will add a widget to manage ManyToMany relationship with tags.
 
 @admin.register(Answer)

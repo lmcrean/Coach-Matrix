@@ -24,7 +24,7 @@ class QuestionAnswerTests(TestCase):
 
         # Create a question with the simulated QuillField content
         self.question = Question.objects.create(
-            title='Test Question',
+            subject='Test Question',
             content=quill_content,  # Directly use the JSON string
             subject='Test Subject',
             status=1,

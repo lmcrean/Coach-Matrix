@@ -15,17 +15,15 @@ STATUS = ((0, "Draft"), (1, "Published"))
 
 class Question(models.Model):
     """
-    This class will create a user question along with the question's title, slug, author, featured image, excerpt, updated_on, content, created_on, status, upvotes, downvotes, subject, body, standards, answercount, and views.
+    This class will create a user question along with the question's subject, slug, author, featured image, excerpt, updated_on, content, created_on, status, upvotes, downvotes, subject, body, standards, answercount, and views.
 
     Key Parameters: The body can be no longer than 10000 characters. When choosing teacher standard, they can tag the question with up to 3 standards.
     """
-    title = models.CharField(max_length=200, unique=True)
-    slug = models.SlugField(max_length=200, unique=True) # slug is a human-readable unique identifier for an object, which is used in URLs. It is usually a hyphenated lowercase version of the title.
+    subject = models.CharField(max_length=100, help_text='Enter a subject line for your question.', unique=True)
+    slug = models.SlugField(max_length=200, unique=True) # slug is a human-readable unique identifier for an object, which is used in URLs. It is usually a hyphenated lowercase version of the subject.
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="question_posts"
     )
-    featured_image = CloudinaryField('image', default='placeholder')
-    excerpt = QuillField()
     updated_on = models.DateTimeField(auto_now=True)
     content = QuillField()
     created_on = models.DateTimeField(auto_now_add=True)
@@ -33,9 +31,8 @@ class Question(models.Model):
     upvotes = models.ManyToManyField(
         User, related_name='questionpost_upvotes', blank=True)
     downvotes = models.ManyToManyField(User, related_name='questionpost_downvote', blank=True)
-    subject = models.CharField(max_length=100, help_text='Enter a subject line for your question.', unique=True)
     answercount = models.IntegerField(default=0)
-    views = models.IntegerField(default=0) # number of views
+    views = models.IntegerField(default=0) 
     net_votes = models.IntegerField(default=0)
     tags = TaggableManager()
 
@@ -44,10 +41,9 @@ class Question(models.Model):
         # Determine whether this is a new instance or an update
         is_new = self._state.adding
 
-        # Handling slug and title creation or update
+        # Handling slug and subject creation or update
         if not self.pk:  # If this is a new question
             self.slug = slugify(self.subject)
-            self.title = self.subject
 
         # Save the instance first (for both new and updated instances)
         super(Question, self).save(*args, **kwargs)

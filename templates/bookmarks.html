@@ -20,7 +20,7 @@
             <div class="card">
                 <div class="card-body">
                     <a href="{% url 'question_detail' question.slug  %}" class="question-link">
-                        <h5 class="card-title">{{ question.title }}</h5>
+                        <h5 class="card-title">{{ question.subject }}</h5>
                     </a>
                     <p class="card-text">{{ question.excerpt.html|safe }}</p>
                     <div class="text-muted">{{ question.formatted_date }}</div>
