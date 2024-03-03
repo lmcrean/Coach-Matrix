@@ -38,6 +38,21 @@ class QuestionForm(forms.ModelForm):
         fields = ['subject', 'content', 'tags']
         print('Meta fields:', fields) 
 
+    def __init__(self, *args, **kwargs):
+        """
+        This is for checking if the form is bound to an existing instance, i.e. if the form is being used to update an existing question.
+
+        self.fields['tags'].widget.attrs['id'] = 'id_tags' is used to add an id to the tags field so that it can be targeted by JavaScript.
+
+        If the form is bound to an existing instance, pre-populate the tags field with the existing tags.
+        """
+        super(QuestionForm, self).__init__(*args, **kwargs)
+        self.fields['tags'].widget.attrs['id'] = 'id_tags'  
+
+        if self.instance.pk: 
+            self.fields['tags'].initial = ' '.join(tag.name for tag in self.instance.tags.all()) # Pre-populate the tags field with the existing tags
+            print('tags initial:', self.fields['tags'].initial) # PASS? tags initial: tag1 tag2 tag3
+
     def clean_subject(self):
         print('cleaning subject') # PASS
         subject = self.cleaned_data.get('subject')
@@ -82,22 +97,6 @@ class QuestionForm(forms.ModelForm):
         if self.instance.pk:
             # If this is an update, save the instance again
             instance.save()  # Save the instance again to save the many-to-many relationships
-            print('instance saved:', instance)
+            print('instance saved:', instance) # testing:
 
         return instance
-
-
-    def __init__(self, *args, **kwargs):
-        """
-        This is for checking if the form is bound to an existing instance, i.e. if the form is being used to update an existing question.
-
-        self.fields['tags'].widget.attrs['id'] = 'id_tags' is used to add an id to the tags field so that it can be targeted by JavaScript.
-
-        If the form is bound to an existing instance, pre-populate the tags field with the existing tags.
-        """
-        super(QuestionForm, self).__init__(*args, **kwargs)
-        self.fields['tags'].widget.attrs['id'] = 'id_tags'  
-
-        if self.instance.pk: 
-            self.fields['tags'].initial = ' '.join(tag.name for tag in self.instance.tags.all()) # Pre-populate the tags field with the existing tags
-            print('tags initial:', self.fields['tags'].initial) # PASS? tags initial: tag1 tag2 tag3

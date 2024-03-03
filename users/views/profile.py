@@ -17,8 +17,6 @@ class ProfileView(LoginRequiredMixin, View):
     template_name = 'my_profile.html'
 
     def get(self, request, *args, **kwargs):
-
-        print('getting...')
         profile_update_form = ProfileUpdateForm(instance=request.user)
         password_form = CustomPasswordChangeForm(user=request.user)
         context = {
@@ -31,28 +29,18 @@ class ProfileView(LoginRequiredMixin, View):
         profile_update_form = ProfileUpdateForm(instance=request.user)
         try:
             password_form = CustomPasswordChangeForm(data=request.POST, user=request.user) # this section was tested as working, or at least it was tested as not throwing an error
-            print('password updating part 2...') # this line was tested as working, or at least it was tested as not throwing an error
         except Exception as e:
-            print(f"Error instantiating CustomPasswordChangeForm: {e}")
             messages.error(request, "An error occurred during form processing.")
             password_form = CustomPasswordChangeForm(user=request.user)  # Re-initialize form for context
 
         if request.POST.get('form_type') == 'update_profile': # this section was tested as working
             profile_update_form = ProfileUpdateForm(request.POST, instance=request.user)
-            print('profile updating...')
-            print(profile_update_form)
             
             if profile_update_form.is_valid(): # this section was tested as working
-                print('profile is valid')
                 profile_update_form.save()
                 messages.success(request, 'Your profile has been updated.')
-                print("Profile updated")
-                print(request.user)
-                print(request.user.username)
                 return redirect('my_profile')
             else:
-                print("Profile not updated")
-                print(profile_update_form.errors)
                 for field, errors in profile_update_form.errors.items():
                     for error in errors:
                         messages.error(request, f"{field}: {error}")

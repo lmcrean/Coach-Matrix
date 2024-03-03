@@ -19,7 +19,6 @@ class FilterByTagView(ListView):
         tag = get_object_or_404(Tag, slug=tag_slug)
         # Use TaggedItem to query all items associated with the tag
         questions_ids = TaggedItem.objects.filter(tag_id=tag.id).values_list('object_id', flat=True)
-        print(questions_ids)
         return Question.objects.filter(id__in=questions_ids) # Return the questions associated with the tag
 
     def get_context_data(self, **kwargs): # This method will return the context data for the template, and is used to pass the tag to the template.
