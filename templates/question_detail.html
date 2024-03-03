@@ -159,16 +159,28 @@
         <!--voting component-->
         <form method="post" action="{% url 'answer_upvote' answer.id %}" class="voting-component text-center">
           {% csrf_token %}
+          {% if request.user.is_authenticated %}
           <button class="circle green" type="submit">
             <div class="triangle upvote"></div>
           </button>
+          {% else %}
+          <button class="circle green" onclick="alert('You must sign in to vote.');">
+            <div class="triangle upvote"></div>
+          </button>
+          {% endif %}
         </form>
         <div class="total-answer-votes number text-center justify-content-center">{{ answer.total_votes }}</div>
         <form method="post" action="{% url 'answer_downvote' answer.id %}" class="voting-component text-center">
           {% csrf_token %}
+          {% if request.user.is_authenticated %}
           <button class="circle yellow" type="submit">
             <div class="triangle downvote"></div>
           </button>
+          {% else %}
+          <button class="circle yellow" onclick="alert('You must sign in to vote.');">
+            <div class="triangle downvote"></div>
+          </button>
+          {% endif %}
         </form>
         <div class="icon-action"><i class="far fa-bookmark"></i></div>
         <div class="icon-action"><i class="far fa-flag"></i></div>
