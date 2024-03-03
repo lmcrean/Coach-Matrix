@@ -35,16 +35,28 @@
       <div class="voting-component text-center">
         <form class="d-inline" action="{% url 'question_upvote' question.slug %}" method="POST">
           {% csrf_token %}
+          {% if request.user.is_authenticated %}
           <button type="submit" class="circle green" name="blogquestion_id" value="{{question.slug}}">
             <div class="triangle upvote"></div>
           </button>
+          {% else %}
+          <button type="button" class="circle green" onclick="alert('You must sign in to vote.');">
+            <div class="triangle upvote"></div> 
+          </button>
+          {% endif %}
         </form>
         <div class="number">{{ total_votes }}</div>
         <form class="d-inline" action="{% url 'question_downvote' question.slug %}" method="POST">
           {% csrf_token %}
+          {% if request.user.is_authenticated %}
           <button type="submit" class="circle yellow" name="blogquestion_id" value="{{question.slug}}">
             <div class="triangle downvote"></div>
           </button>
+          {% else %}
+          <button type="button" class="circle yellow" onclick="alert('You must sign in to vote.');">
+            <div class="triangle downvote"></div>
+          </button>
+          {% endif %}
         </form>
       </div>
     </div>
@@ -93,18 +105,20 @@
     </div>
 
     <div class="icon-column">
-      <!-- this column shouold be in a gutter/margin on the right of the main body of text, and just underneath the voting buttons-->
-      {% if question|is_bookmarked_by:user %}
-          <form method="POST" action="{% url 'delete_bookmark' question.id %}">
-            {% csrf_token %}
-            <i class="far fa-bookmark delete-bookmark"></i> Delete
-          </form>
-          {% else %}
-          <form method="POST" action="{% url 'create_bookmark' question.id %}">
-            {% csrf_token %}
-            <i class="far fa-bookmark add-bookmark"></i> Bookmark
-          </form>
-          {% endif %}
+      {% if user.is_authenticated %}
+        {% if question|is_bookmarked_by:user %} 
+            <form method="POST" action="{% url 'delete_bookmark' question.id %}">
+                {% csrf_token %}
+                <i class="far fa-bookmark delete-bookmark"></i> Delete
+            </form>
+        {% else %}
+            <form method="POST" action="{% url 'create_bookmark' question.id %}">
+                {% csrf_token %}
+                <i class="far fa-bookmark add-bookmark"></i> Bookmark
+            </form>
+        {% endif %}
+      {% endif %}
+
       <div class="icon-action"><i class="far fa-bookmark"></i></div>
       <div class="icon-action"><i class="far fa-flag"></i></div>
     </div>

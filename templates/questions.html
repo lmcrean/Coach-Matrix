@@ -77,9 +77,9 @@
             <!-- Column 3 -->
             <div class="col-md-6 col-lg-2 col-sm-4">
               <div class="voting-component text-center text-md-center">
-                <!-- Center content for medium screens -->
-                <!-- Upvote Button -->
-                <form action="{% url 'question_upvote' question.slug %}" method="POST"> <!-- should lead to questions.html template, currently leads to question_detail.html-->
+                {% if request.user.is_authenticated %}
+                <!-- Upvote Button for authenticated users -->
+                <form action="{% url 'question_upvote' question.slug %}" method="POST">
                   {% csrf_token %}
                   <input type="hidden" name="origin_page" value="questions_list" />
                   <button type="submit" class="circle green"> 
@@ -87,14 +87,25 @@
                   </button>
                   <div class="number" name="net_votes">{{ question.net_votes }}</div>
                 </form>
-                <!-- Downvote Button -->
-                <form action="{% url 'question_downvote' question.slug %}" method="POST"> <!-- should lead to questions.html template, currently leads to question_detail.html-->
+                <!-- Downvote Button for authenticated users -->
+                <form action="{% url 'question_downvote' question.slug %}" method="POST">
                   {% csrf_token %}
                   <input type="hidden" name="origin_page" value="questions_list" />
                   <button type="submit" class="circle yellow">
                     <div class="triangle downvote"></div>
                   </button>
                 </form>
+              {% else %}
+                <!-- Upvote Button for unauthenticated users -->
+                <button class="circle green" onclick="alert('You must sign in to vote.');"> 
+                  <div class="triangle upvote"></div>
+                </button>
+                <div class="number">{{ question.net_votes }}</div>
+                <!-- Downvote Button for unauthenticated users -->
+                <button class="circle yellow" onclick="alert('You must sign in to vote.');">
+                  <div class="triangle downvote"></div>
+                </button>
+              {% endif %}
 
               </div>
             </div>
