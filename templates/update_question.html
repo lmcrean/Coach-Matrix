@@ -160,7 +160,7 @@
                 <div class="input">
                     <div>
                         <i class="fa fa-tags"></i>
-                        {{ form.tags.value | as_crispy_field }} <!--not rendering as expected: reading as [<Tag: tag1>, <Tag: tag2>, <Tag: tag3>]. Expecting tag1 tag2 tag3-->
+                        {{ form.tags | as_crispy_field }} <!--not rendering as expected: reading as [<Tag: tag1>, <Tag: tag2>, <Tag: tag3>]. Expecting tag1 tag2 tag3 to be retrieved from TaggableManager/ django-taggit-->
                     </div>
                 </div>
                 <div class="tag-list mb-4"></div>
