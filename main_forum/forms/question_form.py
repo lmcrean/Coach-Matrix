@@ -75,7 +75,10 @@ class QuestionForm(forms.ModelForm):
 
         print('instance.tags.all:', instance.tags.all()) # PASS <QuerySet [<Tag: tag1>, <Tag: tag2>, <Tag: tag3>]> etc.
 
-        # If there are other many-to-many fields that need to be saved, call save_m2m() if necessary
+        if self.instance.pk:
+            # If this is an update, save the instance again
+            instance.save()  # Save the instance again to save the many-to-many relationships
+            print('instance saved:', instance)
 
         return instance
 
@@ -87,4 +90,4 @@ class QuestionForm(forms.ModelForm):
         if self.instance.pk:  # Check if this form is bound to an existing instance
             # If the form is bound to an existing instance, pre-populate the tags field with the existing tags
             self.fields['tags'].initial = ' '.join(tag.name for tag in self.instance.tags.all())
-            print('tags initial:', self.fields['tags'].initial)
+            print('tags initial:', self.fields['tags'].initial) # PASS? tags initial: tag1 tag2 tag3

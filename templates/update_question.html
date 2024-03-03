@@ -1,10 +1,8 @@
-<!-- templates/ask_question.html -->
+<!-- templates/update_question.html -->
 <!--
-    This is the form to ask a question. 
+    This is the form to update a question. 
     
-    It contains the ability to create a new question or update an existing question:
-    1. if the user arrives at the templates without a question instance, the form to create a new question is used
-    2. if the user arrives at the templates with a question instance, the form to update the question is used
+    It contains the ability to update an existing question. The user should have arrived at the templates with a question instance.
 
     ***************
     Within the form, the user can 
@@ -42,13 +40,13 @@
     <!-- If there is no primary key, we are creating a new question -->
 
     <div class="container-question my-5">
-        <h1 class="text-center">Ask a Question</h1>
+        <h1>Update Your Question</h1>
         <hr>
         <h2 class="text-center">Category</h2>
         <label>
             Select the most Relevant <a href="google.com">Teaching Standard</a> to your question:
         </label>
-        <form id="standards-form" method="post" action="{% url 'ask_question' %}">
+        <form id="standards-form" method="post" action="{% url 'question_update' slug=question.slug %}">
             {% csrf_token %}
             <div class="row">
                 <!-- High Expectations -->
@@ -162,7 +160,7 @@
                 <div class="input">
                     <div>
                         <i class="fa fa-tags"></i>
-                            {{ form.tags | as_crispy_field }} <!--not rendering as expected-->
+                        {{ form.tags | as_crispy_field }} <!--not rendering as expected-->
                     </div>
                 </div>
                 <div class="tag-list mb-4"></div>

@@ -1,4 +1,4 @@
-# main_forum/views/questions.py
+# main_forum/views/question_view.py
 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
@@ -49,7 +49,7 @@ class QuestionUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.Update
     """ view for updating a question. This should only be accessible to the author of the question. """
     model = Question
     form_class = QuestionForm
-    template_name = 'ask_question.html'
+    template_name = 'update_question.html'
     context_object_name = 'question' # context_object_name is a variable that is used to specify the name of the variable that will be used to access the object in the template.
 
     def test_func(self): # test_func is a method that is called to check if the user has permission to update the question. It returns True if the user has permission, and False otherwise.
