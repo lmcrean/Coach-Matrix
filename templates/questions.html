@@ -79,16 +79,18 @@
               <div class="voting-component text-center text-md-center">
                 <!-- Center content for medium screens -->
                 <!-- Upvote Button -->
-                <form action="{% url 'question_upvote' question.slug %}" method="POST">
+                <form action="{% url 'question_upvote' question.slug %}" method="POST"> <!-- should lead to questions.html template, currently leads to question_detail.html-->
                   {% csrf_token %}
-                  <button type="submit" class="circle green">
+                  <input type="hidden" name="origin_page" value="questions_list" />
+                  <button type="submit" class="circle green"> 
                     <div class="triangle upvote"></div>
                   </button>
                   <div class="number" name="net_votes">{{ question.net_votes }}</div>
                 </form>
                 <!-- Downvote Button -->
-                <form action="{% url 'question_downvote' question.slug %}" method="POST">
+                <form action="{% url 'question_downvote' question.slug %}" method="POST"> <!-- should lead to questions.html template, currently leads to question_detail.html-->
                   {% csrf_token %}
+                  <input type="hidden" name="origin_page" value="questions_list" />
                   <button type="submit" class="circle yellow">
                     <div class="triangle downvote"></div>
                   </button>

@@ -33,6 +33,8 @@ class BaseVotingView(LoginRequiredMixin, View):
         opposite_vote_type = 'downvotes' if self.vote_type == 'upvotes' else 'upvotes'
         vote_attr = getattr(obj, self.vote_type)
         opposite_vote_attr = getattr(obj, opposite_vote_type)
+        user_profile = UserProfile.objects.get(user=obj.author)
+        origin_page = request.POST.get('origin_page', None)
 
         if opposite_vote_attr.filter(id=request.user.id).exists():
             messages.error(request, "Please remove your existing vote before voting in the opposite direction.")
@@ -43,20 +45,23 @@ class BaseVotingView(LoginRequiredMixin, View):
             vote_attr.add(request.user)
             messages.success(request, "Your vote has been added.")
 
-        user_profile = UserProfile.objects.get(user=obj.author)
         if vote_attr.filter(id=request.user.id).exists():  # If vote is being added
             user_profile.reputation += 1 if self.vote_type == 'upvotes' else -1
         else:  # If vote is being removed
             user_profile.reputation -= 1 if self.vote_type == 'upvotes' else 1
         user_profile.save()
 
-        return self.get_redirect_url(obj)
+        return self.get_redirect_url(obj, origin_page)
 
-    def get_redirect_url(self, obj): # get the redirect URL based on the type of object
-        if isinstance(obj, Question): # if the object is a question, redirect to the question detail page
+    def get_redirect_url(self, obj, origin_page):
+        if origin_page == 'questions_list':
+            return HttpResponseRedirect(reverse('questions'))
+        elif isinstance(obj, Question):
             return HttpResponseRedirect(reverse('question_detail', args=[obj.slug]))
-        elif isinstance(obj, Answer): # if the object is an answer, redirect to the question detail page
+        elif isinstance(obj, Answer):
             return HttpResponseRedirect(reverse('question_detail', kwargs={'slug': obj.question.slug}))
+        else:
+            return HttpResponseRedirect('/')
 
     def get(self, request, *args, **kwargs): # only allow POST requests. This is to prevent users from voting by directly accessing the URL
         return HttpResponseNotAllowed(['POST'])
