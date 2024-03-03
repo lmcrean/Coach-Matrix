@@ -43,10 +43,10 @@ class QuestionUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.Update
     def form_valid(self, form):
     # Only update the slug if the subject has changed
         if form.instance.subject != self.object.subject:
-            console.log("Updating slug") # testing
+            print("Updating slug") # testing
             form.instance.slug = slugify(form.cleaned_data.get('subject'))
         else:
-            console.log("Slug not updated") # testing
+            print("Slug not updated") # testing
         return super().form_valid(form)
 
     def get_success_url(self):

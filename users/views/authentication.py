@@ -9,6 +9,8 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import get_backends
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_protect
+
 
 
 logger = logging.getLogger(__name__)
@@ -26,6 +28,7 @@ def logout_view(request):
     messages.info(request, "You have successfully logged out.")
     return redirect(reverse('home'))
 
+@csrf_protect
 def custom_login_view(request):
     if request.method == 'POST':
         logger.debug('Attempting to authenticate a user.')

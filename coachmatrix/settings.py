@@ -35,16 +35,11 @@ X_FRAME_OPTION = 'SAMEORIGIN'
 ALLOWED_HOSTS = [
     '8000-lmcrean-coachmatrix-zp6cz7sdhxw.ws-eu106.gitpod.io',
     '8000-lmcrean-coachmatrix-l20rc4qf4rn.ws-eu107.gitpod.io',
-    '8000-lmcrean-classroommatrix-zp6cz7sdhxw.ws-us107.gitpod.io',
-    'lmcrean-ittib-b97fbbd27fb0.herokuapp.com',
-    'classroom-matrix-985ace5aad63.herokuapp.com',
-    '8000-lmcrean-project4-avaw7dd1zq8.ws-eu106.gitpod.io',
+    '8000-lmcrean-coachmatrix-40h4yerdbqh.ws-eu108.gitpod.io',
     'localhost',
+    'localhost:8000',
     '127.0.0.1',
     '8000-lmcrean-coachmatrix-zp6cz7sdhxw.ws-eu107.gitpod.io',
-    '8000-lmcrean-classroommatrix-zp6cz7sdhxw.ws-eu107.gitpod.io',
-    'coach-matrix-d2cd1e717f81.herokuapp.com',
-    'coach-matrix-new-1b407ab07b60.herokuapp.com',
     'coachmatrix.org',
     'www.coachmatrix.org'
 ]
@@ -137,6 +132,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.gitpod.io',
+    'http://coachmatrix.org',
+    'http://www.coachmatrix.org',
 ]
 
 ROOT_URLCONF = 'coachmatrix.urls'

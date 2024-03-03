@@ -12,11 +12,6 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('taggit', '0004_alter_taggeditem_content_type_alter_taggeditem_tag'),
-    ]
-
     operations = [
         migrations.CreateModel(
             name='Question',
