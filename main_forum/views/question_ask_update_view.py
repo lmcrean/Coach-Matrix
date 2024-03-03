@@ -40,6 +40,17 @@ class QuestionUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.Update
         print(self.get_object().author) # PASS e.g. lmcrean
         return self.get_object().author == self.request.user or self.request.user.is_superuser
 
+    def get_context_data(self, **kwargs):
+        """
+        This function should get context data. At present it retrieves subject and content correctly, however tags appear as [<Tag: tag1>, <Tag: tag2>, <Tag: tag3>, <Tag: tag4>, <Tag: tag5>] when expected to be tag1 tag2 tag3 tag4 tag5.
+        """
+        context = super(QuestionUpdateView, self).get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.form_class(instance=self.object)
+        context['question'] = self.get_object()
+        print("get Context:", context) # PASS prints as expected.
+        return context
+
     def form_valid(self, form):
     # Only update the slug if the subject has changed
         if form.instance.subject != self.object.subject:
@@ -69,8 +80,4 @@ class QuestionUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.Update
         else:
             return self.form_invalid(form)
     
-    def get_context_data(self, **kwargs):
-        context = super(QuestionUpdateView, self).get_context_data(**kwargs)
-        context['question'] = self.get_object()
-        print("get Context:", context) # PASS USING TAGS  tag1 tag2 tag3 : prints: get Context: {'object': <Question: test for updating Q>, 'question': <Question: test for updating Q>, 'form': <QuestionForm bound=False, valid=Unknown, fields=(subject;content;tags)>, 'view': <main_forum.views.questions.QuestionUpdateView object at 0x7f20094617c0>} 
-        return context
+    

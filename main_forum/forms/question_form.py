@@ -28,7 +28,7 @@ class QuestionForm(forms.ModelForm):
     tags = forms.CharField(required=False)
 
     print('QuestionForm') 
-    print('content:', content)
+    print('content:', content) # PASS prints as
 
     class Meta:
         """
@@ -51,7 +51,7 @@ class QuestionForm(forms.ModelForm):
 
         if self.instance.pk: 
             self.fields['tags'].initial = ' '.join(tag.name for tag in self.instance.tags.all()) # Pre-populate the tags field with the existing tags
-            print('tags initial:', self.fields['tags'].initial) # PASS? tags initial: tag1 tag2 tag3
+            print('tags initial:', self.fields['tags'].initial) # PASS. reads as "tags initial: tag1 tag2 tag3". This is expected to render on the update question template, however the template is currently appearing as [<Tag: tag1>, <Tag: tag2>, <Tag: tag3>]
 
     def clean_subject(self):
         print('cleaning subject') # PASS
