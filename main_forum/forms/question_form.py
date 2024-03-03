@@ -27,12 +27,16 @@ class QuestionForm(forms.ModelForm):
     content = QuillFormField()
     tags = forms.CharField(required=False)
 
+    print('QuestionForm') 
+    print('content:', content)
+
     class Meta:
         """
         the Meta class is used to specify the model to which the form is associated and the fields from the model you want the form to include.
         """
         model = Question  # Specifies the model in models.py associated with this form
         fields = ['subject', 'content', 'tags']
+        print('Meta fields:', fields) 
 
     def clean_subject(self):
         print('cleaning subject') # PASS
@@ -64,7 +68,7 @@ class QuestionForm(forms.ModelForm):
         # Handling tags here
         tags = self.cleaned_data.get('tags', '')
         tag_names = tags.split()  # Split the string into a list of tag names
-        print(tag_names, '=tag_names after tag.split') # expecting ['tag1', 'tag2', 'tag3'] etc. PASS 
+        print('tag_names after tag.split', tag_names) # expecting ['tag1', 'tag2', 'tag3'] etc. PASS 
 
         # Clear existing tags first if needed, which is important when updating a question
         instance.tags.clear()
@@ -84,10 +88,16 @@ class QuestionForm(forms.ModelForm):
 
 
     def __init__(self, *args, **kwargs):
-        # This is for checking if the form is bound to an existing instance, i.e. if the form is being used to update an existing question
+        """
+        This is for checking if the form is bound to an existing instance, i.e. if the form is being used to update an existing question.
+
+        self.fields['tags'].widget.attrs['id'] = 'id_tags' is used to add an id to the tags field so that it can be targeted by JavaScript.
+
+        If the form is bound to an existing instance, pre-populate the tags field with the existing tags.
+        """
         super(QuestionForm, self).__init__(*args, **kwargs)
-        self.fields['tags'].widget.attrs['id'] = 'id_tags'  # Add an id to the tags field for front-end manipulation
-        if self.instance.pk:  # Check if this form is bound to an existing instance
-            # If the form is bound to an existing instance, pre-populate the tags field with the existing tags
-            self.fields['tags'].initial = ' '.join(tag.name for tag in self.instance.tags.all())
+        self.fields['tags'].widget.attrs['id'] = 'id_tags'  
+
+        if self.instance.pk: 
+            self.fields['tags'].initial = ' '.join(tag.name for tag in self.instance.tags.all()) # Pre-populate the tags field with the existing tags
             print('tags initial:', self.fields['tags'].initial) # PASS? tags initial: tag1 tag2 tag3

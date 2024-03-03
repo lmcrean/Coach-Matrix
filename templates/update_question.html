@@ -148,19 +148,19 @@
             </div>
             
             <h2 class="text-center">Subject line</h2>
-            {{ form.subject | as_crispy_field }}
+            {{ form.subject | as_crispy_field }} <!-- rendering as expected-->
 
             
             <br>
             <h2 class="text-center">Details</h2>
-            {{ form.content | as_crispy_field }} <!--not rendering as expected-->
+            {{ form.content | as_crispy_field }} <!-- rendering as expected-->
             <br>
             <h2 class="text-center">Tags</h2>
             <div class="tag-input">
                 <div class="input">
                     <div>
                         <i class="fa fa-tags"></i>
-                        {{ form.tags | as_crispy_field }} <!--not rendering as expected-->
+                        {{ form.tags.value | as_crispy_field }} <!--not rendering as expected: reading as [<Tag: tag1>, <Tag: tag2>, <Tag: tag3>]. Expecting tag1 tag2 tag3-->
                     </div>
                 </div>
                 <div class="tag-list mb-4"></div>
