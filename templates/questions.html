@@ -111,7 +111,9 @@
             </div>
           </div>
         </div>
-        <!-- Check if the current user is the author of the question -->
+
+
+        <!-- CHECK IF USER IS AUTHOR OF THE QUESTION -->
         {% if user.is_authenticated and user == question.author %}
         <div class="question-actions text-end mt-2">
           <!-- Bookmark Button for author -->
@@ -123,9 +125,9 @@
           </button>
           </form>
           {% else %}
-          <form method="POST" action="{% url 'create_bookmark' question.id %}">
+          <form method="POST" action="{% url 'create_bookmark' question_id=question.id %}">
             {% csrf_token %}
-          <button class="btn btn-outline-secondary btn-sm" type="submit">
+          <button class="btn btn-outline-secondary btn-sm" type="submit"> 
             <i class="far fa-bookmark"></i> Bookmark
           </button>
           </form>
@@ -167,12 +169,19 @@
             </div>
           </div>
         </div>
+
         {% else %}
+
+
+        <!-- FOR WHEN NOT AUTHOR OF QUESTION -->
         <div class="question-actions text-end mt-2">
-          <!-- Bookmark Button for author -->
-          <button class="btn btn-outline-secondary btn-sm">
+          <form method="POST" action="{% url 'create_bookmark' question_id=question.id %}">
+            {% csrf_token %}
+          <!-- Bookmark Button for non-author -->
+          <button class="btn btn-outline-secondary btn-sm" type="submit">
             <i class="far fa-bookmark"></i> Bookmark
           </button>
+          </form>
           <!-- Flag Button -->
           <button class="btn btn-outline-warning btn-sm">
             <i class="fas fa-flag"></i> Flag
