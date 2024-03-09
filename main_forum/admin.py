@@ -3,8 +3,22 @@
 # The admin settings will include the QuestionAdmin and AnswerAdmin classes, which will be used to customize the admin interface for the Question and Answer models.
 
 from django.contrib import admin
-from .models.question_model import Question
-from .models.answer_model import Answer
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.models import User
+from .models import UserProfile, Question, Answer
+
+class UserProfileInline(admin.StackedInline):
+    model = UserProfile
+    can_delete = False
+    verbose_name_plural = 'UserProfile'
+    fields = ('reputation',)  # Display only the reputation field
+
+class UserAdmin(BaseUserAdmin):
+    inlines = (UserProfileInline, )
+
+# Unregister the default User admin and register the new UserAdmin class
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
