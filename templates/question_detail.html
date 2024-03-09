@@ -62,8 +62,9 @@
     </div>
   </div>
 
-  <div class="question-actions mt-3">
-    {% if user.is_authenticated and question.author == user %}
+  <div class="question-actions d-flex justify-content-end mt-2">
+    {% if user.is_authenticated %}
+    {% if question.author == user %}
     <!-- Edit Question Button -->
     <a href="{% url 'question_update' slug=question.slug %}" class="btn btn-outline-primary btn-sm">
       <i class="fas fa-pencil-alt"></i> Edit
@@ -73,6 +74,29 @@
     <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
       data-bs-target="#deleteConfirmModal">
       <i class="fas fa-trash"></i> Delete
+    </button>
+    {% endif %}
+
+    <!--bookmark button-->
+    {% if question|is_bookmarked_by:user %}
+    <form method="POST" action="{% url 'delete_bookmark' question.id %}">
+      {% csrf_token %}
+      <button class="btn btn-outline-secondary btn-sm" type="submit">
+        <i class="fas fa-bookmark delete-bookmark"></i> Unbookmark
+      </button>
+    </form>
+    {% else %}
+    <form method="POST" action="{% url 'create_bookmark' question_id=question.id %}">
+      {% csrf_token %}
+      <button class="btn btn-outline-secondary btn-sm" type="submit">
+        <i class="far fa-bookmark"></i> Bookmark
+      </button>
+    </form>
+    {% endif %}
+
+    <!-- Flag Button -->
+    <button class="btn btn-outline-warning btn-sm">
+      <i class="fas fa-flag"></i> Flag
     </button>
 
     <!-- Delete Confirmation Modal -->
@@ -104,29 +128,6 @@
   <div class="body-and-gutter">
     <div class="question-body">
       <p>{{ question.content.html | safe }}</p>
-    </div>
-
-    <div class="icon-column">
-      {% if user.is_authenticated %}
-      {% if question|is_bookmarked_by:user %}
-      <form method="POST" action="{% url 'delete_bookmark' question.id %}">
-        {% csrf_token %}
-        <button class="btn btn-outline-secondary btn-sm" type="submit">
-          <i class="fas fa-bookmark delete-bookmark"></i> Unbookmark
-        </button>
-      </form>
-      {% else %}
-      <form method="POST" action="{% url 'create_bookmark' question_id=question.id %}">
-        {% csrf_token %}
-        <button class="btn btn-outline-secondary btn-sm" type="submit">
-          <i class="far fa-bookmark"></i> Bookmark
-        </button>
-      </form>
-      {% endif %}
-      {% endif %}
-
-      <div class="icon-action"><i class="far fa-bookmark"></i></div>
-      <div class="icon-action"><i class="far fa-flag"></i></div>
     </div>
   </div>
 
