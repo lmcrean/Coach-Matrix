@@ -17,7 +17,7 @@
         <div class="question-tags">
           {% for tag in question.tags.all %}
           {% if tag.slug %}
-            <a href="{% url 'filter_by_tag' tag.slug %}" class="btn btn-outline-success tags">{{ tag.name }}</a>
+          <a href="{% url 'filter_by_tag' tag.slug %}" class="btn btn-outline-success tags">{{ tag.name }}</a>
           {% endif %}
           {% endfor %}
         </div>
@@ -41,7 +41,7 @@
           </button>
           {% else %}
           <button type="button" class="circle green" onclick="alert('You must sign in to vote.');">
-            <div class="triangle upvote"></div> 
+            <div class="triangle upvote"></div>
           </button>
           {% endif %}
         </form>
@@ -64,37 +64,39 @@
 
   <div class="question-actions mt-3">
     {% if user.is_authenticated and question.author == user %}
-      <!-- Edit Question Button -->
-      <a href="{% url 'question_update' slug=question.slug %}" class="btn btn-outline-primary btn-sm">
-        <i class="fas fa-pencil-alt"></i> Edit
-      </a>
+    <!-- Edit Question Button -->
+    <a href="{% url 'question_update' slug=question.slug %}" class="btn btn-outline-primary btn-sm">
+      <i class="fas fa-pencil-alt"></i> Edit
+    </a>
 
-      <!-- Delete Question Button -->
-      <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
-        <i class="fas fa-trash"></i> Delete
-      </button>
+    <!-- Delete Question Button -->
+    <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+      data-bs-target="#deleteConfirmModal">
+      <i class="fas fa-trash"></i> Delete
+    </button>
 
-      <!-- Delete Confirmation Modal -->
-      <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="deleteConfirmModalLabel">Confirm Delete</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              Are you sure you want to delete this question?
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <form method="post" action="{% url 'question_delete' question.slug %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger">Delete</button>
-              </form>
-            </div>
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteConfirmModalLabel">Confirm Delete</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete this question?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <form method="post" action="{% url 'question_delete' question.slug %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
           </div>
         </div>
       </div>
+    </div>
     {% endif %}
   </div>
 
@@ -106,17 +108,21 @@
 
     <div class="icon-column">
       {% if user.is_authenticated %}
-        {% if question|is_bookmarked_by:user %} 
-            <form method="POST" action="{% url 'delete_bookmark' question.id %}">
-                {% csrf_token %}
-                <i class="far fa-bookmark delete-bookmark"></i> Delete
-            </form>
-        {% else %}
-            <form method="POST" action="{% url 'create_bookmark' question.id %}">
-                {% csrf_token %}
-                <i class="far fa-bookmark add-bookmark"></i> Bookmark
-            </form>
-        {% endif %}
+      {% if question|is_bookmarked_by:user %}
+      <form method="POST" action="{% url 'delete_bookmark' question.id %}">
+        {% csrf_token %}
+        <button class="btn btn-outline-secondary btn-sm" type="submit">
+          <i class="fas fa-bookmark delete-bookmark"></i> Unbookmark
+        </button>
+      </form>
+      {% else %}
+      <form method="POST" action="{% url 'create_bookmark' question_id=question.id %}">
+        {% csrf_token %}
+        <button class="btn btn-outline-secondary btn-sm" type="submit">
+          <i class="far fa-bookmark"></i> Bookmark
+        </button>
+      </form>
+      {% endif %}
       {% endif %}
 
       <div class="icon-action"><i class="far fa-bookmark"></i></div>

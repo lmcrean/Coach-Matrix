@@ -6,6 +6,7 @@
 {% extends "base.html" %}
 {% load socialaccount %}
 {% load static %}
+{% load question_tags %}
 
 {% block content %}
 
@@ -15,7 +16,8 @@
     <!-- Button to toggle sorting -->
     <div>
       {% if request.GET.sort_by == 'votes' %}
-      <h1>Top Questions tagged with "{{ tag.name }}"</h2></h1>
+      <h1>Top Questions tagged with "{{ tag.name }}"</h2>
+      </h1>
       <a href="?sort_by=recent" class="btn btn-secondary">Sort by Most Recent</a>
       {% elif request.GET.sort_by == 'recent' %}
       <h1>Most Recent Questions tagged with "{{ tag.name }}"</h1>
@@ -45,11 +47,13 @@
               </a>
               <div class="tags-placeholder p-2 tags">
                 {% for tag in question.tags.all %}
-                  {% if tag.slug %}
-                    <a href="{% url 'filter_by_tag' tag.slug %}" class="btn btn-outline-success tags">{{ tag.name }}</a>
-                  {% endif %}
+                {% if tag.slug %}
+                <a href="{% url 'filter_by_tag' tag.slug %}" class="btn btn-outline-success tags">{{ tag.name }}</a>
+                {% endif %}
                 {% endfor %}
               </div>
+
+
               <div class="d-flex justify-content-evenly p-1 column-gap-3 ">
                 <!-- Single row for date, answers, and read more -->
                 <p class="text-muted">{{ question.formatted_date }} </p>
@@ -101,11 +105,23 @@
         </div>
         <!-- Check if the current user is the author of the question -->
         {% if user.is_authenticated and user == question.author %}
-        <div class="question-actions text-end mt-2">
+        <div class="question-actions d-flex justify-content-end mt-2">
           <!-- Bookmark Button for author -->
-          <button class="btn btn-outline-secondary btn-sm">
-            <i class="far fa-bookmark"></i> Bookmark
-          </button>
+          {% if question|is_bookmarked_by:user %}
+          <form method="POST" action="{% url 'delete_bookmark' question.id %}">
+            {% csrf_token %}
+            <button class="btn btn-outline-secondary btn-sm" type="submit">
+              <i class="fas fa-bookmark delete-bookmark"></i> Unbookmark
+            </button>
+          </form>
+          {% else %}
+          <form method="POST" action="{% url 'create_bookmark' question_id=question.id %}">
+            {% csrf_token %}
+            <button class="btn btn-outline-secondary btn-sm" type="submit">
+              <i class="far fa-bookmark"></i> Bookmark
+            </button>
+          </form>
+          {% endif %}
           <!-- Edit Button -->
           <a href="{% url 'question_update' question.slug %}" class="btn btn-outline-primary btn-sm">
             <i class="fas fa-pencil-alt"></i> Edit
@@ -144,35 +160,45 @@
           </div>
         </div>
         {% else %}
-        <div class="question-actions text-end mt-2">
-          <!-- Bookmark Button for author -->
-          <button class="btn btn-outline-secondary btn-sm">
-            <i class="far fa-bookmark"></i> Bookmark
-          </button>
+        <div class="question-actions d-flex justify-content-end mt-2">
+          <!-- Bookmark Button for non-author -->
+          {% if question|is_bookmarked_by:user %}
+          <form method="POST" action="{% url 'delete_bookmark' question.id %}">
+            {% csrf_token %}
+            <i class="fas fa-bookmark delete-bookmark"></i> Unbookmark
+          </form>
+          {% else %}
+          <form method="POST" action="{% url 'create_bookmark' question_id=question.id %}">
+            {% csrf_token %}
+            <button class="btn btn-outline-secondary btn-sm" type="submit">
+              <i class="far fa-bookmark"></i> Bookmark
+            </button>
+          </form>
+          {% endif %}
           <!-- Flag Button -->
           <button class="btn btn-outline-warning btn-sm">
             <i class="fas fa-flag"></i> Flag
           </button>
-        {% endif %}
+          {% endif %}
+        </div>
       </div>
+
+
+
+      {% if is_paginated %}
+      <!-- Pagination logic here -->
     </div>
-
-
-
-    {% if is_paginated %}
-    <!-- Pagination logic here -->
+    <nav aria-label="Page navigation">
+      <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li><a href="?page={{ page_obj.previous_page_number }}" class="page-link">&laquo; PREV </a></li>
+        {% endif %}
+        {% if page_obj.has_next %}
+        <li><a href="?page={{ page_obj.next_page_number }}" class="page-link"> NEXT &raquo;</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
   </div>
-  <nav aria-label="Page navigation">
-    <ul class="pagination justify-content-center">
-      {% if page_obj.has_previous %}
-      <li><a href="?page={{ page_obj.previous_page_number }}" class="page-link">&laquo; PREV </a></li>
-      {% endif %}
-      {% if page_obj.has_next %}
-      <li><a href="?page={{ page_obj.next_page_number }}" class="page-link"> NEXT &raquo;</a></li>
-      {% endif %}
-    </ul>
-  </nav>
-  {% endif %}
-</div>
-{%endfor%}
-{% endblock content %}
+  {%endfor%}
+  {% endblock content %}

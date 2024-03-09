@@ -25,6 +25,12 @@
                     <p class="card-text">{{ question.excerpt.html|safe }}</p>
                     <div class="text-muted">{{ question.formatted_date }}</div>
                 </div>
+                <form method="POST" action="{% url 'delete_bookmark' question.id %}">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-secondary btn-sm" type="submit">
+                      <i class="fas fa-bookmark delete-bookmark"></i> Unbookmark
+                    </button>
+                </form>
             </div>
         </div>
         
