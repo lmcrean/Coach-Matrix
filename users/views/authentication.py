@@ -75,3 +75,11 @@ def custom_signup_view(request):
     else:
         form = CustomSignupForm()
         return render(request, 'index.html', {'signup_form': form})
+
+@login_required
+def delete_profile(request):
+    user = request.user
+    user.delete()  # Delete the user
+    logout(request)  # Log the user out
+    messages.success(request, 'Your profile has been successfully deleted.')
+    return render(request, "index.html")

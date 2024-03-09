@@ -11,68 +11,99 @@
 {% block content %}
 
 <div class="container profile-page mt-5">
-    <div class="row"><div class="col-12 col-md-6 mx-auto">
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li class="{{ message.tags }}">{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        <div class="profile-header text-center mb-5">
-            <h1>My Profile</h1>
+    <div class="row">
+        <div class="col-12 col-md-6 mx-auto">
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <div class="profile-header text-center mb-5">
+                <h1>My Profile</h1>
             </div>
             <hr>
             <div class="profile-info text-center mt-3">
-                <h3>{{ user.username }} </h3> 
-                <p>{{ user.email }} </p> 
-                <p>Member since: {{ user.date_joined | date:"F d, Y" }} </p>   
-            <hr>
-            <h2>Update Profile here:</h2>
-            <form method="post" action="{% url 'my_profile' %}">
-                {% csrf_token %}
-                <input type="hidden" name="form_type" value="update_profile">
-                {{ profile_update_form|crispy }}  
-                <button type="submit" class="btn btn-primary">Update Profile</button>
-            </form>
-            {{ profile_update_form.non_field_errors }}
-            {% for field in profile_update_form %}
-            {{ field.errors }}
-            {% endfor %}
-            
-            <hr>
-            <h2>Change Password here:</h2>
-            <!-- Button to trigger the password change modal -->
-            <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
-                Change Password
-            </button>
-            
-            <!-- Password Change Modal -->
-            <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        {{ password_form.non_field_errors }}
-                        {% for field in password_form %}
-                        {{ field.errors }}
-                        {% endfor %}
-                        <form method="post" action="{% url 'my_profile' %}">
-                            {% csrf_token %}
-                            <!-- Hidden input to identify the form submission type -->
-                            <input type="hidden" name="form_type" value="change_password">
-                            {{ password_form|crispy }}
-                            <button type="submit">Change Password</button>
-                        </form>
+                <h3>{{ user.username }} </h3>
+                <p>{{ user.email }} </p>
+                <p>Member since: {{ user.date_joined | date:"F d, Y" }} </p>
+                <hr>
+                <h2>Update Profile here:</h2>
+                <form method="post" action="{% url 'my_profile' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="update_profile">
+                    {{ profile_update_form|crispy }}
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                </form>
+                {{ profile_update_form.non_field_errors }}
+                {% for field in profile_update_form %}
+                {{ field.errors }}
+                {% endfor %}
+
+                <hr>
+                <h2>Change Password here:</h2>
+                <!-- Button to trigger the password change modal -->
+                <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                    Change Password
+                </button>
+
+                <!-- Password Change Modal -->
+                <div class="modal fade" id="changePasswordModal" tabindex="-1"
+                    aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                {{ password_form.non_field_errors }}
+                                {% for field in password_form %}
+                                {{ field.errors }}
+                                {% endfor %}
+                                <form method="post" action="{% url 'my_profile' %}">
+                                    {% csrf_token %}
+                                    <!-- Hidden input to identify the form submission type -->
+                                    <input type="hidden" name="form_type" value="change_password">
+                                    {{ password_form|crispy }}
+                                    <button type="submit">Change Password</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Delete Profile Button -->
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                    data-bs-target="#deleteProfileModal">
+                    Delete My Profile
+                </button>
+
+                <!-- Delete Profile Confirmation Modal -->
+                <div class="modal fade" id="deleteProfileModal" tabindex="-1" aria-labelledby="deleteProfileModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteProfileModalLabel">Confirm Profile Deletion</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete your profile? This action cannot be undone.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <a href="{% url 'delete_profile' %}" class="btn btn-danger">Delete</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
-</div>
 
-{% endblock content %}
+    {% endblock content %}
