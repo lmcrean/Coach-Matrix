@@ -43,4 +43,4 @@ class DeleteBookmark(LoginRequiredMixin, View):
         question_id = self.kwargs.get('question_id')
         question = get_object_or_404(Question, id=question_id)
         Bookmark.objects.filter(user=request.user, question=question).delete()
-        return HttpResponseRedirect(reverse('question_detail', args=[question.slug]))
+        return redirect(request.META.get('HTTP_REFERER', 'fallback_url'))
