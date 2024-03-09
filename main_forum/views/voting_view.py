@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views import View
 from ..models import Question, Answer, UserProfile
+import re
 
 class BaseVotingView(LoginRequiredMixin, View):
     """
@@ -34,7 +35,7 @@ class BaseVotingView(LoginRequiredMixin, View):
         vote_attr = getattr(obj, self.vote_type)
         opposite_vote_attr = getattr(obj, opposite_vote_type)
         user_profile = UserProfile.objects.get(user=obj.author)
-        origin_page = request.POST.get('origin_page', None)
+        origin_page = request.POST.get('origin_page', '')
 
         if opposite_vote_attr.filter(id=request.user.id).exists():
             messages.error(request, "Please remove your existing vote before voting in the opposite direction.")
@@ -57,7 +58,13 @@ class BaseVotingView(LoginRequiredMixin, View):
         return self.get_redirect_url(obj, origin_page)
 
     def get_redirect_url(self, obj, origin_page):
-        if origin_page == 'questions_list':
+        if origin_page:  # Only proceed if origin_page is not an empty string
+            match = re.search(tag_regex, origin_page)
+            if match:
+                # If origin_page matches the filtered tag list pattern, redirect back to that filtered list
+                tag_name = match.group(1)
+                return HttpResponseRedirect(reverse('filtered_questions', args=[tag_name]))
+        elif origin_page == 'questions_list':
             return HttpResponseRedirect(reverse('questions'))
         elif isinstance(obj, Question):
             return HttpResponseRedirect(reverse('question_detail', args=[obj.slug]))
@@ -65,6 +72,7 @@ class BaseVotingView(LoginRequiredMixin, View):
             return HttpResponseRedirect(reverse('question_detail', kwargs={'slug': obj.question.slug}))
         else:
             return HttpResponseRedirect('/')
+
 
     def get(self, request, *args, **kwargs): # only allow POST requests. This is to prevent users from voting by directly accessing the URL
         return HttpResponseNotAllowed(['POST'])
