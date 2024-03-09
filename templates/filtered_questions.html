@@ -165,7 +165,9 @@
           {% if question|is_bookmarked_by:user %}
           <form method="POST" action="{% url 'delete_bookmark' question.id %}">
             {% csrf_token %}
-            <i class="fas fa-bookmark delete-bookmark"></i> Unbookmark
+            <button class="btn btn-outline-secondary btn-sm" type="submit">
+              <i class="fas fa-bookmark delete-bookmark"></i> Unbookmark
+            </button>
           </form>
           {% else %}
           <form method="POST" action="{% url 'create_bookmark' question_id=question.id %}">

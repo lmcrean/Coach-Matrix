@@ -84,7 +84,7 @@ class AnswerUpvote(BaseVotingView):
     model = Answer
     vote_type = 'upvotes'
 
-    def get_redirect_url(self, obj): # Adjusted to handle slug correctly
+    def get_redirect_url(self, obj, origin_page=None):
         return redirect('question_detail', slug=obj.question.slug)
 
 class AnswerDownvote(BaseVotingView):
@@ -92,5 +92,5 @@ class AnswerDownvote(BaseVotingView):
     model = Answer
     vote_type = 'downvotes'
 
-    def get_redirect_url(self, obj): # Adjusted to handle slug correctly
+    def get_redirect_url(self, obj, origin_page=None):
         return redirect('question_detail', slug=obj.question.slug)
