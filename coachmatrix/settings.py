@@ -28,7 +28,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 X_FRAME_OPTION = 'SAMEORIGIN'
 
@@ -36,6 +36,7 @@ ALLOWED_HOSTS = [
     '8000-lmcrean-coachmatrix-zp6cz7sdhxw.ws-eu106.gitpod.io',
     '8000-lmcrean-coachmatrix-l20rc4qf4rn.ws-eu107.gitpod.io',
     '8000-lmcrean-coachmatrix-40h4yerdbqh.ws-eu108.gitpod.io',
+    'coach-matrix-d2cd1e717f81.herokuapp.com',
     'localhost',
     'localhost:8000',
     '127.0.0.1',

@@ -23,39 +23,62 @@ class BaseVotingView(LoginRequiredMixin, View):
     model = None
     vote_type = None
 
+    def update_reputation(self, user_profile, action, vote_type):
+        """
+        Update the user's reputation based on the action and vote type.
+        Actions: 'add' or 'remove'
+        Vote types: 'upvotes' or 'downvotes'
+
+        VALIDATION CRITERIA for REPUTATION POINTS
+            1. Rep points never go below 0, if a user on 0 rep points recieves a downvote then the -1 is discounted to remain at 0 instead of -1
+            2. if user A has a mix of upvotes frrom User B and downvotes from User C, and then user B with upvotes deletes their account, then User A's reputation points are capped at 0 instead of a negative value 
+            3. if user A has 7 reputation points, a mix of 5 upvotes frrom User B and 2 upvotes from User C, and then user B with upvotes deletes their account, then User A's reputation points reduces from 7 to 2 reputation points
+            4. If user A recieves 4 negative points from  User B, then has one negative vote removed, it should stay at 0. Only positive votes can add reputation points, providing the user has more positive votes than negative votes.
+        """
+        net_votes = user_profile.user.question_upvotes.count() + user_profile.user.answer_upvotes.count() - user_profile.user.question_downvotes.count() - user_profile.user.answer_downvotes.count()
+
+        if action == 'add':
+            if vote_type == 'upvotes':
+                user_profile.reputation += 1
+            elif vote_type == 'downvotes' and net_votes > 0:
+                user_profile.reputation = max(user_profile.reputation - 1, 0)
+        elif action == 'remove':
+            if vote_type == 'upvotes' and net_votes >= 0:
+                user_profile.reputation = max(user_profile.reputation - 1, 0)
+            elif vote_type == 'downvotes' and net_votes > 0:
+                user_profile.reputation += 1
+
+        user_profile.save()
+
     def post(self, request, *args, **kwargs):
-        identifier = kwargs.get('pk') or kwargs.get('slug') # Adjusted to handle slug correctly
+        identifier = kwargs.get('pk') or kwargs.get('slug')
         obj = get_object_or_404(self.model, slug=identifier) if 'slug' in kwargs else get_object_or_404(self.model, pk=identifier)
+        user_profile = UserProfile.objects.get(user=obj.author)
 
         if obj.author == request.user:
             messages.error(request, "You cannot vote on your own post.")
             return self.get_redirect_url(obj)
 
-        opposite_vote_type = 'downvotes' if self.vote_type == 'upvotes' else 'upvotes'
         vote_attr = getattr(obj, self.vote_type)
-        opposite_vote_attr = getattr(obj, opposite_vote_type)
-        user_profile = UserProfile.objects.get(user=obj.author)
-        origin_page = request.POST.get('origin_page', '')
+        opposite_vote_attr = getattr(obj, 'downvotes' if self.vote_type == 'upvotes' else 'upvotes')
 
         if opposite_vote_attr.filter(id=request.user.id).exists():
             messages.error(request, "Please remove your existing vote before voting in the opposite direction.")
-        elif vote_attr.filter(id=request.user.id).exists():
+            return self.get_redirect_url(obj)
+
+        vote_already_exists = vote_attr.filter(id=request.user.id).exists()
+
+        if vote_already_exists:
             vote_attr.remove(request.user)
+            self.update_reputation(user_profile, 'remove', self.vote_type)
             messages.success(request, "Your vote has been removed.")
         else:
             vote_attr.add(request.user)
+            self.update_reputation(user_profile, 'add', self.vote_type)
             messages.success(request, "Your vote has been added.")
 
-        if vote_attr.filter(id=request.user.id).exists():  # If vote is being added
-            user_profile.reputation = max(user_profile.reputation + 1 if self.vote_type == 'upvotes' else user_profile.reputation - 1, 0) # This ensures adding an upvote increases reputation and adding a downvote decreases reputation, but doesn't decrease reputation below 0
-        else:  # If vote is being removed
-            if self.vote_type == 'downvotes':
-                user_profile.reputation = max(user_profile.reputation + 1, 0) # This ensures removing a downvote doesn't increase reputation below 0
-            else:
-                user_profile.reputation = max(user_profile.reputation - 1, 0) # This ensures removing an upvote doesn't decrease reputation below 0
-        user_profile.save()
+        return self.get_redirect_url(obj)
 
-        return self.get_redirect_url(obj, origin_page)
 
     def get_redirect_url(self, obj, origin_page):
         if origin_page:  # Only proceed if origin_page is not an empty string
