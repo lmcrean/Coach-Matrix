@@ -36,7 +36,7 @@ class CreateBookmark(LoginRequiredMixin, View):
         question_id = self.kwargs.get('question_id')
         question = get_object_or_404(Question, id=question_id)
         Bookmark.objects.get_or_create(user=request.user, question=question)
-        return HttpResponseRedirect(reverse('question_detail', args=[question.slug]))
+        return redirect(request.META.get('HTTP_REFERER', 'fallback_url'))
 
 class DeleteBookmark(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
