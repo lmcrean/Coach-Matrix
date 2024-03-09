@@ -1,6 +1,4 @@
-# main_forum/models.py
-
-# this file will contain the models for the main_forum app. The models will include the Question, Answer, Upvote, Downvote, UserProfile, and Bookmark classes.
+# main_forum/user_profile_model.py
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -19,6 +17,11 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def save(self, *args, **kwargs): # Ensure reputation is never less than 0
+        if self.reputation < 0:
+            self.reputation = 0
+        super(UserProfile, self).save(*args, **kwargs)
 
 # Signal to create or update user profile upon saving a User instance
 @receiver(post_save, sender=User)

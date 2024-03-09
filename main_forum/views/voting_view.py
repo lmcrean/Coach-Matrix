@@ -46,9 +46,12 @@ class BaseVotingView(LoginRequiredMixin, View):
             messages.success(request, "Your vote has been added.")
 
         if vote_attr.filter(id=request.user.id).exists():  # If vote is being added
-            user_profile.reputation += 1 if self.vote_type == 'upvotes' else -1
+            user_profile.reputation = max(user_profile.reputation + 1 if self.vote_type == 'upvotes' else user_profile.reputation - 1, 0) # This ensures adding an upvote increases reputation and adding a downvote decreases reputation, but doesn't decrease reputation below 0
         else:  # If vote is being removed
-            user_profile.reputation -= 1 if self.vote_type == 'upvotes' else 1
+            if self.vote_type == 'downvotes':
+                user_profile.reputation = max(user_profile.reputation + 1, 0) # This ensures removing a downvote doesn't increase reputation below 0
+            else:
+                user_profile.reputation = max(user_profile.reputation - 1, 0) # This ensures removing an upvote doesn't decrease reputation below 0
         user_profile.save()
 
         return self.get_redirect_url(obj, origin_page)
