@@ -20,20 +20,15 @@ class UserProfile(models.Model):
     This is currently in testing
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-    reputation = models.IntegerField(default=0)
 
     def __str__(self):
         return self.user.username
 
-    def save(self, *args, **kwargs): # Ensure reputation is never less than 0
-        if self.reputation < 0:
-            self.reputation = 0
+    def save(self, *args, **kwargs):
         super(UserProfile, self).save(*args, **kwargs)
 
-# Signal to create or update user profile upon saving a User instance. Need to establish if still needed.
 @receiver(post_save, sender=User)
-def create_or_update_user_profile(sender, instance, created, **kwargs):
+def create_user_profile_and_reputation(sender, instance, created, **kwargs):
     if created:
-        UserProfile.objects.create(user=instance)
-    instance.profile.save()
-    super().save(*args, **kwargs) # super() is used to call the parent class's method. In this case, it is used to call the save method of the parent class, which is the User model. This is used to ensure that the user profile is saved when the user is saved.
+        UserProfile.objects.get_or_create(user=instance)
+        ReputationPoints.objects.get_or_create(user=instance)
