@@ -18,6 +18,8 @@ class Question(models.Model):
     This class will create a user question along with the question's subject, slug, author, featured image, excerpt, updated_on, content, created_on, status, upvotes, downvotes, subject, body, standards, answercount, and views.
 
     Key Parameters: The body can be no longer than 10000 characters. When choosing teacher standard, they can tag the question with up to 3 standards.
+
+    Reputation points are retrieved through {{ question.author.reputation_points.reputation }}
     """
     subject = models.CharField(max_length=100, help_text='Enter a subject line for your question.', unique=True)
     slug = models.SlugField(max_length=200, unique=True) # slug is a human-readable unique identifier for an object, which is used in URLs. It is usually a hyphenated lowercase version of the subject.
@@ -36,7 +38,19 @@ class Question(models.Model):
     net_votes = models.IntegerField(default=0)
     tags = TaggableManager()
 
+    @property
+    def author_reputation(self):
+        """
+        This is a property that retrieves the user's reputation points from the user's profile. There should be one author_reputation for each question instance.
 
+        it is called in the question template to display the author's reputation points with {{ question.author_reputation }}.
+
+        If there is an error, it should return 0.
+
+        This is currently in testing.
+        """
+        return self.author.reputation_points.reputation if hasattr(self.author, 'reputation_points') else 0
+    
     def save(self, *args, **kwargs):
         # Determine whether this is a new instance or an update
         is_new = self._state.adding
@@ -80,9 +94,13 @@ class Question(models.Model):
         else:
             return self.created_on.strftime('%b %d, %Y') # else the question was created in a previous year
 
-# Signal handlers to update net_votes when upvotes or downvotes change
 @receiver(m2m_changed, sender=Question.upvotes.through)
 @receiver(m2m_changed, sender=Question.downvotes.through)
 def update_net_votes(sender, instance, **kwargs):
+    """
+    Update net votes when upvotes or downvotes change.
+    
+    Need to test if this is still needed.
+    """
     instance.net_votes = instance.upvotes.count() - instance.downvotes.count()
     instance.save()
