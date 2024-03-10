@@ -5,7 +5,9 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
-from .models import UserProfile, Question, Answer
+from .models import UserProfile, Question, Answer, ReputationPoints
+
+
 
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
@@ -38,3 +40,9 @@ class AnswerAdmin(admin.ModelAdmin):
 
     def approve_answers(self, request, queryset):
         queryset.update(approved=True)
+
+@admin.register(ReputationPoints)
+class ReputationPointsAdmin(admin.ModelAdmin):
+    list_display = ('user', 'reputation', 'date_awarded')
+    search_fields = ('user__username', 'reputation')
+    list_filter = ('date_awarded',)
