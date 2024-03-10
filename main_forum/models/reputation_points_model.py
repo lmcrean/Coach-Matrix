@@ -13,6 +13,8 @@ class ReputationPoints(models.Model):
     """
     This class will create a user's reputation points along with the user, reputation, and date awarded.
 
+    Each user has their own reputation points.
+
     Key Parameters: The reputation can be no longer than 10000 characters.
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="reputation_points")
