@@ -10,7 +10,6 @@ from django_quill.fields import QuillField
 from django.db.models.signals import m2m_changed, post_save
 from django.dispatch import receiver
 from taggit.managers import TaggableManager
-from .reputation_points_model import ReputationPoints
 
 class UserProfile(models.Model):
     """
@@ -25,9 +24,12 @@ class UserProfile(models.Model):
     def get_reputation(self):
         """
         This method retrieves the user's reputation points from the main_forum/models/reputation_points_model.py. It's useful for getting the user's reputation points in the template, and centralising the data.
+
+        This is currently in testing and possibly not needed.
         """
-        reputation_points_instance, created = ReputationPoints.objects.get_or_create(user=self.user)
-        return reputation_points_instance.reputation
+        from .reputation_points_model import ReputationPoints
+        reputation, created = ReputationPoints.objects.get_or_create(user=self.user)
+        return reputation.reputation
 
     def __str__(self):
         return self.user.username
@@ -43,3 +45,4 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
     instance.profile.save()
+    super().save(*args, **kwargs) # super() is used to call the parent class's method. In this case, it is used to call the save method of the parent class, which is the User model. This is used to ensure that the user profile is saved when the user is saved.
