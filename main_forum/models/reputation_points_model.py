@@ -2,7 +2,6 @@
 
 from django.db import models
 from django.contrib.auth.models import User
-from .user_profile_model import UserProfile
 from django.db.models.signals import post_save
 from django.utils import timezone
 from datetime import timedelta
@@ -16,12 +15,9 @@ class ReputationPoints(models.Model):
 
     Key Parameters: The reputation can be no longer than 10000 characters.
     """
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="reputation")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="reputation_points")
     reputation = models.IntegerField(default=0)
     date_awarded = models.DateTimeField(auto_now_add=True)
-
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-    reputation = models.IntegerField(default=0)
 
     def calculate_net_votes(self):
         """
