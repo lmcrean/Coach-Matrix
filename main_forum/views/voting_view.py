@@ -41,7 +41,7 @@ class BaseVotingView(LoginRequiredMixin, View):
         opposite_vote_attr = getattr(obj, 'downvotes' if self.vote_type == 'upvotes' else 'upvotes')
         vote_already_exists = vote_attr.filter(id=request.user.id).exists()
         action = 'remove' if vote_already_exists else 'add'
-        
+        origin_page = request.META.get('HTTP_REFERER', '/')  # Capture the referring page
 
         if obj.author == request.user:
             messages.error(request, "You cannot vote on your own post.")
@@ -58,10 +58,10 @@ class BaseVotingView(LoginRequiredMixin, View):
             vote_attr.add(request.user) # add the vote if it does not exist
             messages.success(request, "Your vote has been added.")
 
-        return self.get_redirect_url(obj)
+        return self.get_redirect_url(obj, origin_page=origin_page)
 
 
-    def get_redirect_url(self, obj, origin_page):
+    def get_redirect_url(self, obj, origin_page='/'):
         """
         This method is overridden in the specific views for each type of vote to redirect the user to the appropriate page after voting.
         """
