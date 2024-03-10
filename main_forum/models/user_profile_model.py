@@ -15,21 +15,12 @@ class UserProfile(models.Model):
     """
     This stores additional information to the Django User model, including the user's reputation points. The reputation points are calculated based on the user's upvotes and downvotes.
 
-    This should retrieve and attribute the user's reputation points from the main_forum/models/reputation_points_model.py.
+    This is particularly important when the question author's reputation points are called, as the author's reputation points are retrieved from the Reputation Points model through {{ question.author.reputation_points.reputation }} in the question model.
 
+    This is currently in testing
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-
-
-    def get_reputation(self):
-        """
-        This method retrieves the user's reputation points from the main_forum/models/reputation_points_model.py. It's useful for getting the user's reputation points in the template, and centralising the data.
-
-        This is currently in testing and possibly not needed.
-        """
-        from .reputation_points_model import ReputationPoints
-        reputation, created = ReputationPoints.objects.get_or_create(user=self.user)
-        return reputation.reputation
+    reputation = models.IntegerField(default=0)
 
     def __str__(self):
         return self.user.username
@@ -39,7 +30,7 @@ class UserProfile(models.Model):
             self.reputation = 0
         super(UserProfile, self).save(*args, **kwargs)
 
-# Signal to create or update user profile upon saving a User instance
+# Signal to create or update user profile upon saving a User instance. Need to establish if still needed.
 @receiver(post_save, sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
     if created:
