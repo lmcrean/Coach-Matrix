@@ -41,7 +41,7 @@ class BaseVotingView(LoginRequiredMixin, View):
         opposite_vote_attr = getattr(obj, 'downvotes' if self.vote_type == 'upvotes' else 'upvotes')
         vote_already_exists = vote_attr.filter(id=request.user.id).exists()
         action = 'remove' if vote_already_exists else 'add'
-        ReputationPoints.update_reputation_based_on_action(action, self.vote_type) # this is being tested, it should update the user's reputation based on the action and vote type using the reputation points model.
+        
 
         if obj.author == request.user:
             messages.error(request, "You cannot vote on your own post.")
