@@ -24,14 +24,24 @@ class BaseVotingView(LoginRequiredMixin, View):
     vote_type = None
 
     def post(self, request, *args, **kwargs):
+        """
+        This method is called when a user clicks the upvote or downvote button on a question or answer.
+
+        1. if the user is the author of the question or answer, a message is displayed to inform the user that they cannot vote on their own post. obj.author is used to determine the author of the object.
+        2. If the user has already voted in the opposite direction, a message is displayed to remove the existing vote before voting in the opposite direction.  opposite_vote_type is used to determine the opposite vote type for the object.
+        3. If the user has already voted in the same direction, the vote is removed instead of added. This is important to prevent users from voting multiple times in the same direction.
+        4. If the user has not voted, the vote is added. 
+        
+        The method then calls the get_redirect_url method to redirect the user to the appropriate page.
+        """
         identifier = kwargs.get('pk') or kwargs.get('slug')
         obj = get_object_or_404(self.model, slug=identifier) if 'slug' in kwargs else get_object_or_404(self.model, pk=identifier)
         user_profile = UserProfile.objects.get(user=obj.author)
-        vote_attr = getattr(obj, self.vote_type) # get the attribute for the vote type, vote_attr is either upvotes or downvotes
+        vote_attr = getattr(obj, self.vote_type) # this is being tested, vote attr can be upvotes or downvotes
         opposite_vote_attr = getattr(obj, 'downvotes' if self.vote_type == 'upvotes' else 'upvotes')
         vote_already_exists = vote_attr.filter(id=request.user.id).exists()
         action = 'remove' if vote_already_exists else 'add'
-        user_profile.update_reputation_based_on_action(action, self.vote_type) # this is being tested, it should update the user's reputation based on the action and vote type
+        ReputationPoints.update_reputation_based_on_action(action, self.vote_type) # this is being tested, it should update the user's reputation based on the action and vote type using the reputation points model.
 
         if obj.author == request.user:
             messages.error(request, "You cannot vote on your own post.")
@@ -52,6 +62,9 @@ class BaseVotingView(LoginRequiredMixin, View):
 
 
     def get_redirect_url(self, obj, origin_page):
+        """
+        This method is overridden in the specific views for each type of vote to redirect the user to the appropriate page after voting.
+        """
         if origin_page:  # Only proceed if origin_page is not an empty string
             match = re.search(tag_regex, origin_page)
             if match:
@@ -68,7 +81,8 @@ class BaseVotingView(LoginRequiredMixin, View):
             return HttpResponseRedirect('/')
 
 
-    def get(self, request, *args, **kwargs): # only allow POST requests. This is to prevent users from voting by directly accessing the URL
+    def get(self, request, *args, **kwargs): 
+        """only allow POST requests. This is to prevent users from voting by directly accessing the URL"""
         return HttpResponseNotAllowed(['POST'])
 
 class QuestionUpvote(BaseVotingView):
@@ -86,7 +100,7 @@ class AnswerUpvote(BaseVotingView):
     model = Answer
     vote_type = 'upvotes'
 
-    def get_redirect_url(self, obj, origin_page=None):
+    def get_redirect_url(self, obj, origin_page=None): 
         return redirect('question_detail', slug=obj.question.slug)
 
 class AnswerDownvote(BaseVotingView):
