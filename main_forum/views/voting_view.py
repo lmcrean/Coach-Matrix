@@ -65,6 +65,7 @@ class BaseVotingView(LoginRequiredMixin, View):
         """
         This method is overridden in the specific views for each type of vote to redirect the user to the appropriate page after voting.
         """
+        tag_regex = r'/tags/([\w-]+)/'
         if origin_page:  # Only proceed if origin_page is not an empty string
             match = re.search(tag_regex, origin_page)
             if match:
