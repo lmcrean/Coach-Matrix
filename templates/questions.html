@@ -87,7 +87,7 @@
                 <form action="{% url 'question_upvote' question.slug %}" method="POST">
                   {% csrf_token %}
                   <input type="hidden" name="origin_page" value="questions_list" />
-                  <button type="submit" class="circle green">
+                  <button type="submit" class="circle green"> <!-- in testing, clicking here returns the error message -->
                     <div class="triangle upvote"></div>
                   </button>
                   <div class="number" name="net_votes">{{ question.net_votes }}</div>

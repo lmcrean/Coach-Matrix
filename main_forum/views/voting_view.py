@@ -45,11 +45,11 @@ class BaseVotingView(LoginRequiredMixin, View):
 
         if obj.author == request.user:
             messages.error(request, "You cannot vote on your own post.")
-            return self.get_redirect_url(obj)
+            return self.get_redirect_url(obj, origin_page)
 
         if opposite_vote_attr.filter(id=request.user.id).exists():
             messages.error(request, "Please remove your existing vote before voting in the opposite direction.")
-            return self.get_redirect_url(obj)
+            return self.get_redirect_url(obj, origin_page)
 
         if vote_already_exists:
             vote_attr.remove(request.user)
@@ -58,28 +58,19 @@ class BaseVotingView(LoginRequiredMixin, View):
             vote_attr.add(request.user) # add the vote if it does not exist
             messages.success(request, "Your vote has been added.")
 
-        return self.get_redirect_url(obj, origin_page=origin_page)
+        return self.get_redirect_url(obj, origin_page)
 
 
-    def get_redirect_url(self, obj, origin_page='/'):
+    def get_redirect_url(self, obj, origin_page):
         """
         This method is overridden in the specific views for each type of vote to redirect the user to the appropriate page after voting.
         """
         tag_regex = r'/tags/([\w-]+)/'
-        if origin_page:  # Only proceed if origin_page is not an empty string
-            match = re.search(tag_regex, origin_page)
-            if match:
-                # If origin_page matches the filtered tag list pattern, redirect back to that filtered list
-                tag_name = match.group(1)
-                return HttpResponseRedirect(reverse('filtered_questions', args=[tag_name]))
-        elif origin_page == 'questions_list':
-            return HttpResponseRedirect(reverse('questions'))
-        elif isinstance(obj, Question):
-            return HttpResponseRedirect(reverse('question_detail', args=[obj.slug]))
+        if isinstance(obj, Question):
+            # this now works, for further development, need to differentiate between returning to the same page from where started. User needs to vote from questions, question_detail and filter_view
+            return redirect('questions')
         elif isinstance(obj, Answer):
-            return HttpResponseRedirect(reverse('question_detail', kwargs={'slug': obj.question.slug}))
-        else:
-            return HttpResponseRedirect('/')
+            return redirect('question_detail', slug=obj.question.slug)
 
 
     def get(self, request, *args, **kwargs): 
