@@ -34,7 +34,6 @@
 
 {% block content %}
 
-<button id="random-bg-logo-position"> random design variation </button>
 <div class="bg-overlay"></div> <!-- New overlay element -->
 
 <main class="flex-shrink-0 main-bg">
@@ -60,7 +59,7 @@
                 <div class="input">
                     <div>
                         <i class="fa fa-tags"></i>
-                            {{ form.tags | as_crispy_field }} <!--rendering as expected-->
+                            <input type="text" class="form-control px-5" name="tags" id="id_tags"/>
                     </div>
                 </div>
                 <div class="tag-list mb-4"></div>
