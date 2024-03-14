@@ -138,25 +138,28 @@
     </div>
   </div>
 
-  <!-----------------------answers section----------------------->
+  <!-----------------------answers header----------------------->
   {% with answers.count as total_answers %}
   <div class="answer-section-header d-flex justify-content-center ">
-    <h1 class="answer-count text-center mr-2">{{ total_answers }} Answers</h1>
+    <h1 class="answer-count text-center mr-2 mx-3">{{ total_answers }} Answers</h1>
 
     {% if request.GET.sort_by == 'most_votes' %}
-    <a href="?sort_by=newest" class="btn btn-secondary"><i class="fa-solid fa-medal"></i> Most Votes</a>
+    <a href="?sort_by=newest" class="btn btn-secondary mx-3"><i class="fa-solid fa-medal"></i> Most Votes</a>
     {% elif request.GET.sort_by == 'newest' %}
-    <a href="?sort_by=oldest" class="btn btn-secondary"><i class="fa-solid fa-sort-up"></i> Newest First</a>
+    <a href="?sort_by=oldest" class="btn btn-secondary mx-3"><i class="fa-solid fa-sort-up"></i> Newest First</a>
     {% elif request.GET.sort_by == 'oldest' %}
-    <a href="?sort_by=most_votes" class="btn btn-secondary"><i class="fa-solid fa-sort-down"></i> Oldest First</a>
+    <a href="?sort_by=most_votes" class="btn btn-secondary mx-3"><i class="fa-solid fa-sort-down"></i> Oldest First</a>
     {% else %} <!-- Default view, no filter pressed -->
-    <a href="?sort_by=newest" class="btn btn-secondary"><i class="fa-solid fa-medal"></i> Most Votes</a>
+    <a href="?sort_by=newest" class="btn btn-secondary mx-3"><i class="fa-solid fa-medal"></i> Most Votes</a>
     {% endif %}
   </div>
   {% endwith %}
-  {% for answer in answers %}
 
-  <div class="container d-flex flex-column">
+  <!--
+    ANSWERS: this section is the answer cards.
+  -->
+  {% for answer in answers %}
+  <div class="container card d-flex flex-column mb-4 mt-3 rounded p-3">
     <div class="body-and-gutter">
       <div class="icon-column">
         <!-- this column shouold be in a gutter/margin on the right of the main body of text, and just underneath the voting buttons-->
@@ -190,33 +193,33 @@
       <div class="answer-body">
         {{ answer.body.html|safe }}
       </div>
-      <hr><br>
-      </div>
-      <div class="answer-buttons d-flex flex-row justify-content-end">
-        {% if user.is_authenticated and user == answer.author %}
-        <a href="{% url 'answer_update' answer.pk %}">
-        <button type="button" class="btn btn-primary">
+    </div>
+    <div class="answer-buttons d-flex flex-row justify-content-end">
+      {% if user.is_authenticated and user == answer.author %}
+      <a href="{% url 'answer_update' answer.pk %}">
+        <button type="button" class="btn btn-primary mx-2">
           <i class="fas fa-pencil-alt"></i>
           Edit Answer
         </button>
-        </a>
-        <a href="{% url 'answer_delete' answer.pk %}">
-        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAnswerModal-{{ answer.id }}">
+      </a>
+      <a href="{% url 'answer_delete' answer.pk %}">
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+          data-bs-target="#deleteAnswerModal-{{ answer.id }}">
           <i class="fas fa-trash"></i>
           Delete Answer
         </button>
-        </a>
-        {% endif %}
-      </div>
+      </a>
+      {% endif %}
+    </div>
+    <div class="user-info">
+      <hr>
+      <i class="fa fa-user-circle user-icon"></i>
+      <span class="user-asked">Answered by {{ answer.author }} on {{ answer.created_on }}</span>
     </div>
   </div>
 
   <div class="container">
-    <div class="user-info">
-      <hr>
-      <i class="fa fa-user-circle user-icon"></i>
-      <span class="user-asked">Answered by {{ answer.name }} on {{ answer.created_on }}</span>
-    </div>
+
 
 
 
@@ -248,17 +251,6 @@
   </div>
 </div>
 
-
-
-<!-- Trigger/Open The Modal -->
-{% if user.is_authenticated and question.author == user %}
-<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
-  Delete Question
-</button>
-
-<!-- Update Confirmation Modal -->
-<a href="{% url 'question_update' slug=question.slug %}" class="btn btn-primary">Edit this Question</a>
-{% endif %}
 {% endfor %}
 
 <div class="container mb-4 mt-3 ">
@@ -271,7 +263,7 @@
     {% endif %}
 
     {% if user.is_authenticated %}
-    <h3>Leave a answer:</h3>
+    <h3>Leave an answer:</h3>
     <p>Answering as: {{ user.username }}</p>
     <form method="post" style="margin-top: 1.3em;">
       {% csrf_token %}
