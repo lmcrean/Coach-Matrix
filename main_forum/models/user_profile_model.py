@@ -10,6 +10,7 @@ from django_quill.fields import QuillField
 from django.db.models.signals import m2m_changed, post_save
 from django.dispatch import receiver
 from taggit.managers import TaggableManager
+from .reputation_points_model import ReputationPoints
 
 class UserProfile(models.Model):
     """
