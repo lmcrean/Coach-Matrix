@@ -34,6 +34,10 @@ h2, h3, p, a, form, #pause-video {
     font-family: 'GlacialIndifference', sans-serif;
 }
 
+.question-list-header {
+    font-family: 'YesevaOne', cursive !important;
+}
+
 h2 {
     font-size: 2rem;
     font-weight: 500;

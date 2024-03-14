@@ -42,7 +42,7 @@
             <!-- Expanded Column 1 -->
             <div class="col-lg-8 col-md-12 col-sm-12">
               <a href="{% url 'question_detail' question.slug  %}" class="question-link">
-                <h2 class="card-title card-header main">{{ question.subject }}</h2>
+                <h2 class="card-title card-header main question-list-header">{{ question.subject }}</h2>
                 <p class="card-text">{{ question.excerpt.html|safe }}</p>
               </a>
               <div class="tags-placeholder p-2 tags">
@@ -120,7 +120,7 @@
           </form>
           {% endif %}
           <!-- Edit Button -->
-          <a href="{% url 'question_update' question.slug %}" class="btn btn-outline-primary btn-sm">
+          <a href="{% url 'question_update' question.slug %}" class="btn btn-outline-primary btn-sm mx-2">
             <i class="fas fa-pencil-alt"></i> Edit
           </a>
           <!-- Delete Button -->
