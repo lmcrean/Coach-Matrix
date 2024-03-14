@@ -73,7 +73,7 @@ class BaseVotingView(LoginRequiredMixin, View):
 
         if the object is an answer, the method redirects the user to the question detail page for the question that the answer belongs to.
         """
-        filtered_questions_pattern = r'questions/tag/(?P<slug>[\w-]+)/$'
+        filtered_questions_pattern = r'/questions/tag/(?P<slug>[\w-]+)/$'
         question_detail_pattern = r'/(?P<slug>[\w-]+)/$'
         question_list_pattern = r'/questions/$'
         if isinstance(obj, Question):
