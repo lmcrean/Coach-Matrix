@@ -81,15 +81,15 @@ class BaseVotingView(LoginRequiredMixin, View):
 
         if the object is an answer, the method redirects the user to the question detail page for the question that the answer belongs to.
         """
-        filtered_questions_pattern = r'/questions/tag/(?P<slug>[\w-]+)/$'
-        filtered_questions_pattern_most_recent = r'/questions/tag/(?P<slug>[\w-]+)/?sort_by=recent' # testing
-        filtered_questions_pattern_most_votes = r'/questions/tag/(?P<slug>[\w-]+)/?sort_by=votes' # testing
+        filtered_questions_pattern = r'/questions/tag/(?P<slug>[\w-]+)/$' # test pass
+        filtered_questions_pattern_most_recent = r'/questions/tag/(?P<slug>[\w-]+)/\?sort_by=recent' # testing fails, expecting to reach an url such as http://coachmatrix.org/questions/tag/health/?sort_by=recent
+        filtered_questions_pattern_most_votes = r'/questions/tag/(?P<slug>[\w-]+)/\?sort_by=votes' # testing fails
 
-        question_list_pattern = r'/questions/$'
-        question_list_pattern_most_recent = r'/questions/?sort_by=recent' # testing fails
-        question_list_pattern_most_votes = r'/questions/?sort_by=votes' # testing fails
+        question_list_pattern = r'/questions/$' # test pass
+        question_list_pattern_most_recent = r'/questions/\?sort_by=recent' # testing fails, expecting to reach an url such as http://coachmatrix.org/questions/?sort_by=recent
+        question_list_pattern_most_votes = r'/questions/\?sort_by=votes' # testing fails
 
-        question_detail_pattern = r'/(?P<slug>[\w-]+)/$'
+        question_detail_pattern = r'/(?P<slug>[\w-]+)/$' # test pass
         
         if isinstance(obj, Question):
             # Check for specific filtered questions patterns -- testing
