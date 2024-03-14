@@ -7,9 +7,10 @@
       <div class="error-modal px-10">
         <h1>403 Error</h1>
         <p>Page Forbidden. Looks like you're trying to access forbidden content. Please log out and signed in to the correct account.</p>
-        <a href="javascript:history.back()" class="back-button"><button>Go Back</button></a>
-        <a href="{% url 'account_logout' %}"><button>Logout</button></a>
-        <a href="{% url 'home' %}" class="home"><button>Home</button></a>
+        <hr>
+        <a href="javascript:history.back()"><button class="btn btn-secondary">Go Back</button></a>
+        <a href="{% url 'account_logout' %}"><button class="btn btn-primary ">Logout</button></a>
+        <a href="{% url 'home' %}"><button class="btn btn-secondary">Home</button></a>
       </div>
     </div>
   </div>
