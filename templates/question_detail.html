@@ -24,7 +24,8 @@
         <div class="question-info d-flex justify-content-left">
           <span class="question-date">18th Nov</span>
           <span class="spacer mx-1"></span>
-          <span class="question-answers">5 Answers</span>
+          {% with question.answers.count as answer_count %}
+          <span class="question-answers"> {{ answer_count }} Answers</span>
         </div>
 
       </div>
@@ -184,24 +185,26 @@
           </button>
           {% endif %}
         </form>
-        <div class="icon-action"><i class="far fa-bookmark"></i></div>
-        {% if user.is_authenticated and user == answer.author %}
-        <div class="answer-actions">
-          <!-- Edit Answer Button -->
-          <a href="{% url 'answer_update' answer.pk %}" class="btn btn-outline-white btn-sm">
-            <i class="fas fa-pencil-alt"></i><br>Edit
-          </a>
-          <br>
-          <!-- Delete Answer Button -->
-          <button type="button" class="btn btn-outline-white btn-sm" data-bs-toggle="modal"
-            data-bs-target="#deleteAnswerModal-{{ answer.id }}">
-            <i class="fas fa-trash"></i><br>Delete
-          </button>
-        </div>
-        {% endif %}
       </div>
       <div class="answer-body">
         {{ answer.body.html|safe }}
+      </div>
+      <hr>
+      <div class="answer-buttons d-flex flex-row justify-content-end">
+        {% if user.is_authenticated and user == answer.author %}
+        <a href="{% url 'answer_update' answer.pk %}" class="btn btn-primary">
+        <button type="button" class="btn btn-primary">
+          <i class="fas fa-pencil-alt"></i>
+          Edit Answer
+        <button>
+        </a>
+        <a href="{% url 'answer_delete' answer.pk %}" class="btn btn-danger">
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAnswerModal-{{ answer.id }}">
+          <i class="fas fa-trash"></i>
+          Delete Answer
+        </button>
+        </a>
+        {% endif %}
       </div>
     </div>
 
