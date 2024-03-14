@@ -64,11 +64,27 @@ class BaseVotingView(LoginRequiredMixin, View):
     def get_redirect_url(self, obj, origin_page):
         """
         This method is overridden in the specific views for each type of vote to redirect the user to the appropriate page after voting.
+
+        if the object is a question, the method checks the referring page to determine the appropriate redirect URL:
+
+            1. If the referring page is the filtered questions page, the method redirects the user to the filtered questions page with the same tag.
+            2. If the referring page is the question list page, the method redirects the user to the question list page.
+            3. If the referring page is the question detail page, the method redirects the user to the question detail page for the question that was voted on.
+
+        if the object is an answer, the method redirects the user to the question detail page for the question that the answer belongs to.
         """
-        tag_regex = r'/tags/([\w-]+)/'
+        filtered_questions_pattern = r'questions/tag/(?P<slug>[\w-]+)/$'
+        question_detail_pattern = r'/(?P<slug>[\w-]+)/$'
+        question_list_pattern = r'/questions/$'
         if isinstance(obj, Question):
-            # this now works, for further development, need to differentiate between returning to the same page from where started. User needs to vote from questions, question_detail and filter_view
-            return redirect('questions')
+            if re.search(filtered_questions_pattern, origin_page):
+                return redirect('filter_by_tag', tag_slug=re.search(filtered_questions_pattern, origin_page).group('slug'))
+            elif re.search(question_list_pattern, origin_page):
+                return redirect('questions')
+            elif re.search(question_detail_pattern, origin_page):
+                return redirect('question_detail', slug=obj.slug)
+            else:
+                return redirect('questions') # default to questions page, shouldn't be necessary
         elif isinstance(obj, Answer):
             return redirect('question_detail', slug=obj.question.slug)
 
