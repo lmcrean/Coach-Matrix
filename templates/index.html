@@ -40,14 +40,6 @@
     </div>
   
     <div id="login-form">
-        <form>
-        <a href="{% provider_login_url 'google' %}?next=/questions/"><button type="button" class="btn -box-sd-effect" > <i class="fa fa-google fa-lg" aria-hidden="true"></i> sign in with google</button></a>
-        </form>
-
-        <hr>
-        <p class="text-center">or</p>
-        <hr>
-
         <!--LOG IN form-->
         <form class="login" method="post" action="{% url 'custom_login' %}">
           {% csrf_token %}
@@ -67,12 +59,6 @@
           <input type="password" name="password2" placeholder="Repeat password" required />
           <button type="submit" class="btn signup" id="create-account">Create Account</button>
       </form>
-
-        <hr>
-        <p class="text-center">or</p>
-        <hr>
-        
-        <a href="{% provider_login_url 'google' %}?next=/questions/"><button type="button" class="btn -box-sd-effect" id="google-signup"> <i class="fa fa-google fa-lg" aria-hidden="true"></i> sign up with google</button></a>
         <hr>
         <p>Clicking <strong>create account</strong> means that you are agree to our <a href="https://generator.lorem-ipsum.info/terms-and-conditions" target="_blank" rel="noopener noreferrer"> terms of services</a>.</p>
         </a>
