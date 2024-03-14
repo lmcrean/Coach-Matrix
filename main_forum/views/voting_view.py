@@ -86,21 +86,21 @@ class BaseVotingView(LoginRequiredMixin, View):
         filtered_questions_pattern_most_votes = r'/questions/tag/(?P<slug>[\w-]+)/\?sort_by=votes' # testing fails
 
         question_list_pattern = r'/questions/$' # test pass
-        question_list_pattern_most_recent = r'/questions/\?sort_by=recent' # testing fails, expecting to reach an url such as http://coachmatrix.org/questions/?sort_by=recent
-        question_list_pattern_most_votes = r'/questions/\?sort_by=votes' # testing fails
+        question_list_pattern_most_recent = r'/questions/\?sort_by=recent' # testing passes
+        question_list_pattern_most_votes = r'/questions/\?sort_by=votes' # testing passes
 
         question_detail_pattern = r'/(?P<slug>[\w-]+)/$' # test pass
         
         if isinstance(obj, Question):
-            # Check for specific filtered questions patterns -- testing
-            if re.search(filtered_questions_pattern_most_recent, origin_page):
-                tag_slug = re.search(filtered_questions_pattern_most_recent, origin_page).group('slug')
-                return HttpResponseRedirect(reverse('filter_by_tag', kwargs={'slug': tag_slug}) + '?sort_by=recent')
-            elif re.search(filtered_questions_pattern_most_votes, origin_page):
-                tag_slug = re.search(filtered_questions_pattern_most_votes, origin_page).group('slug')
-                return HttpResponseRedirect(reverse('filter_by_tag', kwargs={'slug': tag_slug}) + '?sort_by=votes')
+            # Check for specific filtered questions patterns -- testing fails when voting from an url such as http://coachmatrix.org/questions/tag/tag2/?sort_by=recent
+            if re.search(filtered_questions_pattern, origin_page):
+                tag_slug = re.search(filtered_questions_pattern, origin_page).group('slug')
+                if '?sort_by=recent' in origin_page:
+                    return HttpResponseRedirect(reverse('filter_by_tag', kwargs={'tag_slug': tag_slug}) + '?sort_by=recent')
+                elif '?sort_by=votes' in origin_page:
+                    return HttpResponseRedirect(reverse('filter_by_tag', kwargs={'tag_slug': tag_slug}) + '?sort_by=votes')
             
-            # Check for question list patterns with sort parameters -- testing
+            # Check for question list patterns with sort parameters -- testing passes
             elif re.search(question_list_pattern_most_recent, origin_page):
                 return HttpResponseRedirect(reverse('questions') + '?sort_by=recent')
             elif re.search(question_list_pattern_most_votes, origin_page):
