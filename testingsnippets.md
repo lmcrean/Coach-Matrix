@@ -164,3 +164,23 @@ currently left out of ask_questions.html, as envisioned to update as an advanced
       <i class="fas fa-flag"></i> Flag
     </button>
 ```
+
+## sidebar for answers
+
+```html
+    <div class="icon-action"><i class="far fa-bookmark"></i></div>
+        {% if user.is_authenticated and user == answer.author %}
+        <div class="answer-actions">
+          <!-- Edit Answer Button -->
+          <a href="{% url 'answer_update' answer.pk %}" class="btn btn-outline-white btn-sm">
+            <i class="fas fa-pencil-alt"></i><br>Edit
+          </a>
+          <br>
+          <!-- Delete Answer Button -->
+          <button type="button" class="btn btn-outline-white btn-sm" data-bs-toggle="modal"
+            data-bs-target="#deleteAnswerModal-{{ answer.id }}">
+            <i class="fas fa-trash"></i><br>Delete
+          </button>
+        </div>
+        {% endif %}
+        

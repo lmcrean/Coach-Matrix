@@ -1,3 +1,5 @@
+# main_forum/views/voting_view.py
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect, HttpResponseNotAllowed
@@ -68,19 +70,44 @@ class BaseVotingView(LoginRequiredMixin, View):
         if the object is a question, the method checks the referring page to determine the appropriate redirect URL:
 
             1. If the referring page is the filtered questions page, the method redirects the user to the filtered questions page with the same tag.
+            1.1. If the referring page is the filtered questions page, and the user has toggled on most recent votes, the method redirects the user to the filtered questions page with the same tag and most recent votes.
+            1.2 If the referring page is the filtered questions page, and the user has toggled on most votes, same as above, but for most votes.
+
             2. If the referring page is the question list page, the method redirects the user to the question list page.
+            2.1 If the referring page is the question list page, and the user has toggled on most recent votes, the method redirects the user to the question list page with most recent votes.
+            2.2 If the referring page is the question list page, and the user has toggled on most votes, same as above, but for most votes.
+
             3. If the referring page is the question detail page, the method redirects the user to the question detail page for the question that was voted on.
 
         if the object is an answer, the method redirects the user to the question detail page for the question that the answer belongs to.
         """
         filtered_questions_pattern = r'/questions/tag/(?P<slug>[\w-]+)/$'
-        question_detail_pattern = r'/(?P<slug>[\w-]+)/$'
+        filtered_questions_pattern_most_recent = r'/questions/tag/(?P<slug>[\w-]+)/?sort_by=recent' # testing
+        filtered_questions_pattern_most_votes = r'/questions/tag/(?P<slug>[\w-]+)/?sort_by=votes' # testing
+
         question_list_pattern = r'/questions/$'
+        question_list_pattern_most_recent = r'/questions/?sort_by=recent' # testing
+        question_list_pattern_most_votes = r'/questions/?sort_by=votes' # testing
+
+        question_detail_pattern = r'/(?P<slug>[\w-]+)/$'
+        
         if isinstance(obj, Question):
-            if re.search(filtered_questions_pattern, origin_page):
-                return redirect('filter_by_tag', tag_slug=re.search(filtered_questions_pattern, origin_page).group('slug'))
+            # ordered by most specific to least specific patterns, still testing
+            if re.search(filtered_questions_pattern_most_recent, origin_page):
+                return redirect('filter_by_tag', tag_slug=re.search(filtered_questions_pattern_most_recent, origin_page).group('slug')) # testing
+            elif re.search(filtered_questions_pattern_most_votes, origin_page):
+                return redirect('filter_by_tag', tag_slug=re.search(filtered_questions_pattern_most_votes, origin_page).group('slug')) # testing
+            elif re.search(question_list_pattern_most_recent, origin_page):
+                url = reverse('questions') + '?sort_by=recent'
+                return redirect(url) # testing
+            elif re.search(question_list_pattern_most_votes, origin_page):
+                url = reverse('questions') + '?sort_by=votes'
+                return redirect(url) # testing
+
+            elif re.search(filtered_questions_pattern, origin_page):
+                return redirect('filter_by_tag', tag_slug=re.search(filtered_questions_pattern, origin_page).group('slug')) # testing passes from here
             elif re.search(question_list_pattern, origin_page):
-                return redirect('questions')
+                return redirect('questions') 
             elif re.search(question_detail_pattern, origin_page):
                 return redirect('question_detail', slug=obj.slug)
             else:
