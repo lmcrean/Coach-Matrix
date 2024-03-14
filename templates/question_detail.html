@@ -156,7 +156,7 @@
   {% endwith %}
   {% for answer in answers %}
 
-  <div class="container">
+  <div class="container d-flex flex-column">
     <div class="body-and-gutter">
       <div class="icon-column">
         <!-- this column shouold be in a gutter/margin on the right of the main body of text, and just underneath the voting buttons-->
@@ -190,16 +190,17 @@
       <div class="answer-body">
         {{ answer.body.html|safe }}
       </div>
-      <hr>
+      <hr><br>
+      </div>
       <div class="answer-buttons d-flex flex-row justify-content-end">
         {% if user.is_authenticated and user == answer.author %}
-        <a href="{% url 'answer_update' answer.pk %}" class="btn btn-primary">
+        <a href="{% url 'answer_update' answer.pk %}">
         <button type="button" class="btn btn-primary">
           <i class="fas fa-pencil-alt"></i>
           Edit Answer
-        <button>
+        </button>
         </a>
-        <a href="{% url 'answer_delete' answer.pk %}" class="btn btn-danger">
+        <a href="{% url 'answer_delete' answer.pk %}">
         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAnswerModal-{{ answer.id }}">
           <i class="fas fa-trash"></i>
           Delete Answer
@@ -208,11 +209,6 @@
         {% endif %}
       </div>
     </div>
-
-
-
-
-
   </div>
 
   <div class="container">
