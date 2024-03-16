@@ -4,12 +4,14 @@
 
 from django import forms
 from django.contrib.auth.models import User
+from django.core.validators import MinLengthValidator
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from ..models import Question, Answer
 from django_quill.forms import QuillFormField
 from taggit.forms import TagField
 from django.contrib.auth.forms import PasswordChangeForm
+import re
 
 
 class QuestionForm(forms.ModelForm):
@@ -19,10 +21,11 @@ class QuestionForm(forms.ModelForm):
     The user can enter a subject line and the main body of the question. They can also tag the question with up to 5 tags. If the user is updating a question, the form needs to be pre-populated with the existing data.
     """
     subject = forms.CharField(
-        max_length=100, 
-        required=True, 
-        label='Enter your question heading here',  # Update the label here
-        help_text='Enter a subject line for your question.'
+        max_length=200,
+        required=True,
+        label='Enter your question heading here',
+        help_text='Enter a subject line for your question.',
+        validators=[MinLengthValidator(10)]
     )
     content = QuillFormField()
     tags = forms.CharField(required=False)
@@ -30,16 +33,16 @@ class QuestionForm(forms.ModelForm):
 
     class Meta:
         """
-        the Meta class is used to specify the model to which the form is associated and the fields from the model you want the form to include.
+        the Meta class is used to specify the model to which the form is associated and the fields from the model to include.
         """
-        model = Question  # Specifies the model in models.py associated with this form
+        model = Question
         fields = ['subject', 'content', 'tags']
 
     def __init__(self, *args, **kwargs):
         """
         This is for checking if the form is bound to an existing instance, i.e. if the form is being used to update an existing question.
 
-        self.fields['tags'].widget.attrs['id'] = 'id_tags' is used to add an id to the tags field so that it can be targeted by JavaScript.
+        self.fields['tags'].widget.attrs['id'] = 'id_tags' is used to add an id to the tags field so that it can be targeted by JavaScript. (yet to be implemented in the project)
 
         If the form is bound to an existing instance, pre-populate the tags field with the existing tags.
         """
@@ -50,13 +53,19 @@ class QuestionForm(forms.ModelForm):
             self.fields['tags'].initial = ' '.join(tag.name for tag in self.instance.tags.all()) # Pre-populate the tags field with the existing tags
 
     def clean_subject(self):
-        subject = self.cleaned_data.get('subject')
-        if self.instance.pk:  # if this form is updating an existing instance
-            if Question.objects.filter(subject=subject).exclude(pk=self.instance.pk).exists(): # Check if a question with the same subject exists, excluding the current question
-                raise forms.ValidationError('A question with this subject already exists.')
-        else: # if this form is creating a new instance
-            if Question.objects.filter(subject=subject).exists():
-                raise forms.ValidationError('A question with this subject already exists.')
+        """
+        This method is used to validate the subject field in further detail from the initial class.
+        """
+        subject = self.cleaned_data.get('subject') # Get the subject from the cleaned data
+        subject = re.sub(' +', ' ', subject)  # Replace any multiple spaces with a single space
+        if re.search(r"[!£$%^&*()\"\">]", subject):
+            raise forms.ValidationError('Special characters are not allowed except "?".')
+        # Ensure the subject does not exist already:
+        query = Question.objects.filter(subject=subject)
+        if self.instance.pk: # If this is an update, exclude the current question from the query
+            query = query.exclude(pk=self.instance.pk)
+        if query.exists():
+            raise forms.ValidationError('A question with this subject already exists.')
         return subject
   
 
