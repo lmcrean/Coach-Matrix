@@ -10,6 +10,16 @@
 
 {% block content %}
 
+{% if form.errors %}
+<div class="alert alert-danger" role="alert">
+    {% for field in form %}
+    {% for error in field.errors %}
+    <p>{{ error }}</p>
+    {% endfor %}
+    {% endfor %}
+</div>
+{% endif %}
+
 <div class="container profile-page mt-5">
     <div class="row">
         <div class="col-12 col-md-6 mx-auto">

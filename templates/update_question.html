@@ -32,6 +32,16 @@
 
 {% block content %}
 
+{% if form.errors %}
+    <div class="alert alert-danger" role="alert">
+        {% for field in form %}
+            {% if field.errors %}
+                <p>{{ field.errors|striptags }}</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+
 <div class="bg-overlay"></div> <!-- New overlay element -->
 
 <main class="flex-shrink-0 main-bg">
