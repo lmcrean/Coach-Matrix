@@ -15,18 +15,20 @@ from crispy_forms.layout import Submit
 from django.core.exceptions import ValidationError
 import re
 from better_profanity import profanity
+from django.contrib.auth import password_validation
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext as _
 
 class CustomLoginForm(AuthenticationForm):
+    """
+    This is called on the landing page and when redirected from unauthorized access.
+    """
     username = forms.CharField(label='Username', required=True)
     password = forms.CharField(label='Password', widget=forms.PasswordInput, required=True)
 
 class CustomSignupForm(UserCreationForm):
     """
-    Custom form for signing up a new user.
-
-    1. The username field is required and must be between 3 to 20 characters long. It can only contain letters and numbers.
-    2. The password field is required and must be between 8 to 30 characters long. It must contain at least one number and one special character.
-    3. The confirm password field is required and must match the password field.
+    This is called on the landing page and when redirected from unauthorized access.
     """
 
     username = forms.CharField(max_length=20, min_length=3, required=True, help_text='Required. 3 to 20 characters. Letters and numbers only.')
@@ -80,12 +82,7 @@ class CustomSignupForm(UserCreationForm):
 
 class ProfileUpdateForm(forms.ModelForm):
     """
-    Custom form for updating the user's profile.
-
-    1. The username field is required and must be between 3 to 20 characters long. It can only contain letters and numbers.
-    2. The first name and last name fields are optional, they must be between 2 to 100 characters long.
-    3. original username validation criteria applies when updating the username.
-    4. user cannot place profanity in first name and last name fields.
+    Custom form for updating the user's profile. This is called when the user wants to update their profile. It is a form that inherits from the UserChangeForm class and validates the new username and name fields as per the original criteria.
     """
     username = forms.CharField(max_length=20, min_length=3, required=True, help_text='Required. 3 to 20 characters. Letters and numbers only.')
     first_name = forms.CharField(max_length=100, min_length=2, required=False, help_text='Optional. 2 to 100 characters.')
@@ -134,6 +131,28 @@ class ProfileUpdateForm(forms.ModelForm):
         return last_name
 
 class CustomPasswordChangeForm(PasswordChangeForm):
+    """
+    This is called when the user wants to change their password. It is a form that inherits from the PasswordChangeForm class and validates the new password as per the original criteria.
+    """
+    def clean_new_password2(self):
+        old_password = self.cleaned_data.get('old_password')
+        new_password1 = self.cleaned_data.get('new_password1')
+        new_password2 = self.cleaned_data.get('new_password2')
+
+        if new_password1 and new_password2:
+            if new_password1 != new_password2:
+                raise ValidationError(_("The two password fields didn’t match."))
+            if new_password1 == old_password:
+                raise ValidationError(_("The new password cannot be the same as your old password."))
+            if not re.search(r'\d', new_password1):
+                raise ValidationError(_("The password must contain at least one number."))
+            if not re.search(r'[!@#$%^&*(),.?":{}|<>]', new_password1):
+                raise ValidationError(_("The password must contain at least one special character."))
+            if len(new_password1) < 8 or len(new_password1) > 30:
+                raise ValidationError(_("Password must be between 8 to 30 characters long."))
+
+        return new_password2
+
     def __init__(self, *args, **kwargs):
         super(CustomPasswordChangeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
