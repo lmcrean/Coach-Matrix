@@ -49,9 +49,15 @@ class AnswerForm(forms.ModelForm) :
         5. check if the body contains any profanity
         """
         body = self.cleaned_data.get('body')
-        body = re.sub(' +', ' ', body)
-        body = re.sub(r'(\n{3,})', '\n\n', body)
         query = Answer.objects.filter(body=body)
+        if re.search(r'\n{3,}', body):
+            raise forms.ValidationError("Please remove any extra new lines from the content.")
+        if re.search(r' {3,}', body):
+            raise forms.ValidationError("Please remove any extra spaces from the content.")
+        if re.search(r"^\s+", body):
+            raise forms.ValidationError("Please remove any extra spaces from the beginning of the content.")
+        if re.search(r"\s+$", body):
+            raise forms.ValidationError("Please remove any extra spaces from the end of the content.")
         if self.instance.pk:
             query = query.exclude(pk=self.instance.pk)
         if query.exists():
