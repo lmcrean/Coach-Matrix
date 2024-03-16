@@ -119,11 +119,19 @@ class QuestionForm(forms.ModelForm):
         """
         tags_string = self.cleaned_data.get('tags', '')
         tags_string = re.sub(' +', ' ', tags_string)  # Collapse multiple spaces to single space
-        tags_list = tags_string.split()
-        
+        tags_list = tags_string.split() # Split the tags string into a list of tag names
+        if tags_string.startswith(' '):
+            raise forms.ValidationError('Tags cannot start with whitespace.')
+        if tags_string.endswith(' '):
+            raise forms.ValidationError('Tags cannot end with whitespace.')
+        if re.search(r"\n", tags_string):
+            raise forms.ValidationError('Tags cannot contain new lines.')
+        if re.search(r"\s{2,}", tags_string):
+            raise forms.ValidationError('Tags cannot contain multiple spaces.')
+        if profanity.contains_profanity(tags_string):
+            raise forms.ValidationError('Please remove any profanity from the tags.')
         if not 1 <= len(tags_list) <= 5:
             raise forms.ValidationError('Please provide between 1 and 5 tags.')
-        
         for tag in tags_list:
             if not 3 <= len(tag) <= 20:
                 raise forms.ValidationError('Each tag must be between 3 and 20 characters.')
