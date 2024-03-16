@@ -27,6 +27,16 @@
 
 {% block content %}
 
+{% if form.errors %}
+    <div class="alert alert-danger" role="alert">
+        {% for field in form %}
+            {% if field.errors %}
+                <p>{{ field.errors|striptags }}</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+
 <div class="bg-overlay"></div> <!-- New overlay element -->
 
 <main class="flex-shrink-0 main-bg">
@@ -41,18 +51,19 @@
             
             <h2 class="text-center">Subject line</h2>
             {{ form.subject | as_crispy_field }}
-
+            <!-- rendering as expected INCLUDING validation errors underneath -->
             
             <br>
             <h2 class="text-center">Details</h2>
-            {{ form.content | as_crispy_field }} <!-- rendering as expected-->
+            {{ form.content | as_crispy_field }} 
+            <!-- rendering as expected but does not show validation errors -->
             <br>
             <h2 class="text-center">Tags</h2>
             <div class="tag-input">
                 <div class="input">
                     <div>
                         <i class="fa fa-tags"></i>
-                            <input type="text" class="form-control px-5" name="tags" id="id_tags"/>
+                            <input type="text" class="form-control px-5" name="tags" id="id_tags"/><!-- rendering as expected but does not show validation errors -->
                     </div>
                 </div>
                 <div class="tag-list mb-4"></div>

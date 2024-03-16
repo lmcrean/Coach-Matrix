@@ -24,14 +24,14 @@ class QuestionForm(forms.ModelForm):
         max_length=200,
         required=True,
         label='Enter your question heading here',
-        help_text='Enter a subject line for your question.',
         validators=[MinLengthValidator(10)]
     )
     content = QuillFormField(
         validators=[MinLengthValidator(100), MaxLengthValidator(1000)],
-        help_text='Enter the main body of your question.'
+        label='Enter the main body of your question.',
+        required=True
     )
-    tags = forms.CharField(required=False)
+    tags = forms.CharField(required=True, label='Enter up to 5 tags separated by spaces')
 
 
     class Meta:
@@ -72,8 +72,8 @@ class QuestionForm(forms.ModelForm):
             raise forms.ValidationError('The subject cannot contain new lines.')
         if re.search(r"\s{2,}", subject): # Check for multiple spaces
             raise forms.ValidationError('The subject cannot contain multiple spaces.')
-        if re.search(r"[^a-zA-Z0-9,.\s?]", subject): # Do not allow special characters except "?". Only allow letters, numbers, commas, full stops, and question marks.
-            raise forms.ValidationError('Special characters are not allowed except "?".')
+        if re.search(r"[^a-zA-Z0-9,.\s?\'\"-]", subject): # Check for special characters outside of whitelist
+            raise forms.ValidationError('The special character you have used is not allowed')
         query = Question.objects.filter(subject=subject)
         if self.instance.pk:
             query = query.exclude(pk=self.instance.pk)
@@ -131,7 +131,7 @@ class QuestionForm(forms.ModelForm):
         if profanity.contains_profanity(tags_string):
             raise forms.ValidationError('Please remove any profanity from the tags.')
         if not 1 <= len(tags_list) <= 5:
-            raise forms.ValidationError('Please provide between 1 and 5 tags.')
+            raise forms.ValidationError('Please provide between 1 and 5 tags.') # this currently doesn't show up in the form
         for tag in tags_list:
             if not 3 <= len(tag) <= 20:
                 raise forms.ValidationError('Each tag must be between 3 and 20 characters.')
