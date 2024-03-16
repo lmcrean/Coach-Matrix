@@ -29,7 +29,7 @@ class QuestionForm(forms.ModelForm):
     )
     content = QuillFormField(
         validators=[MinLengthValidator(100), MaxLengthValidator(1000)],
-        help_text='Enter the main body of your question. 100 to 1000 characters.'
+        help_text='Enter the main body of your question.'
     )
     tags = forms.CharField(required=False)
 
@@ -95,7 +95,7 @@ class QuestionForm(forms.ModelForm):
         query = Question.objects.filter(content=content)
         if re.search(r"^\s+", content):
             raise forms.ValidationError('The content cannot start with whitespace.')
-        if re.search(r"\s+$", subject): 
+        if re.search(r"\s+$", content): 
             raise forms.ValidationError('The content cannot end with whitespace.')
         if re.search(r"\s{2,}", content):
             raise forms.ValidationError('The content cannot contain multiple spaces.')
