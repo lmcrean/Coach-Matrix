@@ -60,12 +60,19 @@ class QuestionForm(forms.ModelForm):
         This method is used to validate the subject field in further detail from the initial class.
 
         1. replace any multiple spaces with a single space
-        2. Do not allow special characters except "?"
+        2. Do not allow special characters except "?". Only allow letters, numbers, commas, full stops, and question marks.
         3. Ensure the subject does not exist already (self.instance.pk is used to exclude the current question from the query if this is an update)
         """
         subject = self.cleaned_data.get('subject') # Get the subject from the cleaned data
-        subject = re.sub(' +', ' ', subject)
-        if re.search(r"[!£$%^&*()\"\">]", subject):
+        if re.search(r"^\s+", subject): # Check for leading whitespace
+            raise forms.ValidationError('The subject cannot start with whitespace.')
+        if re.search(r"\s+$", subject): # Check for trailing whitespace
+            raise forms.ValidationError('The subject cannot end with whitespace.')
+        if re.search(r"\n", subject): # Check for new lines
+            raise forms.ValidationError('The subject cannot contain new lines.')
+        if re.search(r"\s{2,}", subject): # Check for multiple spaces
+            raise forms.ValidationError('The subject cannot contain multiple spaces.')
+        if re.search(r"[^a-zA-Z0-9,.\s?]", subject): # Do not allow special characters except "?". Only allow letters, numbers, commas, full stops, and question marks.
             raise forms.ValidationError('Special characters are not allowed except "?".')
         query = Question.objects.filter(subject=subject)
         if self.instance.pk:
@@ -85,9 +92,15 @@ class QuestionForm(forms.ModelForm):
         3. Ensure the content does not exist already (exclude the current question if this is an update)
         """
         content = self.cleaned_data.get('content')
-        content = re.sub(' +', ' ', content)
-        content = re.sub(r'(\n{3,})', '\n\n', content)
         query = Question.objects.filter(content=content)
+        if re.search(r"^\s+", content):
+            raise forms.ValidationError('The content cannot start with whitespace.')
+        if re.search(r"\s+$", subject): 
+            raise forms.ValidationError('The content cannot end with whitespace.')
+        if re.search(r"\s{2,}", content):
+            raise forms.ValidationError('The content cannot contain multiple spaces.')
+        if re.search(r"\n{3,}", content):
+            raise forms.ValidationError('The content cannot contain multiple new lines.')
         if self.instance.pk:
             query = query.exclude(pk=self.instance.pk)
         if query.exists():

@@ -21,7 +21,7 @@ class Question(models.Model):
 
     Reputation points are retrieved through {{ question.author.reputation_points.reputation }}
     """
-    subject = models.CharField(max_length=100, help_text='Enter a subject line for your question.', unique=True)
+    subject = models.CharField(max_length=200, help_text='Enter a subject line for your question.', unique=True)
     slug = models.SlugField(max_length=200, unique=True) # slug is a human-readable unique identifier for an object, which is used in URLs. It is usually a hyphenated lowercase version of the subject.
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="question_posts"
