@@ -14,6 +14,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django.core.exceptions import ValidationError
 import re
+from better_profanity import profanity
 
 class CustomLoginForm(AuthenticationForm):
     username = forms.CharField(label='Username', required=True)
@@ -41,12 +42,15 @@ class CustomSignupForm(UserCreationForm):
         1. get the username from the cleaned data
         2. check if the username only contains letters and numbers
         3. check if the username already exists
+        4. check if username contains profanity
         """
         username = self.cleaned_data['username'].strip()
         if not re.match(r'^\w+$', username):
             raise ValidationError("Username can only contain letters and numbers.")
         if User.objects.filter(username=username).exists():
             raise ValidationError("A user with that username already exists.")
+        if profanity.contains_profanity(username):
+            raise ValidationError("Please remove any profanity from the username.")
         return username
 
     def clean_password2(self):
@@ -75,9 +79,17 @@ class CustomSignupForm(UserCreationForm):
 
 
 class ProfileUpdateForm(forms.ModelForm):
-    username = forms.CharField(max_length=100)
-    first_name = forms.CharField(max_length=100, required=False)
-    last_name = forms.CharField(max_length=100, required=False)
+    """
+    Custom form for updating the user's profile.
+
+    1. The username field is required and must be between 3 to 20 characters long. It can only contain letters and numbers.
+    2. The first name and last name fields are optional, they must be between 2 to 100 characters long.
+    3. original username validation criteria applies when updating the username.
+    4. user cannot place profanity in first name and last name fields.
+    """
+    username = forms.CharField(max_length=20, min_length=3, required=True, help_text='Required. 3 to 20 characters. Letters and numbers only.')
+    first_name = forms.CharField(max_length=100, min_length=2, required=False, help_text='Optional. 2 to 100 characters.')
+    last_name = forms.CharField(max_length=100, min_length=2, required=False, help_text='Optional. 2 to 100 characters.')
 
     class Meta:
         model = User
@@ -89,6 +101,37 @@ class ProfileUpdateForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Update Profile'))
 
+    def clean_username(self):
+        """
+        1. get the username from the cleaned data
+        2. check if the username only contains letters and numbers
+        3. check if the username already exists, excluding the current user
+        4. check if username contains profanity
+        """
+        username = self.cleaned_data['username'].strip()
+        if not re.match(r'^\w+$', username):
+            raise ValidationError("Username can only contain letters and numbers.")
+        if User.objects.filter(username=username).exclude(pk=self.instance.pk).exists():
+            raise ValidationError("A user with that username already exists.")
+        if profanity.contains_profanity(username):
+            raise ValidationError("Please remove any profanity from the username.")
+        return username
+
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get('first_name', '').strip()
+        if first_name and (len(first_name) < 2 or len(first_name) > 100):
+            raise ValidationError("First name must be between 2 to 100 characters.")
+        if profanity.contains_profanity(first_name):
+            raise ValidationError("Please remove any profanity from the first name.")
+        return first_name
+
+    def clean_last_name(self):
+        last_name = self.cleaned_data.get('last_name', '').strip()
+        if last_name and (len(last_name) < 2 or len(last_name) > 100):
+            raise ValidationError("Last name must be between 2 to 100 characters.")
+        if profanity.contains_profanity(last_name):
+            raise ValidationError("Please remove any profanity from the last name.")
+        return last_name
 
 class CustomPasswordChangeForm(PasswordChangeForm):
     def __init__(self, *args, **kwargs):
