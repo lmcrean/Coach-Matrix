@@ -1,10 +1,10 @@
 asgiref==3.7.2
+better-profanity==0.7.0
 cloudinary==1.36.0
 dj-database-url==0.5.0
 dj3-cloudinary-storage==0.0.6
 Django==4.1
 django-allauth==0.58.2
-
 django-crispy-forms==1.14.0
 django-js-asset==2.2.0
 django-quill-editor==0.1.40

@@ -2,9 +2,10 @@
 
 # This file contains the form for the Question model. The QuestionForm class will be used to create and update questions in the forum.
 
+from better_profanity import profanity
 from django import forms
 from django.contrib.auth.models import User
-from django.core.validators import MinLengthValidator
+from django.core.validators import MinLengthValidator, MaxLengthValidator
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from ..models import Question, Answer
@@ -12,7 +13,6 @@ from django_quill.forms import QuillFormField
 from taggit.forms import TagField
 from django.contrib.auth.forms import PasswordChangeForm
 import re
-
 
 class QuestionForm(forms.ModelForm):
     """
@@ -27,7 +27,10 @@ class QuestionForm(forms.ModelForm):
         help_text='Enter a subject line for your question.',
         validators=[MinLengthValidator(10)]
     )
-    content = QuillFormField()
+    content = QuillFormField(
+        validators=[MinLengthValidator(100), MaxLengthValidator(1000)],
+        help_text='Enter the main body of your question. 100 to 1000 characters.'
+    )
     tags = forms.CharField(required=False)
 
 
@@ -55,42 +58,85 @@ class QuestionForm(forms.ModelForm):
     def clean_subject(self):
         """
         This method is used to validate the subject field in further detail from the initial class.
+
+        1. replace any multiple spaces with a single space
+        2. Do not allow special characters except "?"
+        3. Ensure the subject does not exist already (self.instance.pk is used to exclude the current question from the query if this is an update)
         """
         subject = self.cleaned_data.get('subject') # Get the subject from the cleaned data
-        subject = re.sub(' +', ' ', subject)  # Replace any multiple spaces with a single space
+        subject = re.sub(' +', ' ', subject)
         if re.search(r"[!£$%^&*()\"\">]", subject):
             raise forms.ValidationError('Special characters are not allowed except "?".')
-        # Ensure the subject does not exist already:
         query = Question.objects.filter(subject=subject)
-        if self.instance.pk: # If this is an update, exclude the current question from the query
+        if self.instance.pk:
             query = query.exclude(pk=self.instance.pk)
         if query.exists():
             raise forms.ValidationError('A question with this subject already exists.')
+        if profanity.contains_profanity(subject):
+            raise forms.ValidationError('Please remove any profanity from the subject.')
         return subject
   
+    def clean_content(self):
+        """
+        Clean the content field in further detail from the initial class.
+
+        1. replace any multiple spaces with a single space
+        2. replace any multiple new lines with a single new line
+        3. Ensure the content does not exist already (exclude the current question if this is an update)
+        """
+        content = self.cleaned_data.get('content')
+        content = re.sub(' +', ' ', content)
+        content = re.sub(r'(\n{3,})', '\n\n', content)
+        query = Question.objects.filter(content=content)
+        if self.instance.pk:
+            query = query.exclude(pk=self.instance.pk)
+        if query.exists():
+            raise forms.ValidationError('This content has already been used.')
+        if profanity.contains_profanity(content):
+            raise forms.ValidationError('Please remove any profanity from the content.')
+        return content
 
     def clean_tags(self):
-        tags = self.cleaned_data.get('tags', '')
-        return tags
+        """
+        Clean the tags field to ensure:
+        1. There are between 1 and 5 tags.
+        2. Each tag is between 3 and 20 characters in length.
+        3. Multiple spaces within tags are collapsed to a single space.
+        4. Return keys are not considered.
+        """
+        tags_string = self.cleaned_data.get('tags', '')
+        tags_string = re.sub(' +', ' ', tags_string)  # Collapse multiple spaces to single space
+        tags_list = tags_string.split()
+        
+        if not 1 <= len(tags_list) <= 5:
+            raise forms.ValidationError('Please provide between 1 and 5 tags.')
+        
+        for tag in tags_list:
+            if not 3 <= len(tag) <= 20:
+                raise forms.ValidationError('Each tag must be between 3 and 20 characters.')
+        
+        return ' '.join(tags_list)
 
     def save(self, *args, **kwargs):
+        """
+        Save the instance and handle the tags. This method is used to save the instance. The tags are handled separately to ensure they are added to the instance after it has been saved.
+
+        1. Define the instance to be saved as the form instance.
+        2. Save the instance to ensure it has an ID for many-to-many relationships.
+        3. Get the tags string from the cleaned data.
+        4. Split the tags string into a list of tag names.
+        5. Clear existing tags if needed, which is important when updating a question.
+        6. Add each tag individually and ensure it is stripped of extra whitespace.
+        7. If this is an update (self.instance.pk), save the instance again to save the many-to-many relationships.
+        """
         instance = super(QuestionForm, self).save(commit=False)
-        # Save the instance to ensure it has an ID for many-to-many relationships
         instance.save()
-
-        # Handling tags here
         tags = self.cleaned_data.get('tags', '')
-        tag_names = tags.split()  # Split the string into a list of tag names
-
-        # Clear existing tags first if needed, which is important when updating a question
+        tag_names = tags.split()
         instance.tags.clear()
-
-        # Add each tag individually
         for tag_name in tag_names:
-            instance.tags.add(tag_name.strip())  # Ensure tag is stripped of extra whitespace
-
+            instance.tags.add(tag_name.strip())
         if self.instance.pk:
-            # If this is an update, save the instance again
-            instance.save()  # Save the instance again to save the many-to-many relationships
+            instance.save()
 
         return instance
