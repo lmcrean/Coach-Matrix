@@ -73,14 +73,14 @@ class QuestionForm(forms.ModelForm):
         if re.search(r"\s{2,}", subject): # Check for multiple spaces
             raise forms.ValidationError('The subject cannot contain multiple spaces.')
         if re.search(r"[^a-zA-Z0-9,.\s?\'\"-]", subject): # Check for special characters outside of whitelist
-            raise forms.ValidationError('The special character you have used is not allowed')
+            raise forms.ValidationError('The special character you have used in the subject line is not allowed')
         query = Question.objects.filter(subject=subject)
         if self.instance.pk:
             query = query.exclude(pk=self.instance.pk)
         if query.exists():
-            raise forms.ValidationError('A question with this subject already exists.')
+            raise forms.ValidationError('A question with this subject line already exists.')
         if profanity.contains_profanity(subject):
-            raise forms.ValidationError('Please remove any profanity from the subject.')
+            raise forms.ValidationError('Please remove any profanity from the subject line.')
         return subject
   
     def clean_content(self):
@@ -104,7 +104,7 @@ class QuestionForm(forms.ModelForm):
         if self.instance.pk:
             query = query.exclude(pk=self.instance.pk)
         if query.exists():
-            raise forms.ValidationError('This content has already been used.')
+            raise forms.ValidationError('This content has already been used. Do not copy and paste the same content.')
         if profanity.contains_profanity(content):
             raise forms.ValidationError('Please remove any profanity from the content.')
         return content

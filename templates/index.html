@@ -9,7 +9,15 @@
 
 {% block content %}
 
-
+{% if form.errors %}
+<div class="alert alert-danger" role="alert">
+  {% for field in form %}
+      {% if field.errors %}
+          <p>{{ field.errors }}</p>
+      {% endif %}
+  {% endfor %}
+</div>
+{% endif %}
 
 <div class="video-container">
 
