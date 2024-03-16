@@ -30,7 +30,6 @@ class CustomSignupForm(UserCreationForm):
     """
     This is called on the landing page and when redirected from unauthorized access.
     """
-
     username = forms.CharField(max_length=20, min_length=3, required=True, help_text='Required. 3 to 20 characters. Letters and numbers only.')
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput, help_text='Required. 8 to 30 characters. Must include 1 number and 1 special character.')
     password2 = forms.CharField(label="Confirm Password", widget=forms.PasswordInput, help_text='Enter the same password as before, for verification.')

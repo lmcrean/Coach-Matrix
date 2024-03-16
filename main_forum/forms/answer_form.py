@@ -11,6 +11,7 @@ from ..models import Question, Answer
 from django_quill.forms import QuillFormField
 from taggit.forms import TagField
 from django.contrib.auth.forms import PasswordChangeForm
+from django.core.validators import MinLengthValidator, MaxLengthValidator
 import re
 
 class AnswerForm(forms.ModelForm) :
@@ -19,8 +20,8 @@ class AnswerForm(forms.ModelForm) :
     """
     body = QuillFormField(
         validators=[
-            forms.MinLengthValidator(50),
-            forms.MaxLengthValidator(5000)
+            MinLengthValidator(50),
+            MaxLengthValidator(5000)
         ],
         help_text='Enter the main body of your answer. 50 to 5000 characters.'
     )
