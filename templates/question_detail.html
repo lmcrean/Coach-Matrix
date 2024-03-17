@@ -3,9 +3,27 @@
   This is the page for a single question. It displays the question and its answers. It also contains the form to leave an answer. The question and its answers are passed to the template from the view.  The user can also upvote or downvote the questions. If the user is the author of the question, they can also edit or delete the question. 
 -->
 
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% load question_tags %}
+{% load static %}
+
+{% block extra_head %}
+<!-- django-quill-editor Media -->
+{% include 'django_quill/media.html' %}
+{% endblock %}
+
+{% block content %}
+
+{% if form.errors %}
+    <div class="alert alert-danger" role="alert">
+        {% for field in form %}
+            {% if field.errors %}
+                <p>{{ field.errors|striptags }}</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
 
 <main class="flex-shrink-0 main-bg">
 
