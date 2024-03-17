@@ -11,10 +11,11 @@ from ..models import Question, Answer
 from django_quill.forms import QuillFormField
 from taggit.forms import TagField
 from django.contrib.auth.forms import PasswordChangeForm
-from django.core.validators import MinLengthValidator, MaxLengthValidator
+from django.contrib import messages
+import json
 import re
 
-class AnswerForm(forms.ModelForm) :
+class AnswerForm(forms.ModelForm):
     """
     Form for answering a question as seen in question_detail.html. The user can enter the main body of the answer with django_quill module. If the user is updating an answer, the form needs to be pre-populated with the existing data.
     """
@@ -48,38 +49,32 @@ class AnswerForm(forms.ModelForm) :
         5. check if the body contains any profanity
         6. check if the body is between 50 and 5000 characters
         """
-        print("Entering clean_body method")
-        body = self.cleaned_data.get('body')
-        
-        if re.search(r'\n{3,}', body):
-            print("Extra new lines found") # this doesn't print
-            raise forms.ValidationError("Please remove any extra new lines from the content of your answer.") # this doesn't appear to be working, the user appears to be able to submit the form with extra new lines
-        if re.search(r' {3,}', body):
+        print("Entering clean_body method") # working as expected
+        body_data = self.cleaned_data.get('body')
+        print(f"Body data before cleaning: {body_data}")
+
+        # Attempt to parse the JSON string to extract the HTML content
+        try:
+            body_json = json.loads(body_data)
+            html_content = body_json.get('html', '')
+        except json.JSONDecodeError:
+            # Handle the error if the body_data is not a valid JSON string
+            raise forms.ValidationError("Invalid input format. Please ensure your input is correctly formatted.")
+
+        if re.search(r'<br>.*<br>.*<br>', html_content):
+            print("Extra new lines found")
+            messages.error("Please remove any extra new lines from the content of your answer.")
+            raise forms.ValidationError("Please remove any extra new lines from the content of your answer.")
+
+        if re.search(r' {3,}', html_content):
             raise forms.ValidationError("Please remove any extra spaces from the content of your answer.") # working as expected
-        if re.search(r"^\s+", body):
-            raise forms.ValidationError("Please remove any extra spaces from the beginning of the content of your answer.")
-        if re.search(r"\s+$", body):
-            raise forms.ValidationError("Please remove any extra spaces from the end of the content of your answer.")
         
-        # Check for extra spaces and new lines
-        if re.search(r'\n{3,}', body):
-            raise forms.ValidationError("Please remove any extra new lines from the content of your answer.") # this doesn't appear to be working, the user appears to be able to submit the form with extra new lines
-        if re.search(r' {3,}', body):
-            raise forms.ValidationError("Please remove any extra spaces from the content of your answer.")
-        if re.search(r"^\s+", body):
-            raise forms.ValidationError("Please remove any extra spaces from the beginning of the content of your answer.")
-        if re.search(r"\s+$", body):
-            raise forms.ValidationError("Please remove any extra spaces from the end of the content of your answer.")
-        
-        query = Answer.objects.filter(body=body)
-        if self.instance.pk:
-            query = query.exclude(pk=self.instance.pk)
-        if query.exists():
-            raise forms.ValidationError("This content has already been used. You may have already posted this answerm, or it may be copy and pasted. Please enter a new answer.")
-        if profanity.contains_profanity(body):
+        if profanity.contains_profanity(html_content):
             raise forms.ValidationError("Please remove any profanity from the content of your answer.")
-        if len(body) < 50:
-            raise forms.ValidationError("Your answer must be at least 50 characters long.") # this doesn't appear to be working, the user appears to be able to submit the form with less than 50 characters
-        if len(body) > 5000:
-            raise forms.ValidationError("Your answer must be no more than 5000 characters long.") # this doesn't appear to be working, the user appears to be able to submit the form with more than 5000 characters
-        return body
+
+        if len(html_content) < 50:
+            raise forms.ValidationError("Your answer must be at least 50 characters long.")
+        if len(html_content) > 5000:
+            raise forms.ValidationError("Your answer must be no more than 5000 characters long.")
+
+        return body_data
