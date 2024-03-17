@@ -43,25 +43,43 @@ class AnswerForm(forms.ModelForm) :
         This method is used to validate the body field in further detail from the initial class.
 
         1. get the body from the cleaned data
-        2. remove any extra spaces
-        3. remove any extra new lines
+        2. check for extra spaces and new lines
         4. check if the body has already been used, using self.instance.pk to exclude the current instance if it exists and the user is updating the answer
         5. check if the body contains any profanity
+        6. check if the body is between 50 and 5000 characters
         """
+        print("Entering clean_body method")
         body = self.cleaned_data.get('body')
-        query = Answer.objects.filter(body=body)
+        
         if re.search(r'\n{3,}', body):
-            raise forms.ValidationError("Please remove any extra new lines from the content.")
+            print("Extra new lines found") # this doesn't print
+            raise forms.ValidationError("Please remove any extra new lines from the content of your answer.") # this doesn't appear to be working, the user appears to be able to submit the form with extra new lines
         if re.search(r' {3,}', body):
-            raise forms.ValidationError("Please remove any extra spaces from the content.")
+            raise forms.ValidationError("Please remove any extra spaces from the content of your answer.") # working as expected
         if re.search(r"^\s+", body):
-            raise forms.ValidationError("Please remove any extra spaces from the beginning of the content.")
+            raise forms.ValidationError("Please remove any extra spaces from the beginning of the content of your answer.")
         if re.search(r"\s+$", body):
-            raise forms.ValidationError("Please remove any extra spaces from the end of the content.")
+            raise forms.ValidationError("Please remove any extra spaces from the end of the content of your answer.")
+        
+        # Check for extra spaces and new lines
+        if re.search(r'\n{3,}', body):
+            raise forms.ValidationError("Please remove any extra new lines from the content of your answer.") # this doesn't appear to be working, the user appears to be able to submit the form with extra new lines
+        if re.search(r' {3,}', body):
+            raise forms.ValidationError("Please remove any extra spaces from the content of your answer.")
+        if re.search(r"^\s+", body):
+            raise forms.ValidationError("Please remove any extra spaces from the beginning of the content of your answer.")
+        if re.search(r"\s+$", body):
+            raise forms.ValidationError("Please remove any extra spaces from the end of the content of your answer.")
+        
+        query = Answer.objects.filter(body=body)
         if self.instance.pk:
             query = query.exclude(pk=self.instance.pk)
         if query.exists():
-            raise forms.ValidationError("This content has already been used.")
+            raise forms.ValidationError("This content has already been used. You may have already posted this answerm, or it may be copy and pasted. Please enter a new answer.")
         if profanity.contains_profanity(body):
-            raise forms.ValidationError("Please remove any profanity from the content.")
+            raise forms.ValidationError("Please remove any profanity from the content of your answer.")
+        if len(body) < 50:
+            raise forms.ValidationError("Your answer must be at least 50 characters long.") # this doesn't appear to be working, the user appears to be able to submit the form with less than 50 characters
+        if len(body) > 5000:
+            raise forms.ValidationError("Your answer must be no more than 5000 characters long.") # this doesn't appear to be working, the user appears to be able to submit the form with more than 5000 characters
         return body
