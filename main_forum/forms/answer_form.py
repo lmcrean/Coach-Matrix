@@ -55,8 +55,7 @@ class AnswerForm(forms.ModelForm):
         super(AnswerForm, self).__init__(*args, **kwargs)
 
     def clean(self):
-        print("Clean method called") # prints as expected, this is the last line from this view that prints as expected
-        super().clean()
+        super().clean() # Call the parent clean method
 
     def clean_body(self):
         """

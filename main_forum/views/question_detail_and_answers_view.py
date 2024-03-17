@@ -39,22 +39,18 @@ class QuestionDetail(View):
         """
         Post a new answer to the question.
         """
-        print("About to validate form") #prints as expected
-        print("request.POST",request.POST) # PASS: prints <QueryDict: {'csrfmiddlewaretoken': ['uHvvhe4O8rE0vaCV7eAi8gqIqi2O0BNtmQm2XRWIB8lgz0PKSidGeP1dKxB6zU4g'], 'body': ['']}>
         question = self.get_question(slug)
         form = AnswerForm(data=request.POST, request=request)
 
         if form.is_valid():
             # if the form is valid, save the answer and redirect to the question detail page 
-            print('valid form')
             self.save_answer(form, question, request.user)
             return redirect('question_detail', slug=slug)
         else:
-            print('form is not valid') # prints when expected
             answers, _ = self.get_sorted_answers(question)
             for field, errors in form.errors.items():
                 for error in errors:
-                    print(f"{field}: {error}") # prints "body: This field is required. Was expecting a more specific error message.
+                    print(f"{error}")
             return render(request, 'question_detail.html', {
                 'question': question,
                 'answers': answers,
