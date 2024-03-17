@@ -16,6 +16,15 @@ import json
 import re
 from django.core.validators import MinLengthValidator, MaxLengthValidator
 from django.core.exceptions import ValidationError
+from django.utils.html import strip_tags
+
+def normalize_html(html_content):
+    """
+    Normalize HTML content by removing HTML tags and normalizing whitespace.
+    """
+    text_content = strip_tags(html_content)
+    normalized_content = ' '.join(text_content.split())
+    return normalized_content
 
 class AnswerForm(forms.ModelForm):
     """
@@ -93,8 +102,9 @@ class AnswerForm(forms.ModelForm):
             messages.error(self.request, "Your answer must be no more than 5000 characters long.")
             raise ValidationError("Your answer must be no more than 5000 characters long.")
 
-        query = Answer.objects.filter(body=html_content)
-        if self.instance:
+        normalized_html_content = normalize_html(html_content)
+        query = Answer.objects.filter(body__icontains=normalized_html_content)
+        if self.instance.pk: # If the instance is being updated
             query = query.exclude(pk=self.instance.pk) # Exclude the current answer if it is being updated
         if query.exists():
             messages.error(self.request, "This answer already exists. Do not copy and paste duplicate answers.")
