@@ -1,6 +1,8 @@
 # main_forum/models/bookmark_model.py
 
-# this file will contain the models for the main_forum app. The models will include the Question, Answer, Upvote, Downvote, UserProfile, and Bookmark classes.
+# this file will contain the models for the main_forum app.
+# The models will include the Question, Answer, Upvote, Downvote, UserProfile,
+# and Bookmark classes.
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -15,9 +17,12 @@ from taggit.managers import TaggableManager
 from .question_model import Question
 from .user_profile_model import User
 
+
 class Bookmark(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bookmarks")
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name="bookmarked_by")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="bookmarks")
+    question = models.ForeignKey(
+        Question, on_delete=models.CASCADE, related_name="bookmarked_by")
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
