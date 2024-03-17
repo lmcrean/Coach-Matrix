@@ -38,7 +38,11 @@ class AnswerForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         """
         This is for checking if the form is bound to an existing instance, i.e. if the form is being used to update an existing answer.
+
+        1. get the request from the kwargs
+        2. call the parent __init__ method
         """
+        self.request = kwargs.pop('request', None)
         super(AnswerForm, self).__init__(*args, **kwargs)
 
     def clean(self):
@@ -55,9 +59,7 @@ class AnswerForm(forms.ModelForm):
         5. check if the body contains any profanity
         6. check if the body is between 50 and 5000 characters
         """
-        print("Entering clean_body method") # not working working as expected, not printing from here when expected
         body_data = self.cleaned_data.get('body')
-        print(f"Body data before cleaning: {body_data}")
 
         # Attempt to parse the JSON string to extract the HTML content
         try:
@@ -65,22 +67,23 @@ class AnswerForm(forms.ModelForm):
             html_content = body_json.get('html', '')
         except json.JSONDecodeError:
             # Handle the error if the body_data is not a valid JSON string
-            raise forms.ValidationError("Invalid input format. Please ensure your input is correctly formatted.")
+            messages.error(self.request, "Invalid input format. Please ensure your input is correctly formatted.")
+            return body_data
 
         if re.search(r'<br>.*<br>.*<br>', html_content):
-            print("Extra new lines found")
-            messages.error("Please remove any extra new lines from the content of your answer.")
-            raise forms.ValidationError("Please remove any extra new lines from the content of your answer.")
+            messages.error(self.request, "Please remove any extra new lines from the content of your answer.")
+        if re.search(r' {3,}', html_content):
+            messages.error(self.request, "Please remove any extra spaces from the content of your answer.")
 
         if re.search(r' {3,}', html_content):
-            raise forms.ValidationError("Please remove any extra spaces from the content of your answer.") # working as expected
+            messages.error(self.request, "Please remove any extra spaces from the content of your answer.")
         
         if profanity.contains_profanity(html_content):
-            raise forms.ValidationError("Please remove any profanity from the content of your answer.")
+            messages.error(self.request, "Please remove any profanity from the content of your answer.")
 
         if len(html_content) < 50:
-            raise forms.ValidationError("Your answer must be at least 50 characters long.")
+            messages.error(self.request, "Your answer must be at least 50 characters long.")
         if len(html_content) > 5000:
-            raise forms.ValidationError("Your answer must be no more than 5000 characters long.")
+            messages.error(self.request, "Your answer must be no more than 5000 characters long.")
 
         return body_data
