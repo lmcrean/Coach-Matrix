@@ -53,11 +53,12 @@ class AnswerForm(forms.ModelForm):
         """
         This method is used to validate the body field in further detail from the initial class.
 
-        1. get the body from the cleaned data
-        2. check for extra spaces and new lines
-        4. check if the body has already been used, using self.instance.pk to exclude the current instance if it exists and the user is updating the answer
-        5. check if the body contains any profanity
-        6. check if the body is between 50 and 5000 characters
+        1. get the body data from the cleaned data
+        2. parse the JSON string to extract the HTML content
+        3. check if the HTML content contains any extra new lines or spaces
+        4. check if the HTML content contains any profanity
+        5. check if the HTML content is between 50 and 5000 characters
+        6. check if the HTML content already exists in the database
         """
         body_data = self.cleaned_data.get('body')
 
@@ -91,5 +92,12 @@ class AnswerForm(forms.ModelForm):
         if len(html_content) > 5000:
             messages.error(self.request, "Your answer must be no more than 5000 characters long.")
             raise ValidationError("Your answer must be no more than 5000 characters long.")
+
+        query = Answer.objects.filter(body=html_content)
+        if self.instance:
+            query = query.exclude(pk=self.instance.pk) # Exclude the current answer if it is being updated
+        if query.exists():
+            messages.error(self.request, "This answer already exists. Do not copy and paste duplicate answers.")
+            raise ValidationError("This answer already exists.")
 
         return body_data
