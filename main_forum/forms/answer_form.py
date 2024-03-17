@@ -15,6 +15,7 @@ from django.contrib import messages
 import json
 import re
 from django.core.validators import MinLengthValidator, MaxLengthValidator
+from django.core.exceptions import ValidationError
 
 class AnswerForm(forms.ModelForm):
     """
@@ -40,6 +41,10 @@ class AnswerForm(forms.ModelForm):
         """
         super(AnswerForm, self).__init__(*args, **kwargs)
 
+    def clean(self):
+        print("Clean method called") # prints as expected, this is the last line from this view that prints as expected
+        super().clean()
+
     def clean_body(self):
         """
         This method is used to validate the body field in further detail from the initial class.
@@ -50,7 +55,7 @@ class AnswerForm(forms.ModelForm):
         5. check if the body contains any profanity
         6. check if the body is between 50 and 5000 characters
         """
-        print("Entering clean_body method") # working as expected
+        print("Entering clean_body method") # not working working as expected, not printing from here when expected
         body_data = self.cleaned_data.get('body')
         print(f"Body data before cleaning: {body_data}")
 
