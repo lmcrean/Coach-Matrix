@@ -68,22 +68,28 @@ class AnswerForm(forms.ModelForm):
         except json.JSONDecodeError:
             # Handle the error if the body_data is not a valid JSON string
             messages.error(self.request, "Invalid input format. Please ensure your input is correctly formatted.")
-            return body_data
+            raise ValidationError("Invalid input format. Please ensure your input is correctly formatted.")
 
         if re.search(r'<br>.*<br>.*<br>', html_content):
             messages.error(self.request, "Please remove any extra new lines from the content of your answer.")
+            raise ValidationError("Please remove any extra new lines from the content of your answer.")
         if re.search(r' {3,}', html_content):
             messages.error(self.request, "Please remove any extra spaces from the content of your answer.")
+            raise ValidationError("Please remove any extra spaces from the content of your answer.")
 
         if re.search(r' {3,}', html_content):
             messages.error(self.request, "Please remove any extra spaces from the content of your answer.")
+            raise ValidationError("Please remove any extra spaces from the content of your answer.")
         
         if profanity.contains_profanity(html_content):
             messages.error(self.request, "Please remove any profanity from the content of your answer.")
+            raise ValidationError("Please remove any profanity from the content of your answer.")
 
         if len(html_content) < 50:
             messages.error(self.request, "Your answer must be at least 50 characters long.")
+            raise ValidationError("Your answer must be at least 50 characters long.")
         if len(html_content) > 5000:
             messages.error(self.request, "Your answer must be no more than 5000 characters long.")
+            raise ValidationError("Your answer must be no more than 5000 characters long.")
 
         return body_data
