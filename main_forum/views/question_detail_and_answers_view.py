@@ -6,6 +6,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import View, UpdateView, DeleteView
 from ..models import Question, Answer
 from ..forms import AnswerForm
+from django.contrib import messages
 
 class QuestionDetail(View):
     """
@@ -44,8 +45,10 @@ class QuestionDetail(View):
             self.save_answer(form, question, request.user)
             return redirect('question_detail', slug=slug)
         else:
-            # If the form is invalid, re-render the question detail page with the form and errors
             answers, _ = self.get_sorted_answers(question)
+            for field, errors in form.errors.items():
+                for error in errors:
+                    print(f"{error}")
             return render(request, 'question_detail.html', {
                 'question': question,
                 'answers': answers,
