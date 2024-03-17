@@ -42,7 +42,7 @@ class QuestionDetail(View):
         print("About to validate form") #prints as expected
         print("request.POST",request.POST) # PASS: prints <QueryDict: {'csrfmiddlewaretoken': ['uHvvhe4O8rE0vaCV7eAi8gqIqi2O0BNtmQm2XRWIB8lgz0PKSidGeP1dKxB6zU4g'], 'body': ['']}>
         question = self.get_question(slug)
-        form = AnswerForm(data=request.POST)
+        form = AnswerForm(data=request.POST, request=request)
 
         if form.is_valid():
             # if the form is valid, save the answer and redirect to the question detail page 
