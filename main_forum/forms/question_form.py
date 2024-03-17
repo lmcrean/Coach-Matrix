@@ -1,7 +1,8 @@
 # main_forum/forms/question_form.py
 
 # This file contains the form for the Question model.
-# The QuestionForm class will be used to create and update questions in the forum.
+# The QuestionForm class will be used to create and update questions in the
+# forum.
 
 from better_profanity import profanity
 from django import forms
@@ -15,10 +16,10 @@ from taggit.forms import TagField
 from django.contrib.auth.forms import PasswordChangeForm
 import re
 
+
 class QuestionForm(forms.ModelForm):
     """
-    Form for asking a question as seen in ask_question.html. 
-    
+    Form for asking a question as seen in ask_question.html.
     The user can enter a subject line and the main body of the question.
     They can also tag the question with up to 5 tags.
     If the user is updating a question, the form needs to be pre-populated
@@ -40,7 +41,6 @@ class QuestionForm(forms.ModelForm):
         label='Enter up to 5 tags separated by spaces'
         )
 
-
     class Meta:
         """
         the Meta class is used to specify the model to which the form
@@ -58,16 +58,17 @@ class QuestionForm(forms.ModelForm):
         id to the tags field so that it can be targeted by JavaScript.
         (yet to be implemented in the project)
 
-        If the form is bound to an existing instance, pre-populate the tags field with the existing tags.
+        If the form is bound to an existing instance,
+        pre-populate the tags field with the existing tags.
         """
         super(QuestionForm, self).__init__(*args, **kwargs)
-        self.fields['tags'].widget.attrs['id'] = 'id_tags'  
+        self.fields['tags'].widget.attrs['id'] = 'id_tags'
 
-        if self.instance.pk: 
+        if self.instance.pk:
+            # Pre-populate the tags field with the existing tags
             self.fields['tags'].initial = ' '.join(
                 tag.name for tag in self.instance.tags.all()
                 )
-                # Pre-populate the tags field with the existing tags
 
     def clean_subject(self):
         """
@@ -75,54 +76,85 @@ class QuestionForm(forms.ModelForm):
         from the initial class.
 
         1. replace any multiple spaces with a single space
-        2. Do not allow special characters except "?". Only allow letters,numbers, commas, full stops, and question marks.
-        3. Ensure the subject does not exist already (self.instance.pk is used
-        to exclude the current question from the query if this is an update)
+        2. Do not allow special characters except "?".
+        Only allow letters,numbers, commas, full stops, and question marks.
+        3. Ensure the subject does not exist already
+        (self.instance.pk is used to exclude the current question from the
+        query if this is an update)
         """
         subject = self.cleaned_data.get('subject')
         if re.search(r"^\s+", subject):
-            raise forms.ValidationError('The subject cannot start with whitespace.')
+            raise forms.ValidationError(
+                'The subject cannot start with whitespace.'
+                )
         if re.search(r"\s+$", subject):
-            raise forms.ValidationError('The subject cannot end with whitespace.')
+            raise forms.ValidationError(
+                'The subject cannot end with whitespace.'
+                )
         if re.search(r"\n", subject):
-            raise forms.ValidationError('The subject cannot contain new lines.')
+            raise forms.ValidationError(
+                'The subject cannot contain new lines.'
+                )
         if re.search(r"\s{2,}", subject):
-            raise forms.ValidationError('The subject cannot contain multiple spaces.')
+            raise forms.ValidationError(
+                'The subject cannot contain multiple spaces.'
+                )
         if re.search(r"[^a-zA-Z0-9,.\s?\'\"-]", subject):
-            raise forms.ValidationError('The special character you have used in the subject line is not allowed')
+            raise forms.ValidationError(
+                'The special character you have used in the subject line is '
+                'not allowed'
+                )
         query = Question.objects.filter(subject=subject)
         if self.instance.pk:
             query = query.exclude(pk=self.instance.pk)
         if query.exists():
-            raise forms.ValidationError('A question with this subject line already exists.')
+            raise forms.ValidationError(
+                'A question with this subject line already exists.'
+                )
         if profanity.contains_profanity(subject):
-            raise forms.ValidationError('Please remove any profanity from the subject line.')
+            raise forms.ValidationError(
+                'Please remove any profanity from the subject line.'
+                )
         return subject
-  
+
     def clean_content(self):
         """
         Clean the content field in further detail from the initial class.
 
         1. replace any multiple spaces with a single space
         2. replace any multiple new lines with a single new line
-        3. Ensure the content does not exist already (exclude the current question if this is an update)
+        3. Ensure the content does not exist already
+        (exclude the current question if this is an update)
         """
         content = self.cleaned_data.get('content')
         query = Question.objects.filter(content=content)
         if re.search(r"^\s+", content):
-            raise forms.ValidationError('The content cannot start with whitespace.')
-        if re.search(r"\s+$", content): 
-            raise forms.ValidationError('The content cannot end with whitespace.')
+            raise forms.ValidationError(
+                'The content cannot start with whitespace.'
+                )
+        if re.search(r"\s+$", content):
+            raise forms.ValidationError(
+                'The content cannot end with whitespace.'
+                )
         if re.search(r"\s{2,}", content):
-            raise forms.ValidationError('The content cannot contain multiple spaces.')
+            raise forms.ValidationError(
+                'The content cannot contain multiple spaces.'
+                )
         if re.search(r"\n{3,}", content):
-            raise forms.ValidationError('The content cannot contain multiple new lines.')
+            raise forms.ValidationError(
+                'The content cannot contain multiple new lines.'
+                )
         if self.instance.pk:
             query = query.exclude(pk=self.instance.pk)
         if query.exists():
-            raise forms.ValidationError('This content has already been used. Do not copy and paste the same content.')
+            raise forms.ValidationError(
+                'This content has already been used.'
+                'Do not copy and paste the same content.'
+                )
         if profanity.contains_profanity(content):
-            raise forms.ValidationError('Please remove any profanity from the content.')
+            raise forms.ValidationError(
+                'Please remove any profanity from the content.'
+                )
         return content
 
     def clean_tags(self):
@@ -150,7 +182,9 @@ class QuestionForm(forms.ModelForm):
         if re.search(r"\s{2,}", tags_string):
             raise forms.ValidationError('Tags cannot contain multiple spaces.')
         if profanity.contains_profanity(tags_string):
-            raise forms.ValidationError('Please remove any profanity from the tags.')
+            raise forms.ValidationError(
+                'Please remove any profanity from the tags.'
+                )
         if not 1 <= len(tags_list) <= 5:
             raise forms.ValidationError(
                 'Please provide between 1 and 5 tags.'
@@ -160,7 +194,6 @@ class QuestionForm(forms.ModelForm):
                 raise forms.ValidationError(
                     'Each tag must be between 3 and 20 characters.'
                     )
-        
         return ' '.join(tags_list)
 
     def save(self, *args, **kwargs):
