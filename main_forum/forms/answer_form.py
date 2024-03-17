@@ -14,6 +14,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 import json
 import re
+from django.core.validators import MinLengthValidator, MaxLengthValidator
 
 class AnswerForm(forms.ModelForm):
     """
