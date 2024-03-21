@@ -38,7 +38,7 @@ class QuestionAdmin(admin.ModelAdmin):
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
 
-    list_display = ('name', 'body', 'question', 'created_on', 'approved')
+    list_display = ('author', 'body', 'question', 'created_on', 'approved')
     list_filter = ('approved', 'created_on')
     search_fields = ('name', 'email', 'body')
     actions = ['approve_answers']
