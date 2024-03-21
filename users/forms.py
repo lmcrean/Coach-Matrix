@@ -9,7 +9,8 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, UserChangeForm
+from django.contrib.auth.forms import (
+    UserCreationForm, PasswordChangeForm, UserChangeForm)
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django.core.exceptions import ValidationError
@@ -19,20 +20,35 @@ from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
 
+
 class CustomLoginForm(AuthenticationForm):
     """
-    This is called on the landing page and when redirected from unauthorized access.
+    This is called on the landing page and when redirected from
+    unauthorized access.
     """
     username = forms.CharField(label='Username', required=True)
-    password = forms.CharField(label='Password', widget=forms.PasswordInput, required=True)
+    password = forms.CharField(
+        label='Password', widget=forms.PasswordInput, required=True)
+
 
 class CustomSignupForm(UserCreationForm):
     """
-    This is called on the landing page and when redirected from unauthorized access.
+    This is called on the landing page and when redirected from unauthorized
+    access.
     """
-    username = forms.CharField(max_length=20, min_length=3, required=True, help_text='Required. 3 to 20 characters. Letters and numbers only.')
-    password1 = forms.CharField(label="Password", widget=forms.PasswordInput, help_text='Required. 8 to 30 characters. Must include 1 number and 1 special character.')
-    password2 = forms.CharField(label="Confirm Password", widget=forms.PasswordInput, help_text='Enter the same password as before, for verification.')
+    username = forms.CharField(
+        max_length=20, min_length=3, required=True,
+        help_text='Required. 3 to 20 characters. Letters and numbers only.')
+    password1 = forms.CharField(
+        label="Password", widget=forms.PasswordInput,
+        help_text=(
+            '8 to 30 characters required. '
+            'Must include 1 number and 1 special character.')
+        )
+    password2 = forms.CharField(
+        label="Confirm Password",
+        widget=forms.PasswordInput,
+        help_text='Enter the same password as before, for verification.')
 
     class Meta:
         model = User
@@ -47,11 +63,13 @@ class CustomSignupForm(UserCreationForm):
         """
         username = self.cleaned_data['username'].strip()
         if not re.match(r'^\w+$', username):
-            raise ValidationError("Username can only contain letters and numbers.")
+            raise ValidationError(
+                "Username can only contain letters and numbers.")
         if User.objects.filter(username=username).exists():
             raise ValidationError("A user with that username already exists.")
         if profanity.contains_profanity(username):
-            raise ValidationError("Please remove any profanity from the username.")
+            raise ValidationError(
+                "Please remove any profanity from the username.")
         return username
 
     def clean_password2(self):
@@ -68,24 +86,36 @@ class CustomSignupForm(UserCreationForm):
             raise ValidationError("Passwords don't match.")
 
         if not re.search(r'\d', password1):
-            raise ValidationError("The password must contain at least one number.")
-        
+            raise ValidationError(
+                "The password must contain at least one number.")
+
         if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password1):
-            raise ValidationError("The password must contain at least one special character.")
-        
+            raise ValidationError(
+                "The password must contain at least one special character.")
+
         if len(password1) < 8 or len(password1) > 30:
-            raise ValidationError("Password must be between 8 to 30 characters long.")
-        
+            raise ValidationError(
+                "Password must be between 8 to 30 characters long.")
+
         return password2
 
 
 class ProfileUpdateForm(forms.ModelForm):
     """
-    Custom form for updating the user's profile. This is called when the user wants to update their profile. It is a form that inherits from the UserChangeForm class and validates the new username and name fields as per the original criteria.
+    Custom form for updating the user's profile.
+    This is called when the user wants to update their profile.
+    It is a form that inherits from the UserChangeForm class and validates
+    the new username and name fields as per the original criteria.
     """
-    username = forms.CharField(max_length=20, min_length=3, required=True, help_text='Required. 3 to 20 characters. Letters and numbers only.')
-    first_name = forms.CharField(max_length=100, min_length=2, required=False, help_text='Optional. 2 to 100 characters.')
-    last_name = forms.CharField(max_length=100, min_length=2, required=False, help_text='Optional. 2 to 100 characters.')
+    username = forms.CharField(
+        max_length=20, min_length=3, required=True,
+        help_text='Required. 3 to 20 characters. Letters and numbers only.')
+    first_name = forms.CharField(
+        max_length=100, min_length=2, required=False,
+        help_text='Optional. 2 to 100 characters.')
+    last_name = forms.CharField(
+        max_length=100, min_length=2, required=False,
+        help_text='Optional. 2 to 100 characters.')
 
     class Meta:
         model = User
@@ -106,32 +136,45 @@ class ProfileUpdateForm(forms.ModelForm):
         """
         username = self.cleaned_data['username'].strip()
         if not re.match(r'^\w+$', username):
-            raise ValidationError("Username can only contain letters and numbers.")
-        if User.objects.filter(username=username).exclude(pk=self.instance.pk).exists():
+            raise ValidationError(
+                "Username can only contain letters and numbers.")
+        if (
+            User.objects.filter(username=username)
+            .exclude(pk=self.instance.pk)
+            .exists()
+        ):
             raise ValidationError("A user with that username already exists.")
         if profanity.contains_profanity(username):
-            raise ValidationError("Please remove any profanity from the username.")
+            raise ValidationError(
+                "Please remove any profanity from the username.")
         return username
 
     def clean_first_name(self):
         first_name = self.cleaned_data.get('first_name', '').strip()
         if first_name and (len(first_name) < 2 or len(first_name) > 100):
-            raise ValidationError("First name must be between 2 to 100 characters.")
+            raise ValidationError(
+                "First name must be between 2 to 100 characters.")
         if profanity.contains_profanity(first_name):
-            raise ValidationError("Please remove any profanity from the first name.")
+            raise ValidationError(
+                "Please remove any profanity from the first name.")
         return first_name
 
     def clean_last_name(self):
         last_name = self.cleaned_data.get('last_name', '').strip()
         if last_name and (len(last_name) < 2 or len(last_name) > 100):
-            raise ValidationError("Last name must be between 2 to 100 characters.")
+            raise ValidationError(
+                "Last name must be between 2 to 100 characters.")
         if profanity.contains_profanity(last_name):
-            raise ValidationError("Please remove any profanity from the last name.")
+            raise ValidationError(
+                "Please remove any profanity from the last name.")
         return last_name
+
 
 class CustomPasswordChangeForm(PasswordChangeForm):
     """
-    This is called when the user wants to change their password. It is a form that inherits from the PasswordChangeForm class and validates the new password as per the original criteria.
+    This is called when the user wants to change their password. It is a form
+    that inherits from the PasswordChangeForm class and validates the new
+    password as per the original criteria.
     """
     def clean_new_password2(self):
         old_password = self.cleaned_data.get('old_password')
@@ -140,15 +183,28 @@ class CustomPasswordChangeForm(PasswordChangeForm):
 
         if new_password1 and new_password2:
             if new_password1 != new_password2:
-                raise ValidationError(_("The two password fields didn’t match."))
+                raise (
+                    ValidationError(
+                        _("The two password fields didn’t match.")))
             if new_password1 == old_password:
-                raise ValidationError(_("The new password cannot be the same as your old password."))
+                raise ValidationError(
+                    _("The new password cannot be the same as "
+                        "your old password.")
+                )
             if not re.search(r'\d', new_password1):
-                raise ValidationError(_("The password must contain at least one number."))
+                raise ValidationError(_(
+                    "The password must contain at least one number."))
             if not re.search(r'[!@#$%^&*(),.?":{}|<>]', new_password1):
-                raise ValidationError(_("The password must contain at least one special character."))
+                raise (
+                    ValidationError(_(
+                        "The password must contain at least one "
+                        "special character.")))
             if len(new_password1) < 8 or len(new_password1) > 30:
-                raise ValidationError(_("Password must be between 8 to 30 characters long."))
+                raise (
+                    ValidationError(_(
+                        "Password must be between 8 to 30 "
+                        "characters long."))
+                )
 
         return new_password2
 
