@@ -21,9 +21,11 @@ logger = logging.getLogger(__name__)
 
 class BookmarkedQuestionsList(LoginRequiredMixin, ListView):
     """
-    This class will create a view for the user's bookmarked questions. It will display the user's bookmarked questions in a list format that will be displayed in the bookmarked_questions.html template.
+    This class will create a view for the user's bookmarked questions.
+    It will display the user's bookmarked questions in a list format that will
+    be displayed in the bookmarked_questions.html template.
     """
-    model = Question 
+    model = Question
     template_name = 'bookmarks.html'
     context_object_name = 'bookmarked_question_list'
 
@@ -37,6 +39,7 @@ class CreateBookmark(LoginRequiredMixin, View):
         question = get_object_or_404(Question, id=question_id)
         Bookmark.objects.get_or_create(user=request.user, question=question)
         return redirect(request.META.get('HTTP_REFERER', 'fallback_url'))
+
 
 class DeleteBookmark(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
