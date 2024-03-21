@@ -9,18 +9,21 @@ from django.utils.text import slugify
 from django.db.models.signals import m2m_changed, post_save
 from django.dispatch import receiver
 
+
 class ReputationPoints(models.Model):
     """
     AT PRESENT, THIS CLASS IS NOT BEING USED IN THE APPLICATION.
     IT IS A WORK IN PROGRESS.
 
-    This class will create a user's reputation points along with the user, reputation, and date awarded.
+    This class will create a user's reputation points along with the user,
+    reputation, and date awarded.
 
     Each user has their own reputation points.
 
     Key Parameters: The reputation can be no longer than 10000 characters.
     """
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="reputation_points")
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="reputation_points")
     reputation = models.IntegerField(default=0)
     date_awarded = models.DateTimeField(auto_now_add=True)
 
@@ -42,23 +45,35 @@ class ReputationPoints(models.Model):
         models, and the Question and Answer models depend on the UserProfile
         model.
         """
-        from .models import Question, Answer  
-        question_upvotes = sum(question.upvotes.count() for question in Question.objects.filter(author=self.user))
-        question_downvotes = sum(question.downvotes.count() for question in Question.objects.filter(author=self.user))
-        answer_upvotes = sum(answer.upvotes.count() for answer in Answer.objects.filter(author=self.user))
-        answer_downvotes = sum(answer.downvotes.count() for answer in Answer.objects.filter(author=self.user))
-        
-        net_votes = question_upvotes + answer_upvotes - question_downvotes - answer_downvotes
+
+        from .models import Question, Answer
+        question_upvotes = sum(
+            question.upvotes.count()
+            for question in Question.objects.filter(author=self.user))
+        question_downvotes = sum(
+            question.downvotes.count()
+            for question in Question.objects.filter(author=self.user))
+        answer_upvotes = sum(
+            answer.upvotes.count()
+            for answer in Answer.objects.filter(author=self.user))
+        answer_downvotes = sum(
+            answer.downvotes.count()
+            for answer in Answer.objects.filter(author=self.user))
+
+        net_votes = (
+            question_upvotes + answer_upvotes
+            - question_downvotes - answer_downvotes
+            )
 
         if net_votes < 0:
-            net_votes = 0 
+            net_votes = 0
         return net_votes
 
     def update_reputation_based_on_action(self, action, vote_type):
         """
-        This method is called when a vote is added or removed in 
-        main_forum/views/voting_view.py. 
-        
+        This method is called when a vote is added or removed in
+        main_forum/views/voting_view.py.
+
         It updates the user's reputation based on the action and vote type.
         Reputation points are capped at 0.
         After each vote, reputation never increments by more than 1 per vote,
@@ -80,14 +95,14 @@ class ReputationPoints(models.Model):
         """
         if action == 'add':
             if vote_type == 'upvotes':
-                self.reputation += 1 
+                self.reputation += 1
             elif vote_type == 'downvotes':
-                self.reputation -= 1  
+                self.reputation -= 1
         elif action == 'remove':
             if vote_type == 'upvotes':
-                self.reputation -= 1  
+                self.reputation -= 1
             elif vote_type == 'downvotes':
-                self.reputation += 1  
+                self.reputation += 1
 
         # Ensure reputation does not fall below 0
         self.reputation = max(self.reputation, 0)
@@ -113,14 +128,15 @@ class ReputationPoints(models.Model):
         answers, and the same logic should apply.
 
         Validation criteria:
-            1. 
+            1.
             User A has an answer with 5 upvotes and 2 downvotes,
             with 5 net votes including from other content.
-            User A deletes their answer, thereby losing their reputation points.
+            User A deletes their answer, thereby losing their reputation
+            points.
             User A's reputation points are capped at 2 instead of a negative
             value, since they have lost 3 reputation points.
 
-            2. 
+            2.
             User A has an answer with 8 upvotes and 2 downvotes, with 2 net
             votes including from other content. User A deletes their answer,
             thereby losing their reputaiton points. User A's reputation points
