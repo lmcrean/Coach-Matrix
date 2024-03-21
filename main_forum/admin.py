@@ -1,12 +1,13 @@
 # main_forum/admin.py
 
-# The admin settings will include the QuestionAdmin and AnswerAdmin classes, which will be used to customize the admin interface for the Question and Answer models.
+# The admin settings will include the QuestionAdmin and AnswerAdmin classes,
+# which will be used to customize the admin interface for the Question and
+# Answer models.
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 from .models import UserProfile, Question, Answer, ReputationPoints
-
 
 
 class UserProfileInline(admin.StackedInline):
@@ -15,12 +16,15 @@ class UserProfileInline(admin.StackedInline):
     verbose_name_plural = 'UserProfile'
     fields = ('reputation',)  # Display only the reputation field
 
+
 class UserAdmin(BaseUserAdmin):
     inlines = (UserProfileInline, )
+
 
 # Unregister the default User admin and register the new UserAdmin class
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
@@ -28,7 +32,8 @@ class QuestionAdmin(admin.ModelAdmin):
     search_fields = ['subject', 'content', 'tags__name']
     list_filter = ('status', 'created_on')
     prepopulated_fields = {'slug': ('subject',)}
-    filter_horizontal = ('tags',)  # This will add a widget to manage ManyToMany relationship with tags.
+    filter_horizontal = ('tags',)
+
 
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):
@@ -40,6 +45,7 @@ class AnswerAdmin(admin.ModelAdmin):
 
     def approve_answers(self, request, queryset):
         queryset.update(approved=True)
+
 
 @admin.register(ReputationPoints)
 class ReputationPointsAdmin(admin.ModelAdmin):

@@ -164,9 +164,9 @@ class BaseVotingView(LoginRequiredMixin, View):
                     filtered_questions_pattern_most_votes,
                     origin_page).group('slug')
                 return HttpResponseRedirect(
-                    reverse('filter_by_tag',
-                    kwargs={'tag_slug': tag_slug}) + '?sort_by=votes'
-                )
+                    reverse('filter_by_tag', kwargs={'tag_slug': tag_slug}) +
+                    '?sort_by=votes'
+                    )
             elif re.search(question_list_pattern_most_recent, origin_page):
                 return HttpResponseRedirect(
                     reverse('questions') + '?sort_by=recent'
