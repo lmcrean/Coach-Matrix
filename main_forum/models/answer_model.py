@@ -40,7 +40,6 @@ class Answer(models.Model):
     downvotes = models.ManyToManyField(
         User, related_name='answer_downvote', blank=True)
     status = models.IntegerField(choices=STATUS, default=0)
-    answercount = models.IntegerField(default=0)
     featured_image = CloudinaryField('image', default='placeholder')
     author = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
 
@@ -62,7 +61,7 @@ class Answer(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:  # if slug is not set or empty
             # Fallback to 'answer' if name is empty
-            base_slug = slugify(self.name) if self.name else 'answer'
+            base_slug = slugify(self.body.text[:50]) if self.body.text else 'answer'
             new_slug = base_slug
             counter = 1
 
