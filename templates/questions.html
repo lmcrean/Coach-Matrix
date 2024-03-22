@@ -168,7 +168,8 @@
 
         <!-- FOR WHEN NOT AUTHOR OF QUESTION -->
         <div class="question-actions d-flex justify-content-end mt-2">
-          {% if question|is_bookmarked_by:user %}
+          {% if request.user.is_authenticated %}
+          {% if question|is_bookmarked_by:request.user %} 
           <form method="POST" action="{% url 'delete_bookmark' question.id %}">
             {% csrf_token %}
             <button class="btn btn-outline-secondary btn-sm" type="submit">
@@ -183,7 +184,9 @@
             </button>
           </form>
           {% endif %}
+          {% endif %}
         {% endif %}
+
         </div>
       </div>
 
