@@ -37,6 +37,7 @@ class QuestionListView(generic.ListView):
         contains the data that will be used to render the list view
         """
         context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
         context['sort_by'] = self.request.GET.get('sort_by', 'votes')
         return context
 
