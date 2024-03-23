@@ -40,12 +40,15 @@ class AnswerAdmin(admin.ModelAdmin):
 
     list_display = ('author', 'body', 'question', 'created_on', 'approved')
     list_filter = ('approved', 'created_on')
-    search_fields = ('name', 'email', 'body')
-    actions = ['approve_answers']
+    exclude = ('slug',)
 
     def approve_answers(self, request, queryset):
         queryset.update(approved=True)
 
+    def save_model(self, request, obj, form, change):
+        if not obj.slug:
+            obj.slug = 'default-slug'
+        super().save_model(request, obj, form, change)
 
 @admin.register(ReputationPoints)
 class ReputationPointsAdmin(admin.ModelAdmin):
