@@ -7,7 +7,8 @@ from django.utils import timezone
 from datetime import timedelta
 from django.utils.text import slugify
 from django_quill.fields import QuillField
-from django.db.models.signals import m2m_changed, post_save
+from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
 from taggit.managers import TaggableManager
 
@@ -135,3 +136,16 @@ def update_net_votes(sender, instance, **kwargs):
     """
     instance.net_votes = instance.upvotes.count() - instance.downvotes.count()
     instance.save()
+
+from .answer_model import Answer
+# Signals for updating answer count
+@receiver(post_save, sender=Answer)
+def update_answer_count(sender, instance, created, **kwargs):
+    if created:
+        instance.question.answercount = instance.question.answers.count()
+        instance.question.save()
+
+@receiver(post_delete, sender=Answer)
+def decrease_answer_count(sender, instance, **kwargs):
+    instance.question.answercount = instance.question.answers.count()
+    instance.question.save()
