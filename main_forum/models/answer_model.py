@@ -11,11 +11,11 @@ from django.utils import timezone
 from datetime import timedelta
 from django.utils.text import slugify
 from django_quill.fields import QuillField
-from django.db.models.signals import m2m_changed, post_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from taggit.managers import TaggableManager
-from .question_model import Question
 from .user_profile_model import User
+from .question_model import Question
 
 STATUS = ((0, "Draft"), (1, "Published"))
 
@@ -29,17 +29,15 @@ class Answer(models.Model):
     """
     question = models.ForeignKey(
         Question, on_delete=models.CASCADE, related_name="answers")
-    slug = models.SlugField(max_length=200, unique=True)
-    name = models.CharField(max_length=80)
-    email = models.EmailField()
     body = QuillField()
+    slug = models.SlugField(max_length=250, null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
-    approved = models.BooleanField(default=False)
+    approved = models.BooleanField(default=True)
     upvotes = models.ManyToManyField(
         User, related_name='answer_upvote', blank=True)
     downvotes = models.ManyToManyField(
         User, related_name='answer_downvote', blank=True)
-    status = models.IntegerField(choices=STATUS, default=0)
+    status = models.IntegerField(choices=STATUS, default=1)
     featured_image = CloudinaryField('image', default='placeholder')
     author = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
 
@@ -47,7 +45,7 @@ class Answer(models.Model):
         ordering = ["created_on"]
 
     def __str__(self):
-        return f"Answer {self.body} by {self.name}"
+        return f"Answer {self.body} by {self.author}"
 
     def number_of_upvotes(self):
         return self.upvotes.count()
