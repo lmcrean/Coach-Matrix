@@ -4,9 +4,7 @@
     box-sizing: border-box;
 }
 
-h1 {
-    color: var(--mono-dark);
-}
+
 
 form {
     font-weight: 400;

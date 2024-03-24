@@ -21,7 +21,7 @@
 
 .voting-card .profile-picture {
   font-size: 3rem;
-  color: #6c757d;
+  color: var(--secondary-color-light);
 }
 
 .voting-card .reputation {
@@ -54,7 +54,7 @@ button.voting-button {
 
 /* Default state for the green circle */
 .voting-card .circle.green {
-  background-color: #adebad; /* Light green background */
+  background-color: var(--primary-color-darkest); /* Light green background */
 }
 
 /* Hover state for the green circle */
@@ -69,7 +69,7 @@ button.voting-button {
 
 /* Default state for the yellow circle */
 .voting-card .circle.yellow {
-  background-color: #ffecb3; /* Light yellow background */
+  background-color: var(--secondary-color); /* Light yellow background */
 }
 
 /* Hover state for the yellow circle */

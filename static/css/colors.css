@@ -7,8 +7,8 @@
 
 :root {
     /* Primary Color Palette */
-    --primary-color-lightest: #4dd0e1;
-    --primary-color-light: #26c6da;
+    --primary-color-lightest: #4de1b7;
+    --primary-color-light: #26dac5;
     --primary-color-medium: #00acc1;
     --primary-color-dark: #009693;
     --primary-color-darkest: #00897b;
@@ -30,7 +30,8 @@
     /* Typography */
     --text-color-main: #4A4A4F;
     --text-color-hover: #445261;
-    --text-color-footer: white;
+    --text-color-white: #e2e2e2;
+    --text-color-footer: #e2e2e2;
 
     /* Backgrounds */
     --background-color-body: #F9FAFC;
@@ -72,6 +73,8 @@
 html, body, button, input, select, textarea, a, .brand, .footer-link, footer a {
     color: var(--text-color-main);
 }
+
+.text-color-white { color: var(--text-color-white); }
 
 /* No text decoration for Link Styles */
 a { text-decoration: none; }
