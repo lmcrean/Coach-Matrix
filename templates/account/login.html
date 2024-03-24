@@ -2,38 +2,39 @@
 
 {% extends "base.html" %}
 
-{% load i18n %}
-
+{% load static %}
 {% load socialaccount %}
-<!-- removed load account socialaccount -->
-
-{% block head_title %}{% trans "Sign In" %}{% endblock %}
 
 {% block content %}
 
-<div class="container">
-  <div class="row">
-    <div class="col-md-8 mt-3 offset-md-2">
-      <h3>{% trans "Sign In" %}</h3>
 
-      <p>{% blocktrans %}Welcome back to Coach Matrix. To leave a comment or like a post, please log in. If you
-        have not created an account yet, then <a class="link" href="{{ signup_url }}">sign up</a>
-        first.{% endblocktrans %}</p>
-      
-      <a href="{% provider_login_url 'google' %}?next=/">Login With Google</a>
-    </div>
+
+<div class="form-modal">
+
+  <div id="landing-logo" class="logo">
+    <div id="landing-logo" class="green-semicircle"></div>
+    <div id="landing-logo" class="orange-semicircle"></div>
+    <div id="landing-logo" class="slant top-slant"></div>
+    <!-- top slant creates gap beween orange and green semicircle -->
+    <div id="landing-logo" class="slant bottom-slant"></div>
+    <!-- bottom slant has same function, it should really be exactly the same shape as top-slant, just aligned as a gap at the bottom.-->
+    <div id="landing-logo" class="orange-almond almond"></div>
+    <div id="landing-logo" class="green-almond almond"></div>
   </div>
-  <div class="row">
-    <div class="col-md-8 mt-3 offset-md-2">
-      <form class="login" method="POST" action="{% url 'account_login' %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        {% if redirect_field_value %}
-        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-        {% endif %}
-        <button class="btn btn-signup right" type="submit">Sign in</button>
-      </form>
-    </div>
+
+  <h1 class="text-center gy-15"><span class="coach-text color-secondary-main"> Log </span> <span
+      class="matrix-text color-primary-main"> in </span></h1>
+  <h3 class="text-center mx-4"> Enter your details to log in </h3>
+  <hr>
+
+  <div id="login-form">
+    <!--LOG IN form-->
+    <form class="login" method="post" action="{% url 'custom_login' %}">
+      {% csrf_token %}
+      <input type="text" name="username" placeholder="Enter username" required />
+      <input type="password" name="password" placeholder="Enter password" required />
+      <button id="signInBtn" class="btn-success" type="submit">Sign In</button>
+    </form>
   </div>
 </div>
 
