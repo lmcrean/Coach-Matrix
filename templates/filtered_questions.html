@@ -17,25 +17,28 @@
     <div class="card mt-5 mx-auto">
       <div class="card-header">
         {% if request.GET.sort_by == 'votes' %}
-        <h1 class="text-center">Top Questions</h1>
+        <h1 class="text-center"><span class="color-secondary-main">Top Questions</span><span class="color-primary-main"> filtered by '{{ tag.name }}'</span></h1>
       </div>
       <div class="text-center card-body">
         <a href="?sort_by=recent" class="btn btn-secondary"><i class="fa-solid fa-sort-up"></i>Sort by Most Recent</a>
+        <a href="{% url 'questions' %}" class="btn btn-outline-secondary clear-filter-button"><i class="fa-solid fa-cancel"></i>Clear Filter</a>
         {% elif request.GET.sort_by == 'recent' %}
-        <h1 class="text-center">Most Recent Questions</h1>
+        <h1 class="text-center"><span class="color-secondary-main">Most Recent Questions</span><span class="color-primary-main"> filtered by '{{ tag.name }}'</span></h1>
       </div>
       <div class="text-center card-body">
         <a href="?sort_by=votes" class="btn btn-secondary"><i class="fa-solid fa-medal"></i>Sort by Most Votes</a>
+        <a href="{% url 'questions' %}" class="btn btn-outline-secondary clear-filter-button"><i class="fa-solid fa-cancel"></i>Clear Filter</a>
         {% else %} <!--default view needed here when no filter pressed-->
-        <h1 class="text-center">Top Questions</h1>
+        <h1 class="text-center"><span class="color-secondary-main">Top Questions</span><span class="color-primary-main"> filtered by '{{ tag.name }}'</span></h1>
       </div>
       <div class="text-center card-body">
         <a href="?sort_by=recent" class="btn btn-secondary"><i class="fa-solid fa-sort-up"></i>Sort by Most Recent</a>
+        <a href="{% url 'questions' %}" class="btn btn-outline-secondary clear-filter-button"><i class="fa-solid fa-cancel"></i>Clear Filter</a>
         {% endif %}
       </div>
     </div>
 
-    <a href="{% url 'questions' %}" class="clear-filter-button">Clear Filter</a>
+    
     <br>
 
     <!-- Questions List -->
