@@ -136,7 +136,11 @@
         </div>
     </div>
 
+    {% if template_name == 'index.html' %}
     <main class="flex-shrink-0 main-bg">
+    {% else %}
+    <main class="flex-shrink-0 main-bg primary-main">
+    {% endif %}
 
         {% block content %}
         <!-- Content Goes here -->
