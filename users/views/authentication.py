@@ -20,7 +20,10 @@ logger = logging.getLogger(__name__)
 def home(request):
     if request.user.is_authenticated:
         return redirect(reverse('questions'))
-    return render(request, "index.html")
+    context = {
+        'template_name': 'index.html', # this is used because we want a slightly different class for the main div in index.html
+    }
+    return render(request, "index.html", context)
 
 
 def questions_view(request):
@@ -36,7 +39,6 @@ def logout_view(request):
 @csrf_protect
 def custom_login_view(request):
     if request.method == 'POST':
-        logger.debug('Attempting to authenticate a user.')
         form = CustomLoginForm(data=request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
