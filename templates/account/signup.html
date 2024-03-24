@@ -1,31 +1,43 @@
 {% extends "base.html" %}
-
-{% load i18n %}
-
-{% block head_title %}{% trans "Signup" %}{% endblock %}
+{% load static %}
+{% load socialaccount %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 mt-3 offset-md-2">
-            <h3>{% trans "Sign Up" %}</h3>
+<div class="form-modal">
 
-            <p>{% blocktrans %}Welcome back to Coach Matrix blog. Do you already have an account? Then please <a
-                    class="link" href="{{ login_url }}">sign in</a> instead.{% endblocktrans %}</p>
-        </div>
+    <div id="landing-logo" class="logo">
+        <div id="landing-logo" class="green-semicircle"></div>
+        <div id="landing-logo" class="orange-semicircle"></div>
+        <div id="landing-logo" class="slant top-slant"></div>
+        <!-- top slant creates gap beween orange and green semicircle -->
+        <div id="landing-logo" class="slant bottom-slant"></div>
+        <!-- bottom slant has same function, it should really be exactly the same shape as top-slant, just aligned as a gap at the bottom.-->
+        <div id="landing-logo" class="orange-almond almond"></div>
+        <div id="landing-logo" class="green-almond almond"></div>
     </div>
-    <div class="row">
-        <div class="col-md-8 mt-3 offset-md-2">
-            <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+
+    <h1 class="text-center gy-15"><span class="coach-text color-secondary-main"> Sign </span> <span
+            class="matrix-text color-primary-main"> up </span></h1>
+    <h3 class="text-center mx-4"> Enter your details to sign up </h3>
+    <hr>
+    <div id="login-form">
+        <div id="signup-form" style="display:block">
+            <!--SIGN UP form-->
+            <form method="post" action="{% url 'custom_signup' %}">
                 {% csrf_token %}
-                {{ form.as_p }}
-                {% if redirect_field_value %}
-                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-                {% endif %}
-                <button class="btn btn-signup right" type="submit">{% trans "Sign Up" %} &raquo;</button>
+                <input type="text" name="username" placeholder="Choose username" required />
+                <input type="password" name="password1" placeholder="Create password" required />
+                <input type="password" name="password2" placeholder="Repeat password" required />
+                <button type="submit" class="btn signup" id="create-account">Create Account</button>
+            </form>
+            <hr>
+            <p>Clicking <strong>create account</strong> means that you are agree to our <a
+                    href="https://generator.lorem-ipsum.info/terms-and-conditions" target="_blank"
+                    rel="noopener noreferrer"> terms of services</a>.</p>
+            </a>
             </form>
         </div>
     </div>
 </div>
-
+<div class="mt-5"></div>
 {% endblock %}
