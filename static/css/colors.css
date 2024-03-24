@@ -126,7 +126,7 @@ body { background-color: var(--background-color-body);}
 .dark-bg { color: var(--mono-darkest); }
 
 /* answer card */
-.answer-section-header { background: var(--background-white); box-shadow: 0 2px 5px var(--shadow-color); }
+.answer-section-header { background: var(--primary-color); box-shadow: 0 2px 5px var(--shadow-color); }
 .sticky-top { background: var(--background-white); border: 1px solid var(--border-grey); box-shadow: 0 2px 4px var(--shadow-light); }
 .sort-options { background-color: var(--background-white); border-color: var(--border-grey); }
 .question-tags span { background-color: var(--tag-background-grey); }
