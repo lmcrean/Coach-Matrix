@@ -63,3 +63,7 @@ p {
     font-style: italic;
     font-family: 'GlacialIndifference', sans-serif;
 }
+
+nav a {
+	font-weight: 700;
+}

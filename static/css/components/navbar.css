@@ -315,3 +315,6 @@ i {
 		left: -25px;
 	}
 }
+nav i {
+	margin-right: 4px;
+}
