@@ -74,57 +74,74 @@
                         <!--Navbar Home link depending on authentication-->
                         {% if user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="{% url 'questions' %}"><i
-                                    class="fa-solid fa-home"></i>Home</a>
+                            <a class="nav-link" aria-current="page" href="{% url 'questions' %}">
+                                <i class="fa-solid fa-home"></i>
+                                Home
+                            </a>
                         </li>
                         {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="{% url 'home' %}"><i
-                                    class="fa-solid fa-home"></i>Home</a><!--leads to landing-->
+                            <a class="nav-link" aria-current="page" href="{% url 'home' %}">
+                                <i class="fa-solid fa-home"></i>
+                                Home
+                            </a>
                         </li>
                         {% endif %}
-
+                
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'questions' %}"><i class="fa-solid fa-briefcase"></i>Top
-                                Questions</a>
+                            <a class="nav-link" href="{% url 'questions' %}">
+                                <i class="fa-solid fa-briefcase"></i>
+                                Top Questions
+                            </a>
                         </li>
-
+                
                         {% if user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'ask_question' %}"><i class="fa-solid fa-message"></i>Ask A
-                                Question</a>
+                            <a class="nav-link" href="{% url 'ask_question' %}">
+                                <i class="fa-solid fa-message"></i>
+                                Ask A Question
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'bookmarked_questions' %}"><i
-                                    class="fa-solid fa-bookmark"></i>My Bookmarks</a>
+                            <a class="nav-link" href="{% url 'bookmarked_questions' %}">
+                                <i class="fa-solid fa-bookmark"></i>
+                                My Bookmarks
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'account_logout' %}"><i
-                                    class="fa-solid fa-right-from-bracket"></i>Logout</a>
+                            <a class="nav-link" href="{% url 'account_logout' %}">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                                Logout
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/accounts/signup/">
+                                <i class="fa-solid fa-user-plus"></i>
+                                Register
+                            </a>
                         </li>
                         <li class="nav-item">
-                            {% else %}
-                            <a class="nav-link" href="{% url 'account_signup' %}"><i
-                                    class="fa-solid fa-user-plus"></i>Register</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'account_login' %}"><i
-                                    class="far fa-address-book"></i>Login</a>
+                            <a class="nav-link" href="{% url 'account_login' %}">
+                                <i class="far fa-address-book"></i>
+                                Login
+                            </a>
                         </li>
                         {% endif %}
-
+                
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'about' %}"><i
-                                    class="fa-solid fa-circle-info"></i>About</a>
+                            <a class="nav-link" href="{% url 'about' %}">
+                                <i class="fa-solid fa-circle-info"></i>
+                                About
+                            </a>
                         </li>
-
                     </ul>
                     <span class="navbar-text">
                         {% if user.is_authenticated %}
-                        <a href="{% url 'my_profile' %}" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                            title="Click here to view and update your profile">
+                        <a href="{% url 'my_profile' %}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Click here to view and update your profile">
                             <i class="fas fa-user-circle profile-picture"></i>
-                            My Account</a>
+                            My Account
+                        </a>
                         {% endif %}
                     </span>
                 </div>
