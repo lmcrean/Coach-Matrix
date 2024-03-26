@@ -57,7 +57,7 @@
     animation-delay: 1s;
 }
 
-#landing-logo .almond {
+.landing-logo .almond {
     opacity: 0; /* Initial state */
     animation: fadeIn 5s ease forwards;
     animation-delay: 2s;

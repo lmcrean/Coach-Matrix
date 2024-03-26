@@ -37,7 +37,7 @@ body {
     animation-delay: 1s;
 }
 
-#landing-logo .almond {
+.landing-logo .almond {
     opacity: 0;
     animation: fadeIn 5s ease forwards;
     animation-delay: 2s;
@@ -144,7 +144,7 @@ body {
 }
 
 /* Styling for the green semicircle */
-#landing-logo .green-semicircle {
+.landing-logo .green-semicircle {
     position: absolute;
     width: 100px;
     height: 200px;
@@ -155,7 +155,7 @@ body {
 }
 
 /* Styling for the orange semicircle */
-#landing-logo .orange-semicircle {
+.landing-logo .orange-semicircle {
     position: absolute;
     width: 100px;
     border-top-left-radius: 200px;
@@ -189,7 +189,7 @@ body {
 }
 
 /* Additional slant styles */
-#landing-logo .slant {
+.landing-logo .slant {
     position: absolute;
     background-color: #fff;
     border-radius: 0%;
@@ -198,7 +198,7 @@ body {
     z-index: 4;
 }
 
-#landing-logo .top-slant {
+.landing-logo .top-slant {
     margin: -18px 0 auto;
     top: 4%;
     bottom: auto;
@@ -209,7 +209,7 @@ body {
     z-index: 10;
 }
 
-#landing-logo .bottom-slant {
+.landing-logo .bottom-slant {
     bottom: -9%;
     left: 60%;
     width: 14px;
@@ -217,11 +217,11 @@ body {
     transform-origin: 0 0;
 }
 
-#landing-logo .almond {
+.landing-logo .almond {
     z-index: 50;
 }
 
-#landing-logo .green-almond {
+.landing-logo .green-almond {
     position: absolute;
     width: var(--almond-size);
     height: var(--almond-size);
@@ -233,7 +233,7 @@ body {
     z-index: 10;
 }
 
-#landing-logo .orange-almond {
+.landing-logo .orange-almond {
     position: absolute;
     width: var(--almond-size);
     height: var(--almond-size);
