@@ -16,7 +16,6 @@
 /* Import component-specific styles from the components directory */
 @import url('components/answercard.css');
 @import url('components/ask_question.css');
-/* @import url('components/bg-logo.css'); */
 @import url('components/login.css');
 @import url('components/navbar.css');
 @import url('components/question_detail.css');
