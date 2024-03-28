@@ -8,7 +8,6 @@ django-allauth==0.58.2
 django-crispy-forms==1.14.0
 django-js-asset==2.2.0
 django-quill-editor==0.1.40
-django-summernote==0.8.20.0
 django-taggit==1.5.1
 gunicorn==21.2.0
 oauthlib==3.2.2
