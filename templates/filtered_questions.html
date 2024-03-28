@@ -165,7 +165,8 @@
         {% else %}
         <div class="question-actions d-flex justify-content-end mt-2">
           <!-- Bookmark Button for non-author -->
-          {% if question|is_bookmarked_by:user %}
+          {% if user.is_authenticated %}
+            {% if question|is_bookmarked_by:user %}
           <form method="POST" action="{% url 'delete_bookmark' question.id %}">
             {% csrf_token %}
             <button class="btn btn-outline-secondary btn-sm" type="submit">
@@ -202,5 +203,6 @@
     {% endif %}
     <div class="my-5"></div>
   </div>
-  {%endfor%}
-  {% endblock content %}
+  {% endif %}
+  {% endfor %}
+  {% endblock %}

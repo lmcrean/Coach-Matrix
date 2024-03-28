@@ -49,7 +49,7 @@
         <form id="standards-form" method="post" action="{% url 'ask_question' %}">
             {% csrf_token %}
             
-            <h2 class="text-center">Subject line</h2>
+            <h2 id="subject" class="text-center">Subject line</h2>
             {{ form.subject | as_crispy_field }}
             <!-- rendering as expected INCLUDING validation errors underneath -->
             
