@@ -183,7 +183,7 @@
     position: sticky;
     top: 43px; /* Adjust based on your navbar height */
     right: 0;
-    height: 400px;
+    height: 130px;
     z-index: 1020;
   }
   .icon-action {
