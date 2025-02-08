@@ -16,5 +16,5 @@ coachmatrix/settings.py
 /blob-report/
 /playwright/.cache/
 
-# all .png files
-*.png
+# all .png files in the e2e/screenshots folder
+e2e/screenshots/*.png
