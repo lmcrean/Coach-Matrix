@@ -3,4 +3,5 @@
 # python3 manage.py test main_forum.tests
 
 # from .tests_setup import QuestionAnswerTests
-from .tests_questions import UserQuestionTest
+from .tests_questions import SimpleQuestionTest
+from .tests_answers import SimpleAnswerTest
