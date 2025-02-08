@@ -58,8 +58,11 @@ class Answer(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:  # if slug is not set or empty
-            # Fallback to 'answer' if name is empty
-            base_slug = slugify(self.body.text[:50]) if self.body.text else 'answer'
+            # Get the HTML content from QuillField and strip HTML tags for the slug
+            html_content = self.body.html if hasattr(self.body, 'html') else str(self.body)
+            # Remove HTML tags and get first 50 chars
+            text_content = ''.join(c for c in html_content if c not in '<>/')[:50]
+            base_slug = slugify(text_content) if text_content else 'answer'
             new_slug = base_slug
             counter = 1
 
