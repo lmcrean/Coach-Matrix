@@ -14,8 +14,8 @@ from django_quill.fields import QuillField
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from taggit.managers import TaggableManager
-from .user_profile_model import User
 from .question_model import Question
+import uuid
 
 STATUS = ((0, "Draft"), (1, "Published"))
 
