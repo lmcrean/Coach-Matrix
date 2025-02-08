@@ -172,9 +172,19 @@ if 'test' in sys.argv:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'test_db.sqlite3',
+            'NAME': ':memory:',
         }
     }
+    # Use local storage for tests
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'test_media')
+    STATIC_ROOT = os.path.join(BASE_DIR, 'test_static')
+    # Remove Cloudinary from INSTALLED_APPS during tests
+    INSTALLED_APPS = [app for app in INSTALLED_APPS if not app.startswith('cloudinary')]
+    # Disable Cloudinary for tests
+    CLOUDINARY_URL = None
+    CLOUDINARY_STORAGE = None
 else:
     DATABASES = {
         'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
