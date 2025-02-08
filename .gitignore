@@ -15,3 +15,6 @@ coachmatrix/settings.py
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# all .png files
+*.png
