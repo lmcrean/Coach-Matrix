@@ -1,0 +1,14 @@
+{
+  "name": "coach-matrix",
+  "version": "1.0.0",
+  "description": "Coach Matrix is an open-source CPD platform for educators to connect and share knowledge.",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.50.1",
+    "@types/node": "^22.13.1"
+  }
+}
